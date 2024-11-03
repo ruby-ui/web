@@ -9,7 +9,7 @@ class Docs::TabsView < ApplicationView
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Tabs", description: "A set of layered sections of content—known as tab panels—that are displayed one at a time.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY
@@ -21,16 +21,16 @@ class Docs::TabsView < ApplicationView
             TabsContent(value: "account") do
               div(class: "rounded-lg border p-6 space-y-4 bg-background text-foreground") do
                 div(class: "space-y-0") do
-                  TypographyLarge { "Account" }
-                  TypographyMuted { "Update your account details." }
+                  Text(size: "4", weight: "semibold") { "Account" }
+                  Text(size: "2", class: "text-muted-foreground") { "Update your account details." }
                 end
               end
             end
             TabsContent(value: "password") do
               div(class: "rounded-lg border p-6 space-y-4 bg-background text-foreground") do
                 div do
-                  TypographyLarge { "Password" }
-                  TypographyMuted { "Change your password here. After saving, you'll be logged out." }
+                  Text(size: "4", weight: "semibold") { "Password" }
+                  Text(size: "2", class: "text-muted-foreground") { "Change your password here. After saving, you'll be logged out." }
                 end
               end
             end
@@ -59,8 +59,8 @@ class Docs::TabsView < ApplicationView
                 end
                 div(class: "space-y-4") do
                   div do
-                    TypographyLarge { "Joel Drapper" }
-                    TypographyMuted { "Creator of Phlex Components. Ruby on Rails developer." }
+                    Text(size: "4", weight: "semibold") { "Joel Drapper" }
+                    Text(size: "2", class: "text-muted-foreground") { "Creator of Phlex Components. Ruby on Rails developer." }
                   end
                   Link(href: "https://github.com/joeldrapper", variant: :outline, size: :sm) do
                     github_icon
@@ -90,16 +90,16 @@ class Docs::TabsView < ApplicationView
             TabsContent(value: "account") do
               div(class: "rounded-lg border p-6 space-y-4 bg-background text-foreground") do
                 div(class: "space-y-0") do
-                  TypographyLarge { "Account" }
-                  TypographyMuted { "Update your account details." }
+                  Text(size: "4", weight: "semibold") { "Account" }
+                  Text(size: "2", class: "text-muted-foreground") { "Update your account details." }
                 end
               end
             end
             TabsContent(value: "password") do
               div(class: "rounded-lg border p-6 space-y-4 bg-background text-foreground") do
                 div do
-                  TypographyLarge { "Password" }
-                  TypographyMuted { "Change your password here. After saving, you'll be logged out." }
+                  Text(size: "4", weight: "semibold") { "Password" }
+                  Text(size: "2", class: "text-muted-foreground") { "Change your password here. After saving, you'll be logged out." }
                 end
               end
             end

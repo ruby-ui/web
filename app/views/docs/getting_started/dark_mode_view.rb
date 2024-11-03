@@ -7,40 +7,40 @@ class Docs::GettingStarted::DarkModeView < ApplicationView
 
       div(class: "space-y-4") do
         heading2 { "How it works" }
-        TypographyP { "RBUI seamlessly integrates dark mode, a crucial feature for modern applications, enhancing user experience and catering to diverse user preferences." }
-        TypographyP do
+        Text { "RBUI seamlessly integrates dark mode, a crucial feature for modern applications, enhancing user experience and catering to diverse user preferences." }
+        Text do
           plain "RBUI is setup to use the "
-          TypographyInlineLink(href: "https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually") { "TailwindCSS 'class' strategy" }
+          InlineLink(href: "https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually") { "TailwindCSS 'class' strategy" }
           plain ". This means that you can toggle dark mode by adding or removing the "
-          TypographyInlineCode { "dark" }
+          InlineCode { "dark" }
           plain " class from the "
-          TypographyInlineCode { "<body>" }
+          InlineCode { "<body>" }
           plain " element."
         end
-        TypographyP { "To enable dark mode, follow the installation below." }
+        Text { "To enable dark mode, follow the installation below." }
       end
 
       div(class: "space-y-4") do
         heading2 { "Installation" }
-        TypographyP do
+        Text do
           plain "To implement Dark mode, add the "
-          TypographyInlineCode { "ThemeToggle" }
+          InlineCode { "ThemeToggle" }
           plain " component (below) to your application layout file. This ensures it's available on all pages."
         end
-        TypographyP do
+        Text do
           plain "This component is a button that toggles the "
-          TypographyInlineCode { "dark" }
+          InlineCode { "dark" }
           plain " class on the "
-          TypographyInlineCode { "<body>" }
+          InlineCode { "<body>" }
           plain " element, using the "
-          TypographyInlineCode { "ToggleThemeController" }
+          InlineCode { "ToggleThemeController" }
           plain " Stimulus controller."
         end
         Alert do
           AlertTitle { "Pro tip" }
           AlertDescription do
             plain "You can hide the theme toggle on specific pages, like so: "
-            TypographyInlineCode { "ThemeToggle(class: 'hidden')" }
+            InlineCode { "ThemeToggle(class: 'hidden')" }
             plain "."
           end
         end
@@ -91,7 +91,7 @@ class Docs::GettingStarted::DarkModeView < ApplicationView
   end
 
   def heading2(&)
-    TypographyH2(class: "!text-2xl pb-4 border-b", &)
+    Heading(level: 2, class: "!text-2xl pb-4 border-b", &)
   end
 
   def space_y_4(&)

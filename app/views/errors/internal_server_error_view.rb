@@ -5,8 +5,8 @@ class Errors::InternalServerErrorView < ApplicationView
     Card(class: "p-8 space-y-6 flex flex-col items-center") do
       div(class: "space-y-2") do
         Badge(variant: :destructive, class: "font-mono") { "STATUS: 500" }
-        TypographyH1(class: "!leading-tight") { "Oops! Something went wrong" }
-        TypographyP(class: "text-muted-foreground") { "Something unexpected happened. We're looking into it." }
+        Heading(level: 1, class: "!leading-tight") { "Oops! Something went wrong" }
+        Text(class: "text-muted-foreground") { "Something unexpected happened. We're looking into it." }
       end
 
       Link(href: helpers.root_path, variant: :primary, class: "w-full") do

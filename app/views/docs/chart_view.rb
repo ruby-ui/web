@@ -5,17 +5,17 @@ class Docs::ChartView < ApplicationView
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Chart", description: "Displays information in a visual way.")
 
-      TypographyH2 { "Introduction" }
+      Heading(level: 2) { "Introduction" }
 
-      TypographyP do
+      Text do
         plain "RBUI uses "
-        TypographyInlineLink(href: "https://www.chartjs.org/") { "Chart.js" }
+        InlineLink(href: "https://www.chartjs.org/") { "Chart.js" }
         plain " to render charts. Chart.js is a free open-source JavaScript library for data visualization, which supports 8 chart types: bar, line, area, pie, bubble, radar, polar, and scatter. If you're unfamiliar with Chart.js. We recommend the "
-        TypographyInlineLink(href: "https://www.chartjs.org/docs/latest/getting-started/") { "Getting Started guide" }
+        InlineLink(href: "https://www.chartjs.org/docs/latest/getting-started/") { "Getting Started guide" }
         plain ". "
       end
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Bar Chart", context: self) do
         <<~RUBY
