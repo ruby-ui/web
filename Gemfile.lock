@@ -1,20 +1,10 @@
 GIT
-  remote: https://github.com/rbui-labs/rbui.git
-  revision: b9f846b142464c4c3a64511547f51f58bde1eb6f
-  branch: upgrade-to-phlex-v2-beta
-  remote: https://github.com/rbui-labs/rbui.git
-  revision: 9428238764f51f5039dffcfa76ba4e90ab77f74b
-  branch: main
   remote: https://github.com/ruby-ui/ruby_ui.git
-  revision: 33dc56c7565e64080f976594b7a67eb0b7e2412f
+  revision: 9dc4378689fb7157091584108b7563371eab0cf9
   branch: main
   specs:
-    rbui (1.0.0.pre.alpha.4)
-      phlex (>= 1.10)
-    rbui (1.0.0.pre.alpha.3)
-      phlex (~> 1.10)
     ruby_ui (1.0.0.pre.alpha.4)
-      phlex (~> 1.10, < 3)
+      phlex (>= 1.10, < 3)
       rouge (~> 4.2.0)
       tailwind_merge (~> 0.12)
 
@@ -309,8 +299,6 @@ GEM
       railties (>= 6.0.0)
     stringio (3.1.1)
     strscan (3.1.0)
-    tailwind_merge (0.13.1)
-    tailwind_merge (0.13.0)
     tailwind_merge (0.13.2)
       lru_redux (~> 1.1)
     thor (1.3.1)
