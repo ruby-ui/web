@@ -8,7 +8,7 @@ class Views::Docs::Collapsible < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Collapsible", description: "An interactive component which expands/collapses a panel.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY

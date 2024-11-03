@@ -12,14 +12,14 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Rails - JS Bundler", description: "How to install RBUI within a Rails app that employs JS bundling.")
 
-      TypographyH2(class: "!text-2xl pb-4 border-b") { "Creating a Rails app" }
+      Heading(level: 2, class: "!text-2xl pb-4 border-b") { "Creating a Rails app" }
       render Steps::Builder.new do |steps|
         steps.add_step do
           step_container do
-            TypographyLarge { "Generate a new Rails application" }
-            TypographyP do
+            Text(size: "4", weight: "semibold") { "Generate a new Rails application" }
+            Text do
               plain "In case you don't have a Rails application set up yet, let's start by generating one. The demo uses esbuild, however feel free to change esbuild to use bun, webpack or rollup.js. "
-              TypographyInlineLink(href: "https://guides.rubyonrails.org/working_with_javascript_in_rails.html#adding-npm-packages-with-javascript-bundlers") { "Read more about JS bundlers in Rails here." }
+              InlineLink(href: "https://guides.rubyonrails.org/working_with_javascript_in_rails.html#adding-npm-packages-with-javascript-bundlers") { "Read more about JS bundlers in Rails here." }
             end
             code = <<~CODE
               rails new CHANGE_TO_NAME_OF_APP --css=tailwind --javascript=esbuild
@@ -27,7 +27,7 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
             div(class: "w-full") do
               Codeblock(code, syntax: :javascript)
             end
-            TypographyP { "Once that is created, navigate to the app" }
+            Text { "Once that is created, navigate to the app" }
             code = <<~CODE
               cd CHANGE_TO_NAME_OF_APP
             CODE
@@ -38,29 +38,29 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
         end
       end
 
-      TypographyH2(class: "!text-2xl pb-4 border-b") { "Install the gem" }
+      Heading(level: 2, class: "!text-2xl pb-4 border-b") { "Install the gem" }
       render Steps::Builder.new do |steps|
         # STEP 1
         steps.add_step do
           step_container do
-            TypographyLarge { "Install Phlex" }
-            TypographyP { "Run the following in the terminal to install phlex for Rails" }
+            Text(size: "4", weight: "semibold") { "Install Phlex" }
+            Text { "Run the following in the terminal to install phlex for Rails" }
             code = <<~CODE
               bundle add phlex-rails
             CODE
             div(class: "w-full") do
               Codeblock(code, syntax: :javascript)
             end
-            TypographyP { "After the gem is installed, run the generator to create necessary files." }
+            Text { "After the gem is installed, run the generator to create necessary files." }
             code = <<~CODE
               bin/rails generate phlex:install
             CODE
             div(class: "w-full") do
               Codeblock(code, syntax: :javascript)
             end
-            TypographyP do
+            Text do
               plain "Refer to the "
-              TypographyInlineLink(href: @phlex_rails_link) { "Phlex installation guide for Rails" }
+              InlineLink(href: @phlex_rails_link) { "Phlex installation guide for Rails" }
               plain " for more information."
             end
           end
@@ -68,8 +68,8 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
         # STEP 2
         steps.add_step do
           step_container do
-            TypographyLarge { "Install RBUI gem" }
-            TypographyP { "Run the following in the terminal to install the RBUI Component Library" }
+            Text(size: "4", weight: "semibold") { "Install RBUI gem" }
+            Text { "Run the following in the terminal to install the RBUI Component Library" }
             code = <<~CODE
               bundle add phlex_ui
             CODE
@@ -79,10 +79,10 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
         # STEP 3
         steps.add_step do
           step_container do
-            TypographyLarge { "Include RBUI module" }
-            TypographyP do
+            Text(size: "4", weight: "semibold") { "Include RBUI module" }
+            Text do
               plain "Include RBUI module in your "
-              TypographyInlineCode(class: "whitespace-nowrap") { "application_component.rb" }
+              InlineCode(class: "whitespace-nowrap") { "application_component.rb" }
               plain " file"
             end
             code = <<~CODE
@@ -96,26 +96,26 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
         # STEP 4
         steps.add_step do
           step_container do
-            TypographyLarge { "Next step, JS!" }
-            TypographyP { "Let's make the components come to life by adding some JavaScript." }
+            Text(size: "4", weight: "semibold") { "Next step, JS!" }
+            Text { "Let's make the components come to life by adding some JavaScript." }
           end
         end
       end
 
       # JS INSTALLATION
-      TypographyH2(class: "!text-2xl pb-4 border-b") { "Install JS" }
+      Heading(level: 2, class: "!text-2xl pb-4 border-b") { "Install JS" }
       js_installation
 
       # STYLE INSTALLATION
-      TypographyH2(class: "!text-2xl pb-4 border-b") { "Install Styles" }
+      Heading(level: 2, class: "!text-2xl pb-4 border-b") { "Install Styles" }
       render Steps::Builder.new do |steps|
         # STEP 1
         steps.add_step do
           step_container do
-            TypographyLarge { "Install TailwindCSS" }
-            TypographyP do
+            Text(size: "4", weight: "semibold") { "Install TailwindCSS" }
+            Text do
               plain "Most will already have TailwindCSS installed, however if you do not, first follow the "
-              TypographyInlineLink(href: "https://tailwindcss.com/docs/guides/ruby-on-rails") { "TailwindCSS installation guide" }
+              InlineLink(href: "https://tailwindcss.com/docs/guides/ruby-on-rails") { "TailwindCSS installation guide" }
             end
           end
         end
@@ -123,9 +123,9 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
         # STEP 2
         steps.add_step do
           step_container do
-            TypographyLarge { "Install Dependencies" }
+            Text(size: "4", weight: "semibold") { "Install Dependencies" }
 
-            TypographyP { "Run the following in the terminal to install the dependencies" }
+            Text { "Run the following in the terminal to install the dependencies" }
 
             code = <<~CODE
               yarn add tailwindcss-animate
@@ -162,8 +162,8 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
       # STEP 1
       steps.add_step do
         step_container do
-          TypographyLarge { "Install package" }
-          TypographyP { "Run the following in the terminal to install RBUI JS package" }
+          Text(size: "4", weight: "semibold") { "Install package" }
+          Text { "Run the following in the terminal to install RBUI JS package" }
           code = <<~CODE
             yarn add rbui-js
           CODE
@@ -173,10 +173,10 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
 
       # STEP 2
       steps.add_step do
-        TypographyLarge { "Import package" }
-        TypographyP do
+        Text(size: "4", weight: "semibold") { "Import package" }
+        Text do
           plain "Import the package in your "
-          TypographyInlineCode(class: "whitespace-nowrap") { "app/javascript/application.js" }
+          InlineCode(class: "whitespace-nowrap") { "app/javascript/application.js" }
           plain " file"
         end
         code = <<~CODE

@@ -8,8 +8,8 @@ class Components::Docs::Header < Components::Base
 
   def view_template
     div(class: "space-y-2") do
-      TypographyH1 { @title }
-      TypographyLead { @description }
+      Components.Heading(level: 1) { @title }
+      Text(as: "p", size: "5", class: "text-muted-foreground") { @description }
     end
   end
 

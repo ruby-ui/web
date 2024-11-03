@@ -9,7 +9,7 @@ class Views::Docs::Link < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Link", description: "Displays a link that looks like a button or underline link.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", description: "This is the default appearance of a Link", context: self) do
         <<~RUBY

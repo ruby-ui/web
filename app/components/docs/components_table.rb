@@ -7,7 +7,7 @@ class Components::Docs::ComponentsTable < Components::Base
   end
 
   def view_template
-    TypographyH2 { "Components" }
+    Heading(level: 2) { "Components" }
 
     Tabs(default_value: "account", class: "") do
       TabsList do
@@ -28,7 +28,7 @@ class Components::Docs::ComponentsTable < Components::Base
               if @file_components.present?
                 component_table_view(@file_components)
               else
-                TypographyP { "No components for this page" }
+                Text { "No components for this page" }
               end
             end
           end
@@ -56,7 +56,7 @@ class Components::Docs::ComponentsTable < Components::Base
           components.each do |component|
             TableRow do
               TableCell do
-                TypographyInlineCode { component.name }
+                InlineCode { component.name }
               end
               TableCell do
                 component.built_using

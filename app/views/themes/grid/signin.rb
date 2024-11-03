@@ -4,8 +4,8 @@ class Views::Themes::Grid::Signin < ApplicationComponent
   def view_template
     Card(class: "p-8 space-y-4") do
       div do
-        TypographyLarge { "Create an account" }
-        TypographyMuted { "Enter your email below to create your account" }
+        Text(size: "4", weight: "semibold") { "Create an account" }
+        Text(size: "2", class: "text-muted-foreground") { "Enter your email below to create your account" }
       end
       oauth_buttons
       or_continue_with

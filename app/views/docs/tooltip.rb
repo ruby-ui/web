@@ -9,7 +9,7 @@ class Views::Docs::Tooltip < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Tooltip", description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY
@@ -20,7 +20,7 @@ class Views::Docs::Tooltip < Components::Layouts::Docs
               end
             end
             TooltipContent do
-              TypographyP { "Add to library" }
+              Text { "Add to library" }
             end
           end
         RUBY

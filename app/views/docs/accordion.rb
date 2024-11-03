@@ -9,7 +9,7 @@ class Views::Docs::Accordion < Components::Layouts::Docs
       render Docs::Header.new(title: component,
         description: "A vertically stacked set of interactive headings that each reveal a section of content.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         @@code = <<~RUBY

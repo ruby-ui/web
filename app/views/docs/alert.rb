@@ -8,7 +8,7 @@ class Views::Docs::Alert < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Alert", description: "Displays a callout for user attention.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY

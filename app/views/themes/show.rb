@@ -11,8 +11,8 @@ class Views::Themes::Show < Components::Layouts::Base
     render Shared::Container.new(size: "2xl", class: "py-12") do
       div(class: "md:flex items-center justify-between") do
         div do
-          TypographyH1 { "Themes" }
-          TypographyLead { "Customize your app fast with hand-picked themes." }
+          Heading(level: 1) { "Themes" }
+          Text(as: "p", size: "5", weight: "medium") { "Customize your app fast with hand-picked themes." }
         end
         div(class: "flex gap-x-2 mt-4") do
           render Views::Themes::CustomizePopover.new(theme: @theme)

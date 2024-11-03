@@ -8,7 +8,7 @@ class Views::Docs::Card < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Card", description: "Displays a card with header, content, and footer.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Card with image", context: self) do
         <<~RUBY
@@ -70,7 +70,7 @@ class Views::Docs::Card < Components::Layouts::Docs
               h5(class: 'font-semibold text-4xl') { '$2,602' }
             end
             CardFooter do
-              TypographyMuted { "**** 4620" }
+              Text(size: "2", class: "text-muted-foreground") { "**** 4620" }
             end
           end
         RUBY

@@ -42,7 +42,7 @@ class Components::Docs::VisualCodeExample < Components::Base
     div do
       if @title
         div(class: "flex items-center gap-x-2 mb-1") do
-          TypographyH4 { @title.capitalize }
+          Components.Heading(level: 4) { @title.capitalize }
         end
       end
       p { @description } if @description

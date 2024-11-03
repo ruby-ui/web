@@ -8,7 +8,7 @@ class Views::Docs::Clipboard < Components::Layouts::Docs
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Clipboard", description: "A control to allow you to copy content to the clipboard.")
 
-      TypographyH2 { "Usage" }
+      Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY
@@ -17,7 +17,7 @@ class Views::Docs::Clipboard < Components::Layouts::Docs
 
             ClipboardTrigger do
               Link(href: "#", class: "gap-1") do
-                TypographyP(size: :small, class: "text-primary") { "Copy the secret of success!!!" }
+                Text(size: :small, class: "text-primary") { "Copy the secret of success!!!" }
               end
             end
           end
