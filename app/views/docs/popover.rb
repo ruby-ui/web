@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Popover < Components::Layouts::Docs
+class Views::Docs::Popover < Views::Application
   def page_title = "Popover"
 
   def view_template

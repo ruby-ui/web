@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Themes::Grid::Chat < ApplicationComponent
+class Views::Themes::Grid::Chat < Components::Base
   MESSAGES = [
     "You should checkout RBUI's new release, it makes life sooo much easier",
     "What's RBUI?",

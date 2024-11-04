@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::GettingStarted::Theming < Components::Layouts::Docs
+class Views::Docs::GettingStarted::Theming < Views::Application
   def page_title = "Theming"
 
   def view_template

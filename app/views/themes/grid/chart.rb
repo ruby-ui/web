@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Themes::Grid::Chart < ApplicationComponent
+class Views::Themes::Grid::Chart < Components::Base
   def view_template
     Card(class: "p-8 space-y-6") do
       div do

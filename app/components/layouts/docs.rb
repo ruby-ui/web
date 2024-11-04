@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Components::Layouts::Docs < Components::Layouts::Base
+  include ApplicationHelper
+
   def around_template
     super do # Call the Base layout's template method
       div(class: "flex-1") do

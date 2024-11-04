@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::Docs::TailwindConfig < ApplicationComponent
+class Components::Docs::TailwindConfig < Components::Base
   def view_template
     Text(size: "4", weight: "semibold") { "Update Tailwind Configuration" }
     Text do

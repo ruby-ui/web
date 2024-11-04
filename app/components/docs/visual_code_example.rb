@@ -72,7 +72,7 @@ class Components::Docs::VisualCodeExample < Components::Base
     div(class: "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 relative rounded-md border") do
       div(class: "preview flex min-h-[350px] w-full justify-center p-10 items-center") do
         decoded_code = CGI.unescapeHTML(@display_code)
-        @context.instance_eval(decoded_code)
+        instance_eval(decoded_code)
       end
     end
   end

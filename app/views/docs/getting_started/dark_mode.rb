@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::GettingStarted::DarkMode < Components::Layouts::Docs
+class Views::Docs::GettingStarted::DarkMode < Views::Application
   def page_title = "Dark mode"
 
   def view_template

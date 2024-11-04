@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Steps
-  class Builder < ApplicationComponent
+  class Builder < Components::Base
     include Phlex::DeferredRender
 
     def initialize(**attrs)

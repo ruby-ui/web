@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Themes::Grid::Table < ApplicationComponent
+class Views::Themes::Grid::Table < Components::Base
   User = Struct.new(:avatar_url, :name, :username, :commits, :github_url, keyword_init: true)
 
   # def view_template

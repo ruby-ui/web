@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Badge < Components::Layouts::Docs
+class Views::Docs::Badge < Views::Application
   def page_title = "Badge"
 
   def view_template

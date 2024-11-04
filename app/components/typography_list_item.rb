@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::TypographyListItem < Components::Base
+class Components::TypographyListItem < RBUI::Base
   def view_template(&)
     li(**attrs, &)
   end

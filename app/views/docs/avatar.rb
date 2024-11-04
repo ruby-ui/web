@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Avatar < Components::Layouts::Docs
+class Views::Docs::Avatar < Views::Application
   def page_title = "Avatar"
 
   def view_template

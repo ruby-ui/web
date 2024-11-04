@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class Views::Docs::Installation::RailsImportmaps < Components::Layouts::Docs
+class Views::Docs::Installation::RailsImportmaps < Views::Application
+  include RBUI
+
   def page_title = "Rails - Importmaps"
 
   def initialize
@@ -92,7 +94,7 @@ class Views::Docs::Installation::RailsImportmaps < Components::Layouts::Docs
               plain " file"
             end
             code = <<~CODE
-              class ApplicationComponent < Phlex::HTML
+              class Components::Base < Phlex::HTML
                 include RBUI
               end
             CODE

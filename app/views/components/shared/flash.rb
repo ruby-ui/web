@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Shared::Flash < ApplicationComponent
+class Shared::Flash < Components::Base
   # STYLE_CLASS = {
   #     notice: 'bg-primary text-primary-foreground',
   #     alert: 'bg-destructive text-destructive-foreground'

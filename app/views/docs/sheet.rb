@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Sheet < Components::Layouts::Docs
+class Views::Docs::Sheet < Views::Application
   def page_title = "Sheet"
 
   def view_template

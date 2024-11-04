@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::AspectRatio < Components::Layouts::Docs
+class Views::Docs::AspectRatio < Views::Application
   def page_title = "Aspect Ratio"
 
   def view_template

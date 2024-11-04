@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::Docs::TailwindCss < ApplicationComponent
+class Components::Docs::TailwindCss < Components::Base
   def view_template
     Text(size: "4", weight: "semibold") { "Add CSS variables" }
     Text do

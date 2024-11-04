@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-  class Text < Base
+  class Text < RBUI::Base
     def initialize(as: "p", size: "3", weight: "regular", **attrs)
       @as = as
       @size = size

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Animation < ApplicationComponent
+class Animation < Components::Base
   def initialize(path:, options: {}, delay: 0, **attrs)
     @path = path
     @options = options.to_json

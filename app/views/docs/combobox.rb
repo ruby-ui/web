@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Combobox < Components::Layouts::Docs
+class Views::Docs::Combobox < Views::Application
   def page_title = "Combobox"
 
   @@code_example = nil

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Button < Components::Layouts::Docs
+class Views::Docs::Button < Views::Application
   def page_title = "Button"
 
   def view_template

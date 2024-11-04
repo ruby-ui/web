@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::DropdownMenu < Components::Layouts::Docs
+class Views::Docs::DropdownMenu < Views::Application
   def page_title = "Dropdown_menu"
 
   def view_template

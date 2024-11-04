@@ -1,5 +1,12 @@
-class Components::Layouts::Base < Components::Base
-  include Components
+class Components::Layouts::Base < Phlex::HTML
+  # include Components
+
+  if Rails.env.development?
+    def before_template
+      comment { "Before #{self.class.name}" }
+      super
+    end
+  end
 
   PageInfo = Data.define(:title)
 
@@ -10,9 +17,9 @@ class Components::Layouts::Base < Components::Base
       render Components::Shared::Head.new(page_info)
 
       body do
-        render Shared::Navbar.new
+        render Components::Shared::Navbar.new
         yield # This will render the content of child layouts/views
-        render Shared::Flashes.new(notice: helpers.flash[:notice], alert: helpers.flash[:alert])
+        render Components::Shared::Flashes.new(notice: helpers.flash[:notice], alert: helpers.flash[:alert])
       end
     end
   end

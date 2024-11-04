@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
+class Views::Docs::Installation::RailsBundler < Views::Application
   def page_title = "Rails - JS Bundler"
 
   def initialize
@@ -86,7 +86,7 @@ class Views::Docs::Installation::RailsBundler < Components::Layouts::Docs
               plain " file"
             end
             code = <<~CODE
-              class ApplicationComponent < Phlex::HTML
+              class Components::Base < Phlex::HTML
                 include RBUI
               end
             CODE

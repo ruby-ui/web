@@ -1,5 +1,5 @@
 module Typography
-  class InlineLink < ApplicationComponent
+  class InlineLink < Components::Base
     def initialize(href:, **attrs)
       @href = href
       @attrs = attrs

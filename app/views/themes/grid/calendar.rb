@@ -1,4 +1,4 @@
-class Views::Themes::Grid::Calendar < ApplicationComponent
+class Views::Themes::Grid::Calendar < Components::Base
   def view_template
     div(class: "space-y-4 w-full") do
       Input(type: "string", placeholder: "Select a date", class: "rounded-md border shadow", id: "formatted-date", data_controller: "input")

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::AlertDialog < Components::Layouts::Docs
+class Views::Docs::AlertDialog < Views::Application
   def page_title = "Alert"
 
   def view_template

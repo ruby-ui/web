@@ -1,4 +1,4 @@
-class Views::Themes::Grid::Card < ApplicationComponent
+class Views::Themes::Grid::Card < Components::Base
   def view_template
     Card(class: "w-full") do
       CardHeader do

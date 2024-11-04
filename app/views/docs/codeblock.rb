@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Codeblock < Components::Layouts::Docs
+class Views::Docs::Codeblock < Views::Application
   def page_title = "Codeblock"
 
   def view_template

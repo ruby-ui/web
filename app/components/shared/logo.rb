@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::Shared::Logo < ApplicationComponent
+class Components::Shared::Logo < Components::Base
   def view_template
     a(href: helpers.root_url, class: "mr-6 flex items-center space-x-2") do
       Heading(level: 4, class: "flex items-center") {

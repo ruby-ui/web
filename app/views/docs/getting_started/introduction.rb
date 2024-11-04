@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::GettingStarted::Introduction < Components::Layouts::Docs
+class Views::Docs::GettingStarted::Introduction < Views::Application
   def page_title = "Introduction"
 
   def view_template
@@ -11,11 +11,11 @@ class Views::Docs::GettingStarted::Introduction < Components::Layouts::Docs
         Heading(level: 2) { "About" }
         Text do
           plain "RBUI is a UI framework for Ruby developers, built on top of "
-          InlineLink(href: "http://phlex.fun") { "Phlex" }
+          RBUI.InlineLink(href: "http://phlex.fun") { "Phlex" }
           plain ", "
-          InlineLink(href: "https://tailwindcss.com") { "TailwindCSS" }
+          RBUI.InlineLink(href: "https://tailwindcss.com") { "TailwindCSS" }
           plain " and "
-          InlineLink(href: "https://stimulus.hotwire.dev") { "Stimulus JS" }
+          RBUI.InlineLink(href: "https://stimulus.hotwire.dev") { "Stimulus JS" }
           plain ". It provides a set of components that are easy to use, and easy to customize."
         end
       end
@@ -43,9 +43,9 @@ class Views::Docs::GettingStarted::Introduction < Components::Layouts::Docs
         Heading(level: 2) { "Why I built RBUI" }
         Text do
           plain "Many Ruby developers are familiar with "
-          InlineLink(href: "https://rubyonrails.org") { "Rails" }
+          RBUI.InlineLink(href: "https://rubyonrails.org") { "Rails" }
           plain ", and the "
-          InlineLink(href: "https://guides.rubyonrails.org/layouts_and_rendering.html") { "convention over configuration" }
+          RBUI.InlineLink(href: "https://guides.rubyonrails.org/layouts_and_rendering.html") { "convention over configuration" }
           plain " approach it takes. RBUI is built on the same principles, providing a set of components that are easy to use, and easy to customize."
         end
         Text do
@@ -79,9 +79,9 @@ class Views::Docs::GettingStarted::Introduction < Components::Layouts::Docs
         end
         Text do
           plain "As an example, if you want to render a "
-          InlineCode { "<p class='text-sm font-muted-foreground'>Phlex. Same same, but different.</p>" }
+          RBUI.InlineCode { "<p class='text-sm font-muted-foreground'>Phlex. Same same, but different.</p>" }
           plain " element, you can do it like this "
-          InlineCode { "p(class: 'text-sm font-muted-foreground') { 'Phlex. Same same, but different.' }" }
+          RBUI.InlineCode { "p(class: 'text-sm font-muted-foreground') { 'Phlex. Same same, but different.' }" }
           plain "."
         end
         Text do
@@ -96,23 +96,23 @@ class Views::Docs::GettingStarted::Introduction < Components::Layouts::Docs
         Text { "I'd like to thank the following projects and people for helping me build RBUI" }
         Components.TypographyList do
           Components.TypographyListItem do
-            InlineLink(href: "https://github.com/joeldrapper") { "Joel Drapper" }
+            RBUI.InlineLink(href: "https://github.com/joeldrapper") { "Joel Drapper" }
             plain " - Thanks for creating Phlex, and for your support and advice."
           end
           Components.TypographyListItem do
-            InlineLink(href: "https://phlex.fun") { "Phlex" }
+            RBUI.InlineLink(href: "https://phlex.fun") { "Phlex" }
             plain " - The foundation of RBUI."
           end
           Components.TypographyListItem do
-            InlineLink(href: "https://stimulus.hotwired.dev") { "Stimulus JS" }
+            RBUI.InlineLink(href: "https://stimulus.hotwired.dev") { "Stimulus JS" }
             plain " - A quicker way to write JavaScript."
           end
           Components.TypographyListItem do
-            InlineLink(href: "http://tailwindcss.com") { "TailwindCSS" }
+            RBUI.InlineLink(href: "http://tailwindcss.com") { "TailwindCSS" }
             plain " - I wouldn't build without it."
           end
           Components.TypographyListItem do
-            InlineLink(href: "https://twitter.com/george_kettle") { "My Twitter followers" }
+            RBUI.InlineLink(href: "https://twitter.com/george_kettle") { "My Twitter followers" }
             plain " - Thanks for all the ideas, feedback and support."
           end
         end

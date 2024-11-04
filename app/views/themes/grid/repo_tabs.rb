@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Themes::Grid::RepoTabs < ApplicationComponent
+class Views::Themes::Grid::RepoTabs < Components::Base
   Repo = Struct.new(:github_url, :name, :stars, :version, keyword_init: true)
 
   def view_template

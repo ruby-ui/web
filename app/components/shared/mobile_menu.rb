@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::Shared::MobileMenu < ApplicationComponent
+class Components::Shared::MobileMenu < Components::Base
   def initialize(**attributes)
     @attributes = attributes
   end

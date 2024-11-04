@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Calendar < Components::Layouts::Docs
+class Views::Docs::Calendar < Views::Application
   def page_title = "Calendar"
 
   def view_template

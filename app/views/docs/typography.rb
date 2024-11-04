@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# class Views::Docs::Typography < Components::Layouts::Docs
-class Docs::TypographyView < ComponentView
+class Views::Docs::Typography < Views::Application
   def page_title = "Typography"
 
   def view_template
@@ -55,20 +54,20 @@ class Docs::TypographyView < ComponentView
       render Docs::VisualCodeExample.new(title: "List", context: self) do
         <<~RUBY
           Components.TypographyList(items: [
-              'Phlex is fast',
-              'Phlex is easy to use',
-              'Phlex is awesome',
-            ])
+                'Phlex is fast',
+                'Phlex is easy to use',
+                'Phlex is awesome',
+              ])
         RUBY
       end
 
       render Docs::VisualCodeExample.new(title: "Numbered List", context: self) do
         <<~RUBY
           Components.TypographyList(items: [
-              'Copy',
-              'Paste',
-              'Customize',
-            ], numbered: true)
+                'Copy',
+                'Paste',
+                'Customize',
+              ], numbered: true)
         RUBY
       end
 

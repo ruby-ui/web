@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Steps
-  class Step < ApplicationComponent
+  class Step < Components::Base
     def initialize(number: 1, last: false)
       @number = number
       @last = last

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::Shared::Container < ApplicationComponent
+class Components::Shared::Container < Components::Base
   DEFAULT_CLASS = "container mx-auto w-full px-4"
   SIZE_CLASSES = {
     sm: "max-w-md",

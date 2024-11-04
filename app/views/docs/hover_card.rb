@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::HoverCard < Components::Layouts::Docs
+class Views::Docs::HoverCard < Views::Application
   def page_title = "Hover_card"
 
   def view_template

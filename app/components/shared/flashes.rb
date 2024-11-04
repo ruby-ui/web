@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::Shared::Flashes < ApplicationComponent
+class Components::Shared::Flashes < Components::Base
   def initialize(notice: nil, alert: nil)
     @notice = notice
     @alert = alert

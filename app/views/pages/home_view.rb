@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Views::Pages::HomeView < Components::Layouts::Pages
+class Views::Pages::HomeView < Views::Component
   def page_title = "Introduction"
 
   def view_template
-    render Views::HomeView::Banner.new do |banner|
+    render Components::Home::Banner.new do |banner|
       banner.cta do
         Link(variant: :outline, href: helpers.docs_accordion_path, class: "text-center justify-center") { "Browse Components" }
         Link(variant: :primary, href: helpers.docs_introduction_path, class: "text-center justify-center") do
@@ -103,7 +103,7 @@ class Views::Pages::HomeView < Components::Layouts::Pages
             end
           end
           div(class: "relative col-span-6") do
-            render Views::HomeView::Shapes.new(color: :violet, class: "hidden md:block absolute top-0 left-0 rotate-90 -translate-x-1/2 translate-y-full", size: :lg)
+            render Components::Home::Shapes.new(color: :violet, class: "hidden md:block absolute top-0 left-0 rotate-90 -translate-x-1/2 translate-y-full", size: :lg)
             div(class: "mx-auto max-w-lg py-28") do
               steps = [
                 {

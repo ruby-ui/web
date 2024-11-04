@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::GettingStarted::Installation < Components::Layouts::Docs
+class Views::Docs::GettingStarted::Installation < Views::Application
   include Phlex::DeferredRender
 
   def page_title = "Installation"
@@ -21,7 +21,7 @@ class Views::Docs::GettingStarted::Installation < Components::Layouts::Docs
 
   def framework_card(title:, link:, &block)
     a(href: link) do
-      Card(class: "flex flex-col items-center gap-y-4 p-6 py-10 hover:bg-accent hover:text-accent-foreground transition-colors duration-200 ease-in-out") do
+      RBUI.Card(class: "flex flex-col items-center gap-y-4 p-6 py-10 hover:bg-accent hover:text-accent-foreground transition-colors duration-200 ease-in-out") do
         block.call
         p(class: "text-lg font-medium") { title }
       end

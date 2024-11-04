@@ -1,12 +1,24 @@
 # frozen_string_literal: true
 
-class Views::Themes::Grid::Command < ApplicationComponent
+class Views::Themes::Grid::Command < Components::Base
   def view_template
     CommandDialog do
       CommandDialogTrigger do
         Button(variant: "outline", class: "w-full pr-2 pl-3 justify-between") do
           div(class: "flex items-center space-x-1") do
-            search_icon
+            svg(
+              xmlns: "http://www.w3.org/2000/svg",
+              viewbox: "0 0 20 20",
+              fill: "currentColor",
+              class: "w-4 h-4 mr-1.5"
+            ) do |s|
+              s.path(
+                fill_rule: "evenodd",
+                d:
+                  "M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z",
+                clip_rule: "evenodd"
+              )
+            end
             span(class: "text-muted-foreground font-normal") do
               plain "Search"
             end
@@ -59,22 +71,6 @@ class Views::Themes::Grid::Command < ApplicationComponent
       Docs::ComponentStruct.new(name: "CommandGroup", source: "https://github.com/PhlexUI/phlex_ui_pro/blob/main/lib/phlex_ui_pro/command/group.rb", built_using: :phlex),
       Docs::ComponentStruct.new(name: "CommandItem", source: "https://github.com/PhlexUI/phlex_ui_pro/blob/main/lib/phlex_ui_pro/command/item.rb", built_using: :phlex)
     ]
-  end
-
-  def search_icon
-    svg(
-      xmlns: "http://www.w3.org/2000/svg",
-      viewbox: "0 0 20 20",
-      fill: "currentColor",
-      class: "w-4 h-4 mr-1.5"
-    ) do |s|
-      s.path(
-        fill_rule: "evenodd",
-        d:
-          "M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z",
-        clip_rule: "evenodd"
-      )
-    end
   end
 
   def default_icon

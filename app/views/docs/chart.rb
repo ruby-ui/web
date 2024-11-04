@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Chart < Components::Layouts::Docs
+class Views::Docs::Chart < Views::Application
   def page_title = "Chart"
 
   def view_template
@@ -11,9 +11,9 @@ class Views::Docs::Chart < Components::Layouts::Docs
 
       Text do
         plain "RBUI uses "
-        InlineLink(href: "https://www.chartjs.org/") { "Chart.js" }
+        RBUI.InlineLink(href: "https://www.chartjs.org/") { "Chart.js" }
         plain " to render charts. Chart.js is a free open-source JavaScript library for data visualization, which supports 8 chart types: bar, line, area, pie, bubble, radar, polar, and scatter. If you're unfamiliar with Chart.js. We recommend the "
-        InlineLink(href: "https://www.chartjs.org/docs/latest/getting-started/") { "Getting Started guide" }
+        RBUI.InlineLink(href: "https://www.chartjs.org/docs/latest/getting-started/") { "Getting Started guide" }
         plain ". "
       end
 

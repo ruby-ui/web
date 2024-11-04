@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::DatePicker < Components::Layouts::Docs
+class Views::Docs::DatePicker < Views::Application
   def page_title = "Date_picker"
 
   def view_template

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Select < Components::Layouts::Docs
+class Views::Docs::Select < Views::Application
   def page_title = "Select"
 
   def view_template

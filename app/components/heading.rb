@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Components
-  class Heading < Base
+  class Heading < RBUI::Base
     def initialize(level: nil, as: nil, size: nil, **attrs)
       @level = level
       @as = as

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Themes::CustomizePopover < ApplicationComponent
+class Views::Themes::CustomizePopover < Components::Base
   def initialize(theme:)
     @theme = theme
   end

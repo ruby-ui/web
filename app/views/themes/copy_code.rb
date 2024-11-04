@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Themes::CopyCode < ApplicationComponent
+class Views::Themes::CopyCode < Components::Base
   def initialize(theme:)
     @theme = theme
   end

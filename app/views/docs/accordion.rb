@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Accordion < Components::Layouts::Docs
+class Views::Docs::Accordion < Views::Application
   def page_title = "Accordion"
 
   def view_template
@@ -9,7 +9,7 @@ class Views::Docs::Accordion < Components::Layouts::Docs
       render Docs::Header.new(title: component,
         description: "A vertically stacked set of interactive headings that each reveal a section of content.")
 
-      Heading(level: 2) { "Usage" }
+      Components.Heading(level: 2) { "Usage" }
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         @@code = <<~RUBY

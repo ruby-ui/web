@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::GettingStarted::CustomizingComponents < Components::Layouts::Docs
+class Views::Docs::GettingStarted::CustomizingComponents < Views::Application
   def page_title = "Customizing components"
 
   def layout = Layouts::Docs

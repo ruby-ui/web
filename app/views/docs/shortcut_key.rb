@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::ShortcutKey < Components::Layouts::Docs
+class Views::Docs::ShortcutKey < Views::Application
   def page_title = "Shortcut_key"
 
   def view_template

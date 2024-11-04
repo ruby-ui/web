@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Form < Components::Layouts::Docs
+class Views::Docs::Form < Views::Application
   def page_title = "Form"
 
   def view_template

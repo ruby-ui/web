@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Checkbox < Components::Layouts::Docs
+class Views::Docs::Checkbox < Views::Application
   def page_title = "Checkbox"
 
   def view_template

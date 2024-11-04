@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::ContextMenu < Components::Layouts::Docs
+class Views::Docs::ContextMenu < Views::Application
   def page_title = "Context_menu"
 
   def view_template

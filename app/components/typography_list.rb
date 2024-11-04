@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Components::TypographyList < Components::Base
+class Components::TypographyList < RBUI::Base
   def initialize(items: [], numbered: false, **attrs)
     @items = items
     @numbered = numbered
@@ -35,11 +35,11 @@ class Components::TypographyList < Components::Base
 
   def default_attrs
     {
-      class: tokens(
+      class: [
         "my-6 ml-6 [&>li]:mt-2 [&>li]:pl-2",
-        numbered?: "list-decimal marker:font-medium",
-        not_numbered?: "list-disc"
-      )
+        ("list-decimal marker:font-medium" if numbered?),
+        ("list-disc" if not_numbered?)
+      ]
     }
   end
 end

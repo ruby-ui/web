@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::HomeView::Card < ApplicationComponent
+class Views::HomeView::Card < Components::Base
   include Phlex::DeferredRender
 
   def initialize(attributes = {})

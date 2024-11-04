@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Views::Docs::Clipboard < Components::Layouts::Docs
+class Views::Docs::Clipboard < Views::Application
   def page_title = "Clipboard"
 
   def view_template
