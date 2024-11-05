@@ -10,28 +10,67 @@ class Docs::CheckboxGroupView < ApplicationView
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY
-          div(class: 'flex items-center space-x-3') do
-            CheckboxGroup(id: 'terms')
-            label(for: 'terms', class: 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70') { "Accept terms and conditions" }
-          end
-        RUBY
-      end
+          CheckboxGroup(data_required: true) do
+            div(class: "flex flex-col gap-2") do
+              div(class: "flex flex-row items-center gap-2") do
+                Checkbox(value: "FOO", id: "CHECKBOX_GROUP_0")
+                FormFieldLabel(for: "CHECKBOX_GROUP_0") { "FOO" }
+              end
 
-      render Docs::VisualCodeExample.new(title: "Checked", context: self) do
-        <<~RUBY
-          div(class: "items-top flex space-x-3") do
-            CheckboxGroup(id: 'terms1', checked: true)
-            div(class: "grid gap-1.5 leading-none") do
-              label(
-                for: "terms1",
-                class:
-                  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              ) { " Accept terms and conditions " }
-              p(class: "text-sm text-muted-foreground") { " You agree to our Terms of Service and Privacy Policy." }
+              div(class: "flex flex-row items-center gap-2") do
+                Checkbox(value: "BAR", id: "CHECKBOX_GROUP_1")
+                FormFieldLabel(for: "CHECKBOX_GROUP_1") { "BAR" }
+              end
             end
           end
         RUBY
       end
+
+      render Docs::VisualCodeExample.new(title: "With Form", context: self) do
+        <<~RUBY
+          form(class: "flex flex-col gap-2") do
+            FormField do
+              FormFieldLabel(for: "CHECKBOX_GROUP") { "CHECKBOX_GROUP" }
+
+              FormFieldHint { "HINT_FOR_CHECKBOX_GROUP" }
+
+              CheckboxGroup(data_required: true) do
+                div(class: "flex flex-col gap-2") do
+                  div(class: "flex flex-row items-center gap-2") do
+                    Checkbox(
+                      value: "FOO",
+                      checked: false,
+                      id: "CHECKBOX_GROUP_0",
+                      name: "CHECKBOX_GROUP[]",
+                      data: {value_missing: "CUSTOM_MESSAGE"}
+                    )
+
+                    FormFieldLabel(for: "CHECKBOX_GROUP_0") { "FOO" }
+                  end
+
+                  div(class: "flex flex-row items-center gap-2") do
+                    Checkbox(
+                      value: "BAR",
+                      checked: true,
+                      id: "CHECKBOX_GROUP_1",
+                      name: "CHECKBOX_GROUP[]",
+                      data: {value_missing: "CUSTOM_MESSAGE"}
+                    )
+
+                    FormFieldLabel(for: "CHECKBOX_GROUP_1") { "BAR" }
+                  end
+                end
+              end
+
+              FormFieldError()
+            end
+
+            Button(type: "submit") { "SUBMIT_BUTTON" }
+          end
+        RUBY
+      end
+
+      
 
       render Docs::ComponentsTable.new(component_references(component, Docs::VisualCodeExample.collected_code), component_files(component))
     end
