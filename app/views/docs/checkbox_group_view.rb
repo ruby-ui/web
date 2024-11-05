@@ -3,6 +3,7 @@
 class Docs::CheckboxGroupView < ApplicationView
   def view_template
     component = "CheckboxGroup"
+
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "CheckboxGroup", description: "A control that allows the user to toggle between checked and not checked.")
 
@@ -30,7 +31,7 @@ class Docs::CheckboxGroupView < ApplicationView
         <<~RUBY
           form(class: "flex flex-col gap-2") do
             FormField do
-              FormFieldLabel(for: "CHECKBOX_GROUP") { "CHECKBOX_GROUP" }
+              FormFieldLabel { "CHECKBOX_GROUP" }
 
               FormFieldHint { "HINT_FOR_CHECKBOX_GROUP" }
 
