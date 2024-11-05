@@ -13,13 +13,13 @@ class Docs::CheckboxGroupView < ApplicationView
           CheckboxGroup(data_required: true) do
             div(class: "flex flex-col gap-2") do
               div(class: "flex flex-row items-center gap-2") do
-                Checkbox(value: "FOO", id: "CHECKBOX_GROUP_0")
-                FormFieldLabel(for: "CHECKBOX_GROUP_0") { "FOO" }
+                Checkbox(value: "FOO", id: "FOO")
+                FormFieldLabel(for: "FOO") { "FOO" }
               end
 
               div(class: "flex flex-row items-center gap-2") do
-                Checkbox(value: "BAR", id: "CHECKBOX_GROUP_1")
-                FormFieldLabel(for: "CHECKBOX_GROUP_1") { "BAR" }
+                Checkbox(value: "BAR", id: "BAR")
+                FormFieldLabel(for: "BAR") { "BAR" }
               end
             end
           end
@@ -38,26 +38,26 @@ class Docs::CheckboxGroupView < ApplicationView
                 div(class: "flex flex-col gap-2") do
                   div(class: "flex flex-row items-center gap-2") do
                     Checkbox(
+                      id: "FOO",
                       value: "FOO",
                       checked: false,
-                      id: "CHECKBOX_GROUP_0",
                       name: "CHECKBOX_GROUP[]",
                       data: {value_missing: "CUSTOM_MESSAGE"}
                     )
 
-                    FormFieldLabel(for: "CHECKBOX_GROUP_0") { "FOO" }
+                    FormFieldLabel(for: "FOO") { "FOO" }
                   end
 
                   div(class: "flex flex-row items-center gap-2") do
                     Checkbox(
+                      id: "BAR",
                       value: "BAR",
                       checked: true,
-                      id: "CHECKBOX_GROUP_1",
                       name: "CHECKBOX_GROUP[]",
                       data: {value_missing: "CUSTOM_MESSAGE"}
                     )
 
-                    FormFieldLabel(for: "CHECKBOX_GROUP_1") { "BAR" }
+                    FormFieldLabel(for: "BAR") { "BAR" }
                   end
                 end
               end
