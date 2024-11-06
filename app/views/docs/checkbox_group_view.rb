@@ -2,10 +2,10 @@
 
 class Docs::CheckboxGroupView < ApplicationView
   def view_template
-    component = "CheckboxGroup"
+    component = "Checkbox Group"
 
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
-      render Docs::Header.new(title: "CheckboxGroup", description: "A control that allows the user to toggle between checked and not checked.")
+      render Docs::Header.new(title: "Checkbox Group", description: "A control that allows the user to toggle between checked and not checked.")
 
       Heading(level: 2) { "Usage" }
 
