@@ -1,6 +1,6 @@
-  module DeferredRender
-    def before_template(&)
-      vanish(&)
-      super
-    end
+module DeferredRender
+  def before_template(&)
+    vanish(&)
+    super
   end
+end
