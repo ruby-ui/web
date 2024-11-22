@@ -57,7 +57,7 @@ Here is the list of components that are being built. For reference, see here htt
 To contribute to this project, it's recommended to install the gem locally and point to it in your Gemfile:
 
 ```ruby
-gem "rbui", path: "../rbui"
+gem "ruby_ui", path: "../ruby_ui"
 ```
 
 ### Link the JavaScript Package
@@ -65,7 +65,7 @@ gem "rbui", path: "../rbui"
 Similarly, link the rbui-js package locally using yarn:
 
 ```bash
-yarn add ../rbui
+yarn add ../ruby_ui
 ```
 
 ## Working with Components
@@ -74,7 +74,7 @@ yarn add ../rbui
 
 1. Eject the component you want to modify using the generator:
    ```bash
-   rails generate rbui:component combobox
+   rails generate ruby_ui:component combobox
    ```
 2. Make your desired changes to the ejected component
 3. Once you're satisfied with the modifications, integrate the component back into the gem in the appropriate location
