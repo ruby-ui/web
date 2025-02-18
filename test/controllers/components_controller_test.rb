@@ -19,8 +19,6 @@ class ComponentsControllerTest < ActionDispatch::IntegrationTest
   all_docs_routes.each do |route|
     test "should get #{route[:action]}" do
       get route[:path]
-      puts "#{route[:path]} with #{response.status}"
-      puts response.body if response.status = 500
       assert_response :success
     end
   end
