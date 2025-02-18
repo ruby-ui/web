@@ -178,7 +178,7 @@ GEM
       activesupport (>= 7.0.0)
       rack
       railties (>= 7.0.0)
-    pry (0.14.2)
+    pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     psych (5.2.0)
@@ -312,7 +312,7 @@ DEPENDENCIES
   phlex!
   phlex-rails!
   propshaft (= 0.9.0)
-  pry
+  pry (= 0.15.2)
   puma (= 6.4.2)
   rails (= 7.2.0)
   rouge (~> 4.5)
@@ -327,7 +327,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.3.5p100
+   ruby 3.3.7p123
 
 BUNDLED WITH
-   2.5.22
+   2.6.4
