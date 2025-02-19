@@ -1,7 +1,7 @@
 # Provides helper method for rendering CTA links
 
 module Mailers
-  class BaseMailer < Phlex::HTML
+  class BaseMailer < Views::Base
     private
 
     def para(&)
