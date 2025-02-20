@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module PhlexComponentsLibrary
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.2
+    config.load_defaults 8.0
 
     config.active_support.to_time_preserves_timezone = :zone
     # Please, add to the `ignore` list any other `lib` subdirectories that do
