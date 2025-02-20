@@ -8,11 +8,6 @@ Bundler.require(*Rails.groups)
 
 module PhlexComponentsLibrary
   class Application < Rails::Application
-    config.autoload_paths << "#{root}/app/views"
-    config.autoload_paths << "#{root}/app/views/layouts"
-    config.autoload_paths << "#{root}/app/views/components"
-
-    config.autoload_paths << "#{root}/lib"
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.2
 
@@ -29,7 +24,5 @@ module PhlexComponentsLibrary
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    config.exceptions_app = routes # redirects all exceptions to custom error pages (See routes)
   end
 end
