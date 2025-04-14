@@ -51,6 +51,8 @@ Rails.application.routes.draw do
     get "shortcut_key", to: "docs#shortcut_key", as: :docs_shortcut_key
     get "sidebar", to: "docs#sidebar", as: :docs_sidebar
     get "sidebar/example", to: "docs/sidebar#example", as: :docs_sidebar_example
+    get "sidebar/inset", to: "docs/sidebar#inset", as: :docs_sidebar_inset
+    get "sidebar/dialog", to: "docs/sidebar#dialog", as: :docs_sidebar_dialog
     get "skeleton", to: "docs#skeleton", as: :docs_skeleton
     get "switch", to: "docs#switch", as: :docs_switch
     get "table", to: "docs#table", as: :docs_table
