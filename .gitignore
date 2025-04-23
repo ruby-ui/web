@@ -43,3 +43,6 @@ config/credentials/production.key
 
 # Yarn
 yarn-error.log
+
+# OSX
+.DS_Store
