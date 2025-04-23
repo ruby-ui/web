@@ -180,7 +180,6 @@ module Theme
         root: {
           **default_root,
           primary: "oklch(79.5% 0.184 86.047)",
-          primary: "oklch(68.1% 0.162 75.834)",
           "primary-foreground": "oklch(0.985 0 0)",
           ring: "oklch(76.8% 0.233 130.85)"
         },
