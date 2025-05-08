@@ -30,7 +30,7 @@ class Views::Docs::RadioButton < Views::Base
       render Docs::VisualCodeExample.new(title: "Disabled", context: self) do
         <<~RUBY
           div(class: "flex flex-row items-center gap-2") do
-            RadioButton(id: "disabled", disabled: true)
+            RadioButton(class: "peer",id: "disabled", disabled: true)
             FormFieldLabel(for: "disabled") { "Disabled" }
           end
         RUBY
