@@ -36,7 +36,7 @@ importers:
         specifier: 2.1.1
         version: 2.1.1
       embla-carousel:
-        specifier: ^8.5.2
+        specifier: ^8.6.0
         version: 8.6.0
       esbuild:
         specifier: 0.25.3
