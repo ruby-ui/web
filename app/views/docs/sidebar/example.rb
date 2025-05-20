@@ -69,7 +69,7 @@ class Views::Docs::Sidebar::Example < Views::Base
                       ellipsis_icon()
                       span(class: "sr-only") { "More" }
                     end
-                    DropdownMenuContent(class: "z-40") do
+                    DropdownMenuContent do
                       DropdownMenuItem(href: '#') { "Profile" }
                       DropdownMenuItem(href: '#') { "Billing" }
                       DropdownMenuItem(href: '#') { "Team" }
@@ -99,7 +99,7 @@ class Views::Docs::Sidebar::Example < Views::Base
                       ellipsis_icon()
                       span(class: "sr-only") { "More" }
                     end
-                    DropdownMenuContent(class: "z-40") do
+                    DropdownMenuContent do
                       DropdownMenuItem(href: '#') { "Profile" }
                       DropdownMenuItem(href: '#') { "Billing" }
                       DropdownMenuItem(href: '#') { "Team" }

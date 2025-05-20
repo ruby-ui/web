@@ -14,10 +14,4 @@ class Docs::SidebarController < ApplicationController
 
     render Views::Docs::Sidebar::InsetExample.new(sidebar_state:)
   end
-
-  def dialog_example
-    sidebar_state = cookies.fetch(:sidebar_state, "true") == "true"
-
-    render Views::Docs::Sidebar::DialogExample.new(sidebar_state:)
-  end
 end
