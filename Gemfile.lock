@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: https://github.com/ruby-ui/ruby_ui.git
-  revision: 1a21bdb6fd38d2bd08e684a82b71e1637a727597
+  revision: 95dc9a28ba5c4d460fa2845cba308d518bb87431
   branch: main
   specs:
     ruby_ui (1.0.1)
