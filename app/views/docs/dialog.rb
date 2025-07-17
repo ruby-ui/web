@@ -9,13 +9,30 @@ class Views::Docs::Dialog < Views::Base
 
       Heading(level: 2) { "Usage" }
 
+      div(class: "data-[state=show]:animate-in data-[state=hide]:animate-out fade-in slide-in-from-top-8 fade-out slide-out-to-top-8 duration-500", data: {state: "hide"}) do
+        p do
+          plain "If the element has the "
+          code { plain "data-state=\"show\"" }
+          plain " attribute, fade in from 0% opacity, slide from top by 8 spacing units (2rem), with a 500ms duration."
+        end
+      end
+
+      div(class: "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95", data: {state: "closed"}) do
+        p do
+          "Fade in from 0% opacity,"
+          "slide from top by 8 spacing units (2rem),"
+          "with a 500ms duration."
+        end
+      end
+
       render Docs::VisualCodeExample.new(title: "Example", context: self) do
         <<~RUBY
           Dialog do
             DialogTrigger do
               Button { "Open Dialog" }
             end
-            DialogContent do
+            # class: "backdrop:bg-black/80 border-red-500 border-2"
+            DialogContent() do
               DialogHeader do
                 DialogTitle { "RubyUI to the rescue" }
                 DialogDescription { "RubyUI helps you build accessible standard compliant web apps with ease" }
