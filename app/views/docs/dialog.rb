@@ -15,7 +15,8 @@ class Views::Docs::Dialog < Views::Base
             DialogTrigger do
               Button { "Open Dialog" }
             end
-            DialogContent do
+            # class: "backdrop:bg-black/80 border-red-500 border-2"
+            DialogContent() do
               DialogHeader do
                 DialogTitle { "RubyUI to the rescue" }
                 DialogDescription { "RubyUI helps you build accessible standard compliant web apps with ease" }
