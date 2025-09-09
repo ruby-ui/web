@@ -59,7 +59,7 @@ class Views::Docs::Sidebar::InsetExample < Views::Base
                     span { item[:emoji] }
                     span { item[:name] }
                   end
-                  DropdownMenu() do
+                  DropdownMenu(options: { strategy: "fixed", placement: "right-start" }) do
                     SidebarMenuAction(
                       data: {
                         ruby_ui__dropdown_menu_target: "trigger",
