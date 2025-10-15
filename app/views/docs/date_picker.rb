@@ -27,6 +27,30 @@ class Views::Docs::DatePicker < Views::Base
         RUBY
       end
 
+      render Docs::VisualCodeExample.new(title: "Single date with format", context: self) do
+        <<~RUBY
+          div(class: 'space-y-4 w-[260px]') do
+            div(class: 'grid w-full max-w-sm items-center gap-1.5') do
+              label(for: "date-format-american") { "Select a date" }
+              CalendarInput(calendar_id: '#calendar-format-american',format: 'MM-dd-yyyy',id: 'date-format-american',class: 'rounded-md border shadow')
+            end
+            Calendar(id: 'calendar-format-american', input_id: '#date-format-american', date_format: 'MM-dd-yyyy', class: 'rounded-md border shadow')
+          end
+        RUBY
+      end
+
+      render Docs::VisualCodeExample.new(title: "Single date with format (European)", context: self) do
+        <<~RUBY
+          div(class: 'space-y-4 w-[260px]') do
+            div(class: 'grid w-full max-w-sm items-center gap-1.5') do
+              label(for: "date-format-european") { "Select a date" }
+              CalendarInput(calendar_id: '#calendar-format-european',format: 'dd-MM-yyyy', id: 'date-format-european', class: 'rounded-md border shadow')
+            end
+            Calendar(id: 'calendar-format-european', input_id: '#date-format-european', date_format: 'dd-MM-yyyy', class: 'rounded-md border shadow')
+          end
+        RUBY
+      end
+
       render Components::ComponentSetup::Tabs.new(component_name: component)
 
       render Docs::ComponentsTable.new(component_files(component))
