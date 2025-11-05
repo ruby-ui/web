@@ -5,7 +5,12 @@ module Views
     class PagesLayout < Views::Base
       include Phlex::Rails::Layout
 
-      def view_template(&block)
+      def initialize(page_info = nil, **user_attrs)
+        @page_info = page_info
+        super(**user_attrs)
+      end
+
+      def view_template
         doctype
 
         html do
@@ -13,7 +18,7 @@ module Views
 
           body do
             render Shared::Navbar.new
-            main(class: "relative", &block)
+            main(class: "relative") { yield }
             render Shared::Flashes.new(notice: flash[:notice], alert: flash[:alert])
           end
         end

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-class Views::Pages::Home < Views::Base
+class Views::Pages::Home < Views::Pages::Base
+  def layout = Views::Layouts::PagesLayout
+
+  def page_title = "RubyUI"
+
   def view_template
     render HomeView::Banner.new do |banner|
       banner.cta do

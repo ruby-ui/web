@@ -33,6 +33,7 @@ export default class extends Controller {
   open() {
     if (this.hasContentTarget) {
       this.contentTarget.classList.remove('hidden')
+      this.element.dataset.state = 'open'
       this.openValue = true
     }
   }
@@ -41,6 +42,7 @@ export default class extends Controller {
   close() {
     if (this.hasContentTarget) {
       this.contentTarget.classList.add('hidden')
+      this.element.dataset.state = 'closed'
       this.openValue = false
     }
   }

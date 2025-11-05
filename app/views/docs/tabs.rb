@@ -129,6 +129,36 @@ class Views::Docs::Tabs < Views::Base
         RUBY
       end
 
+      render Docs::VisualCodeExample.new(title: "Custom Tabs", context: self) do
+        <<~RUBY
+          div(
+            class: "group/custom-tab",
+            data: {
+              controller: "custom-tabs",
+              tab: "first",
+              action: "tab-change->custom-tabs#setTab"
+            }
+          ) do
+            div(class: "block") do
+              Tabs(default: "first") do
+                TabsList do
+                  TabsTrigger(value: "first") { "first" }
+                  TabsTrigger(value: "second") { "second" }
+                end
+              end
+            end
+            
+            div(class: "hidden group-data-[tab=second]/custom-tab:hidden md:h-50 lg:flex") do
+              plain "first1"
+            end
+            
+            div(class: "bg-code text-code-foreground mr-[14px] flex overflow-hidden rounded-xl border group-data-[tab=first]/custom-tab:hidden md:h-50") do
+              plain "first2"
+            end
+          end
+        RUBY
+      end
+
       render Components::ComponentSetup::Tabs.new(component_name: component)
 
       render Docs::ComponentsTable.new(component_files(component))

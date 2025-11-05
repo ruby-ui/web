@@ -49,6 +49,15 @@
   --warning-foreground: hsl(0 0% 100%);
   --success: hsl(87 100% 37%);
   --success-foreground: hsl(0 0% 100%);
+  
+  /* code colors */
+  --code: oklch(0.97 0 0);
+  --code-foreground: oklch(0.145 0 0);
+  --code-number: oklch(0.556 0 0);
+  
+  /* spacing and text */
+  --spacing: 0.25rem;
+  --text-sm: 0.875rem;
 }
 
 .dark {
@@ -90,6 +99,11 @@
   --warning-foreground: hsl(0 0% 100%);
   --success: hsl(84 81% 44%);
   --success-foreground: hsl(0 0% 100%);
+  
+  /* code colors */
+  --code: oklch(0.205 0 0);
+  --code-foreground: oklch(0.985 0 0);
+  --code-number: oklch(0.708 0 0);
 }
 
 @theme inline {
@@ -135,6 +149,9 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+  --color-code: var(--code);
+  --color-code-foreground: var(--code-foreground);
+  --color-code-number: var(--code-number);
 }
 
 /* Container settings */
@@ -151,4 +168,29 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Shiki line numbers */
+code[data-line-numbers] {
+  counter-reset: line;
+  font-size: var(--text-sm);
+}
+
+[data-line-numbers] [data-line]::before {
+  font-size: var(--text-sm);
+  counter-increment: line;
+  content: counter(line);
+  width: calc(var(--spacing) * 16);
+  padding-right: calc(var(--spacing) * 6);
+  text-align: right;
+  color: var(--color-code-number);
+  background-color: var(--color-code);
+  display: inline-block;
+  position: sticky;
+  left: 0;
+}
+
+[data-line-numbers] [data-line] {
+  display: inline-block;
+  width: 100%;
 }

@@ -29,6 +29,14 @@ export default class extends Controller {
     this.activeContentTarget() &&
       this.activeContentTarget().classList.remove("hidden");
     this.activeTriggerTarget().dataset.state = "active";
+    
+    // Dispatch custom event for external listeners
+    this.element.dispatchEvent(
+      new CustomEvent("tab-change", {
+        detail: { value: currentValue },
+        bubbles: true
+      })
+    );
   }
 
   activeTriggerTarget() {
