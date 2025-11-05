@@ -70,6 +70,9 @@ application.register("ruby-ui--sheet-content", RubyUi__SheetContentController)
 import RubyUi__SheetController from "./ruby_ui/sheet_controller"
 application.register("ruby-ui--sheet", RubyUi__SheetController)
 
+import RubyUi__SidebarController from "./ruby_ui/sidebar_controller"
+application.register("ruby-ui--sidebar", RubyUi__SidebarController)
+
 import RubyUi__TabsController from "./ruby_ui/tabs_controller"
 application.register("ruby-ui--tabs", RubyUi__TabsController)
 
@@ -78,6 +81,9 @@ application.register("ruby-ui--theme-toggle", RubyUi__ThemeToggleController)
 
 import RubyUi__TooltipController from "./ruby_ui/tooltip_controller"
 application.register("ruby-ui--tooltip", RubyUi__TooltipController)
+
+import IframeThemeController from "./iframe_theme_controller"
+application.register("iframe-theme", IframeThemeController)
 
 import SidebarMenuController from "./sidebar_menu_controller"
 application.register("sidebar-menu", SidebarMenuController)

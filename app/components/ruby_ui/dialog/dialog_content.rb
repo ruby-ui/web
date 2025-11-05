@@ -33,7 +33,7 @@ module RubyUI
         data_state: "open",
         data_ruby_ui__dialog_target: "content",
         class: [
-          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closing]:animate-out data-[state=closing]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closing]:zoom-out-95 data-[state=open]:zoom-in-95  sm:rounded-lg",
+          "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closing]:animate-out data-[state=closing]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closing]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg",
           SIZES[@size]
         ]
       }
@@ -70,8 +70,7 @@ module RubyUI
         data_state: "open",
         data_ruby_ui__dialog_target: "backdrop",
         data_action: "click->ruby-ui--dialog#dismiss esc->ruby-ui--dialog#dismiss",
-        class:
-              "fixed pointer-events-auto inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closing]:animate-out data-[state=closing]:fade-out-0 duration-200 data-[state=open]:fade-in-0"
+        class: "fixed pointer-events-auto inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closing]:animate-out data-[state=closing]:fade-out-0 duration-200 data-[state=open]:fade-in-0"
       )
     end
   end

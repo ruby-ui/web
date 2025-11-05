@@ -15,7 +15,6 @@ export default class extends Controller {
   }
 
   open(e) {
-    // if (e) e.preventDefault()
     this.modalTarget.showModal()
 
     this.backdropTarget.setAttribute('data-state', 'open')

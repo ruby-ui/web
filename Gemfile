@@ -4,13 +4,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.4"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "8.0.2"
+gem "rails", "8.0.2.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft", "1.1.0"
+gem "propshaft", "1.2.1"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "2.7.0"
+gem "sqlite3", "2.7.4"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "6.6.0"
+gem "puma", "7.1.0"
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails", "1.3.1"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
@@ -81,4 +81,4 @@ gem "pry", "0.15.2"
 
 gem "tailwind_merge", "~> 1.3.1"
 
-gem "rouge", "~> 4.5"
+gem "rouge", "~> 4.6"
