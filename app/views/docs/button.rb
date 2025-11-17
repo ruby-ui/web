@@ -45,11 +45,9 @@ class Views::Docs::Button < Views::Base
         RUBY
       end
 
-      render Docs::VisualCodeExample.new(title: "Link", context: self) do
-        <<~RUBY
-          Button(variant: :link) { "Link" }
-        RUBY
-      end
+      render Docs::VisualCodeExample.new(ruby_code: <<~RUBY, title: "Link", context: self)
+        Button(variant: :link) { "Link" }
+      RUBY
 
       render Docs::VisualCodeExample.new(title: "Disabled", context: self) do
         <<~RUBY
