@@ -1,20 +1,20 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.4.4"
+ruby "3.4.7"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "8.0.2.1"
+gem "rails", "8.1.1"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft", "1.2.1"
+gem "propshaft", "1.3.1"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "2.7.4"
+gem "sqlite3", "2.8.0"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "7.0.4"
+gem "puma", "7.1.0"
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails", "1.3.1"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails", "2.0.16"
+gem "turbo-rails", "2.0.20"
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails", "1.3.4"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
@@ -65,7 +65,6 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
   gem "standard"
-  gem "dockerfile-rails", ">= 1.6"
 end
 
 group :test do
