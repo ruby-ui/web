@@ -39,6 +39,9 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
+# Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
+gem "thruster", require: false
+
 # Use Sass to process CSS
 # gem "sassc-rails"
 
@@ -81,3 +84,5 @@ gem "pry", "0.15.2"
 gem "tailwind_merge", "~> 1.3.1"
 
 gem "rouge", "~> 4.6"
+
+gem "kamal", github: "basecamp/kamal", branch: "main"
