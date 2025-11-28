@@ -1,7 +1,11 @@
 module Theme
   class CSS
-    def self.retrieve(theme, with_directive: true, format: :css)
+    # Ruby UI specific variables that are not part of the standard shadcn theme
+    RUBY_UI_SPECIFIC_VARS = %w[warning warning-foreground success success-foreground].freeze
+
+    def self.retrieve(theme, with_directive: true, format: :css, exclude_ruby_ui_vars: false)
       theme_hash = send(theme)
+      theme_hash = filter_ruby_ui_vars(theme_hash) if exclude_ruby_ui_vars
 
       case format
       when :css
@@ -11,6 +15,12 @@ module Theme
         theme_hash
       else
         raise ArgumentError, "Invalid format: #{format}"
+      end
+    end
+
+    def self.filter_ruby_ui_vars(theme_hash)
+      theme_hash.transform_values do |properties|
+        properties.reject { |key, _| RUBY_UI_SPECIFIC_VARS.include?(key.to_s) }
       end
     end
 
