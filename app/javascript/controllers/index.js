@@ -87,3 +87,6 @@ application.register("ruby-ui--tooltip", RubyUi__TooltipController)
 
 import SidebarMenuController from "./sidebar_menu_controller"
 application.register("sidebar-menu", SidebarMenuController)
+
+import NestedSidebarController from "./nested_sidebar_controller"
+application.register("nested-sidebar", NestedSidebarController)

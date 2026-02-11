@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get "sidebar", to: "docs#sidebar", as: :docs_sidebar
     get "sidebar/example", to: "docs/sidebar#example", as: :docs_sidebar_example
     get "sidebar/inset", to: "docs/sidebar#inset_example", as: :docs_sidebar_inset
+    get "sidebar/nested", to: "docs/sidebar#nested_example", as: :docs_sidebar_nested
     get "skeleton", to: "docs#skeleton", as: :docs_skeleton
     get "switch", to: "docs#switch", as: :docs_switch
     get "table", to: "docs#table", as: :docs_table

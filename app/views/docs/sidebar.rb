@@ -37,6 +37,10 @@ class Views::Docs::Sidebar < Views::Base
         Views::Docs::Sidebar::InsetExample::CODE
       end
 
+      render Docs::VisualCodeExample.new(title: "Nested sidebar", src: "/docs/sidebar/nested", context: self) do
+        Views::Docs::Sidebar::NestedExample::CODE
+      end
+
       render Docs::VisualCodeExample.new(title: "Dialog variant", context: self) do
         <<~RUBY
           Dialog(data: {action: "ruby-ui--dialog:connect->ruby-ui--dialog#open"}) do
