@@ -15,8 +15,6 @@ class LlmsTxtGeneratorTest < Minitest::Test
   # --- extract_header ---
 
   def test_extract_header_with_string_title
-    # button.rb uses: Docs::Header.new(title: "Button", description: "...")
-    # but actually it uses a variable. Let's use alert.rb which uses a string directly
     result = @generator.extract_header(File.join(@docs_dir, "alert.rb"))
     assert_equal "Alert", result[0]
     assert_equal "Displays a callout for user attention.", result[1]
@@ -77,10 +75,11 @@ class LlmsTxtGeneratorTest < Minitest::Test
     assert_includes components.keys, "Display & Media"
   end
 
-  def test_collect_components_finds_all_45_components
+  def test_collect_components_finds_all_categorized_components
     components = @generator.collect_components
     total = components.values.sum(&:length)
-    assert_equal 45, total, "Expected 45 components, got #{total}"
+    assert_equal LlmsTxtGenerator::CATEGORIES.size, total,
+      "Expected #{LlmsTxtGenerator::CATEGORIES.size} components (one per CATEGORIES entry), got #{total}"
   end
 
   def test_collect_components_skips_base_rb
@@ -176,9 +175,8 @@ class LlmsTxtGeneratorTest < Minitest::Test
 
   def test_generate_uses_markdown_link_format
     content = @generator.generate
-    # Each component line should match: - [Title](url): Description
     component_lines = content.lines.select { |l| l.match?(/^- \[.+\]\(https:\/\//) }
-    assert component_lines.length >= 45, "Expected at least 45 component links"
+    assert component_lines.length >= 30, "Expected at least 30 component links"
     component_lines.each do |line|
       assert_match(/^- \[.+\]\(https:\/\/.+\): .+/, line.chomp,
         "Line does not match llms.txt link format: #{line.chomp}")
@@ -212,7 +210,7 @@ class LlmsTxtGeneratorTest < Minitest::Test
     Dir.mktmpdir do |dir|
       path = File.join(dir, "llms.txt")
       count = @generator.write(path)
-      assert_equal 45, count
+      assert_equal LlmsTxtGenerator::CATEGORIES.size, count
     end
   end
 

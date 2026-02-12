@@ -74,11 +74,12 @@ class LlmsTxtGenerator
     "Install via the ruby_ui gem into any Rails application. Components are written in pure Ruby using " \
     "Phlex (up to 12x faster than ERB) and use custom Stimulus.js controllers for interactivity."
 
-  attr_reader :docs_dir, :base_url
+  attr_reader :docs_dir, :base_url, :component_count
 
   def initialize(docs_dir:, base_url: "https://rubyui.com")
     @docs_dir = docs_dir
     @base_url = base_url.chomp("/")
+    @component_count = 0
   end
 
   # Parse title and description from a Docs::Header.new call in a view file.
@@ -117,8 +118,10 @@ class LlmsTxtGenerator
   end
 
   # Generate the full llms.txt content as a string.
+  # Sets component_count as a side effect.
   def generate
     components_by_category = collect_components
+    @component_count = components_by_category.values.sum(&:length)
     lines = []
 
     lines << "# RubyUI"
@@ -162,6 +165,6 @@ class LlmsTxtGenerator
   def write(output_path)
     content = generate
     File.write(output_path, content)
-    collect_components.values.sum(&:length)
+    component_count
   end
 end
