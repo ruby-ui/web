@@ -42,7 +42,9 @@ class Views::Docs::GettingStarted::LlmsTxt < Views::Base
       div(class: "space-y-4") do
         Heading(level: 2) { "Keeping it updated" }
         Text do
-          plain "The llms.txt file is generated from the doc source files. If you're contributing to RubyUI, you can regenerate it with:"
+          plain "The llms.txt file is auto-generated during every deploy as part of "
+          InlineCode { "assets:precompile" }
+          plain ". To regenerate locally:"
         end
         Codeblock("rake llms:generate", syntax: :bash)
         Text do

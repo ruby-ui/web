@@ -26,6 +26,7 @@
 !/tmp/storage/.keep
 
 /public/assets
+/public/llms.txt
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key

@@ -23,3 +23,10 @@ namespace :llms do
     puts "Generated #{output_path} (#{count} components)"
   end
 end
+
+# Auto-generate llms.txt during assets:precompile (Heroku & Docker builds)
+if Rake::Task.task_defined?("assets:precompile")
+  Rake::Task["assets:precompile"].enhance do
+    Rake::Task["llms:generate"].invoke
+  end
+end
