@@ -89,7 +89,7 @@ class LlmsTxtGenerator
       title = $1 || $2 || $3
       description = $4
       # If title is a variable reference (like `component`), resolve it
-      if title =~ /\A[a-z_]+\z/
+      if title.match?(/\A[a-z_]+\z/)
         content.match(/#{title}\s*=\s*"([^"]+)"/) { |m| title = m[1] }
       end
       [title, description]
