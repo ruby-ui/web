@@ -17,59 +17,59 @@
 ### Form & Input
 
 - [Button](https://rubyui.com/docs/button): Displays a button or a component that looks like a button.
-- [Input](https://rubyui.com/docs/input): Displays a form input field or a component that looks like an input field.
-- [Masked Input](https://rubyui.com/docs/masked_input): Displays a form input field with applied mask.
-- [Textarea](https://rubyui.com/docs/textarea): Displays a textarea field.
+- [Calendar](https://rubyui.com/docs/calendar): A date field component that allows users to enter and edit date.
 - [Checkbox](https://rubyui.com/docs/checkbox): A control that allows the user to toggle between checked and not checked.
 - [Checkbox Group](https://rubyui.com/docs/checkbox_group): A control that allows the user to toggle between checked and not checked.
-- [Radio Button](https://rubyui.com/docs/radio_button): A control that allows users to make a single selection from a list of options.
-- [Select](https://rubyui.com/docs/select): Displays a list of options for the user to pick from, triggered by a button.
-- [Switch](https://rubyui.com/docs/switch): A control that allows the user to toggle between checked and not checked.
-- [Calendar](https://rubyui.com/docs/calendar): A date field component that allows users to enter and edit date.
-- [Date Picker](https://rubyui.com/docs/date_picker): A date picker component with input.
 - [Combobox](https://rubyui.com/docs/combobox): Autocomplete input and command palette with a list of suggestions.
+- [Date Picker](https://rubyui.com/docs/date_picker): A date picker component with input.
 - [Form](https://rubyui.com/docs/form): Building forms with built-in client-side validations.
+- [Input](https://rubyui.com/docs/input): Displays a form input field or a component that looks like an input field.
+- [MaskedInput](https://rubyui.com/docs/masked_input): Displays a form input field with applied mask.
+- [Radio Button](https://rubyui.com/docs/radio_button): A control that allows users to make a single selection from a list of options.
+- [Select](https://rubyui.com/docs/select): Displays a list of options for the user to pick from—triggered by a button.
+- [Switch](https://rubyui.com/docs/switch): A control that allows the user to toggle between checked and not checked.
+- [Textarea](https://rubyui.com/docs/textarea): Displays a textarea field.
 
 ### Layout & Navigation
 
 - [Accordion](https://rubyui.com/docs/accordion): A vertically stacked set of interactive headings that each reveal a section of content.
 - [Breadcrumb](https://rubyui.com/docs/breadcrumb): Indicates the user's current location within a navigational hierarchy.
-- [Tabs](https://rubyui.com/docs/tabs): A set of layered sections of content, known as tab panels, displayed one at a time.
-- [Sidebar](https://rubyui.com/docs/sidebar): A composable, themeable and customizable sidebar component.
-- [Separator](https://rubyui.com/docs/separator): Visually or semantically separates content.
-- [Pagination](https://rubyui.com/docs/pagination): Pagination with page navigation, next and previous links.
-- [Link](https://rubyui.com/docs/link): Displays a link that looks like a button or underline link.
 - [Collapsible](https://rubyui.com/docs/collapsible): An interactive component which expands/collapses a panel.
+- [Link](https://rubyui.com/docs/link): Displays a link that looks like a button or underline link.
+- [Pagination](https://rubyui.com/docs/pagination): Pagination with page navigation, next and previous links.
+- [Separator](https://rubyui.com/docs/separator): Visually or semantically separates content.
+- [Sidebar](https://rubyui.com/docs/sidebar): A composable, themeable and customizable sidebar component.
+- [Tabs](https://rubyui.com/docs/tabs): A set of layered sections of content—known as tab panels—that are displayed one at a time.
 
 ### Overlays & Dialogs
 
-- [Dialog](https://rubyui.com/docs/dialog): A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
 - [Alert Dialog](https://rubyui.com/docs/alert_dialog): A modal dialog that interrupts the user with important content and expects a response.
-- [Sheet](https://rubyui.com/docs/sheet): Extends the Sheet component to display content that complements the main content of the screen.
-- [Popover](https://rubyui.com/docs/popover): Displays rich content in a portal, triggered by a button.
-- [Tooltip](https://rubyui.com/docs/tooltip): A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
-- [Hover Card](https://rubyui.com/docs/hover_card): For sighted users to preview content available behind a link.
-- [Context Menu](https://rubyui.com/docs/context_menu): Displays a menu to the user, such as a set of actions or functions, triggered by a right click.
-- [Dropdown Menu](https://rubyui.com/docs/dropdown_menu): Displays a menu to the user, such as a set of actions or functions, triggered by a button.
 - [Command](https://rubyui.com/docs/command): Fast, composable, unstyled command menu for Phlex.
+- [Context Menu](https://rubyui.com/docs/context_menu): Displays a menu to the user — such as a set of actions or functions — triggered by a right click.
+- [Dialog](https://rubyui.com/docs/dialog): A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.
+- [Dropdown Menu](https://rubyui.com/docs/dropdown_menu): Displays a menu to the user — such as a set of actions or functions — triggered by a button.
+- [Hover Card](https://rubyui.com/docs/hover_card): For sighted users to preview content available behind a link.
+- [Popover](https://rubyui.com/docs/popover): Displays rich content in a portal, triggered by a button.
+- [Sheet](https://rubyui.com/docs/sheet): Extends the Sheet component to display content that complements the main content of the screen.
+- [Tooltip](https://rubyui.com/docs/tooltip): A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
 
 ### Feedback & Status
 
 - [Alert](https://rubyui.com/docs/alert): Displays a callout for user attention.
+- [Badge](https://rubyui.com/docs/badge): Displays a badge or a component that looks like a badge.
 - [Progress](https://rubyui.com/docs/progress): Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.
 - [Skeleton](https://rubyui.com/docs/skeleton): Use to show a placeholder while content is loading.
-- [Badge](https://rubyui.com/docs/badge): Displays a badge or a component that looks like a badge.
 
 ### Display & Media
 
+- [Aspect Ratio](https://rubyui.com/docs/aspect_ratio): Displays content within a desired ratio.
 - [Avatar](https://rubyui.com/docs/avatar): An image element with a fallback for representing the user.
 - [Card](https://rubyui.com/docs/card): Displays a card with header, content, and footer.
-- [Table](https://rubyui.com/docs/table): A responsive table component.
-- [Chart](https://rubyui.com/docs/chart): Displays information in a visual way.
 - [Carousel](https://rubyui.com/docs/carousel): A carousel with motion and swipe built using Embla.
-- [Aspect Ratio](https://rubyui.com/docs/aspect_ratio): Displays content within a desired ratio.
-- [Typography](https://rubyui.com/docs/typography): Sensible defaults to use for text.
-- [Codeblock](https://rubyui.com/docs/codeblock): A component for displaying highlighted code.
+- [Chart](https://rubyui.com/docs/chart): Displays information in a visual way.
 - [Clipboard](https://rubyui.com/docs/clipboard): A control to allow you to copy content to the clipboard.
+- [Codeblock](https://rubyui.com/docs/codeblock): A component for displaying highlighted code.
 - [Shortcut Key](https://rubyui.com/docs/shortcut_key): A component for displaying keyboard shortcuts.
+- [Table](https://rubyui.com/docs/table): A responsive table component.
 - [Theme Toggle](https://rubyui.com/docs/theme_toggle): Toggle between dark/light theme.
+- [Typography](https://rubyui.com/docs/typography): Sensible defaults to use for text.
