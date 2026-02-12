@@ -139,7 +139,6 @@ class LlmsTxtGenerator
     lines << "- [Theming](#{base_url}/docs/theming): Guide to customizing colors and design tokens using CSS variables."
     lines << "- [Dark Mode](#{base_url}/docs/dark_mode): How to implement dark mode support."
     lines << "- [Customizing Components](#{base_url}/docs/customizing_components): How to customize and extend RubyUI components."
-    lines << "- [LLMs.txt](#{base_url}/docs/llms_txt): LLM-friendly documentation for AI-assisted development with RubyUI."
     lines << ""
 
     # Components
