@@ -147,6 +147,7 @@ class LlmsTxtGeneratorTest < Minitest::Test
     assert_includes content, "[Theming]"
     assert_includes content, "[Dark Mode]"
     assert_includes content, "[Customizing Components]"
+    assert_includes content, "[LLMs.txt]"
   end
 
   def test_generate_has_components_section

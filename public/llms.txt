@@ -11,6 +11,7 @@
 - [Theming](https://rubyui.com/docs/theming): Guide to customizing colors and design tokens using CSS variables.
 - [Dark Mode](https://rubyui.com/docs/dark_mode): How to implement dark mode support.
 - [Customizing Components](https://rubyui.com/docs/customizing_components): How to customize and extend RubyUI components.
+- [LLMs.txt](https://rubyui.com/docs/llms_txt): LLM-friendly documentation for AI-assisted development with RubyUI.
 
 ## Components
 

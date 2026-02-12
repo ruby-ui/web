@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     get "theming", to: "docs#theming", as: :docs_theming
     get "dark_mode", to: "docs#dark_mode", as: :docs_dark_mode
     get "customizing_components", to: "docs#customizing_components", as: :docs_customizing_components
+    get "llms_txt", to: "docs#llms_txt", as: :docs_llms_txt
 
     # INSTALLATION
     get "installation/rails_bundler", to: "docs#installation_rails_bundler", as: :docs_installation_rails_bundler

@@ -50,7 +50,8 @@ module Components
           {name: "Installation", path: docs_installation_path},
           {name: "Dark mode", path: docs_dark_mode_path},
           {name: "Theming", path: docs_theming_path},
-          {name: "Customizing components", path: docs_customizing_components_path}
+          {name: "Customizing components", path: docs_customizing_components_path},
+          {name: "LLMs.txt", path: docs_llms_txt_path}
         ]
       end
 
