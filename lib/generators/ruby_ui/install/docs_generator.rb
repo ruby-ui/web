@@ -1,31 +1,37 @@
 # frozen_string_literal: true
 
-require "rails/generators"
+begin
+  require "rails/generators/base"
+rescue LoadError
+  # Rails not available, skip generator definition
+end
 
-module RubyUI
-  module Generators
-    module Install
-      class DocsGenerator < Rails::Generators::Base
-        namespace "ruby_ui:install:docs"
-        source_root File.expand_path("../../../../app/components/ruby_ui", __dir__)
-        class_option :force, type: :boolean, default: false
+if defined?(Rails::Generators::Base)
+  module RubyUI
+    module Generators
+      module Install
+        class DocsGenerator < Rails::Generators::Base
+          namespace "ruby_ui:install:docs"
+          source_root File.expand_path("../../../../app/components/ruby_ui", __dir__)
+          class_option :force, type: :boolean, default: false
 
-        def copy_docs_files
-          say "Installing RubyUI documentation files..."
+          def copy_docs_files
+            say "Installing RubyUI documentation files..."
 
-          docs_file_paths.each do |source_path|
-            dest_filename = File.basename(source_path).sub("_docs", "")
-            copy_file source_path, Rails.root.join("app/views/docs", dest_filename), force: options["force"]
+            docs_file_paths.each do |source_path|
+              dest_filename = File.basename(source_path).sub("_docs", "")
+              copy_file source_path, Rails.root.join("app/views/docs", dest_filename), force: options["force"]
+            end
+
+            say ""
+            say "Documentation installed to app/views/docs/", :green
           end
 
-          say ""
-          say "Documentation installed to app/views/docs/", :green
-        end
+          private
 
-        private
-
-        def docs_file_paths
-          Dir.glob(File.join(self.class.source_root, "*", "*_docs.rb"))
+          def docs_file_paths
+            Dir.glob(File.join(self.class.source_root, "*", "*_docs.rb"))
+          end
         end
       end
     end
