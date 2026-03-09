@@ -79,7 +79,7 @@ module Components
       end
 
       def github_link
-        Link(href: "https://github.com/PhlexUI/phlex_ui", variant: :ghost, icon: true) do
+        Link(href: "https://github.com/sethhorsley/ruby-ui-web", variant: :ghost, icon: true) do
           github_icon
         end
       end
