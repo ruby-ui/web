@@ -2,7 +2,7 @@
 service: rubyui-web
 
 # Name of the container image.
-image: sethhorsley/seth-rubyui-web
+image: rh63e/rubyui-web
 
 # Deploy to these servers.
 servers:
@@ -26,9 +26,10 @@ proxy:
 # Credentials for your image host.
 registry:
   # Specify the registry server, if you're not using Docker Hub
-  # Use GHCR for CI/CD, or localhost:5001 for local development
   # Set KAMAL_REGISTRY_SERVER environment variable to override
-  server: ghcr.io
+  # For local: use localhost:5001 or registry.docker.io (Docker Hub)
+  # For CI/CD: use ghcr.io (GitHub Container Registry)
+  server: registry.docker.io
   username:
     - KAMAL_REGISTRY_USERNAME
 
@@ -50,8 +51,6 @@ env:
   #   DB_HOST: 192.168.0.2
   secret:
     - RAILS_MASTER_KEY
-    - KAMAL_REGISTRY_USERNAME
-    - KAMAL_REGISTRY_PASSWORD
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.
