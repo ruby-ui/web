@@ -40,6 +40,12 @@ registry:
 # Configure builder setup.
 builder:
   arch: amd64
+  cache:
+    type: gha
+    options: mode=max
+    image: app-build-cache
+  secrets:
+    - RAILS_MASTER_KEY
   # Pass in additional build args needed for your Dockerfile.
   # args:
   #   RUBY_VERSION: <%= ENV["RBENV_VERSION"] || ENV["rvm_ruby_string"] || "#{RUBY_ENGINE}-#{RUBY_ENGINE_VERSION}" %>
