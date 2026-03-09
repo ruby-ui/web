@@ -12,12 +12,13 @@ GIT
   specs:
     phlex (2.0.2)
 
-GIT
-  remote: https://github.com/ruby-ui/ruby_ui.git
-  revision: f88242965bcb682a51223b07fa9019cb6e3ddbf6
-  branch: main
+PATH
+  remote: .
   specs:
-    ruby_ui (1.1.0)
+    seth_ruby_ui (0.1.0)
+      phlex (>= 2.0)
+      rouge
+      tailwind_merge (>= 0.12)
 
 GEM
   remote: https://rubygems.org/
@@ -342,8 +343,8 @@ DEPENDENCIES
   puma (= 7.2.0)
   rails (= 8.1.2)
   rouge (~> 4.7)
-  ruby_ui!
   selenium-webdriver
+  seth_ruby_ui!
   sqlite3 (= 2.9.0)
   standard
   stimulus-rails (= 1.3.4)
@@ -356,4 +357,4 @@ RUBY VERSION
    ruby 4.0.1p0
 
 BUNDLED WITH
-   2.6.4
+   4.0.7

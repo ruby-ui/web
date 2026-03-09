@@ -28,7 +28,7 @@ module RubyUI
     end
 
     def gem_path
-      @gem_path ||= Gem::Specification.find_by_name("ruby_ui").gem_dir
+      @gem_path ||= Gem::Specification.find_by_name("seth_ruby_ui").gem_dir
     end
 
     DEPENDENCIES = YAML.load_file(File.join(gem_path, "lib/generators/ruby_ui/dependencies.yml")).freeze
