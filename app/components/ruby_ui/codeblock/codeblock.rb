@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-require "rouge"
-
 module RubyUI
   class Codeblock < Base
-    FORMATTER = ::Rouge::Formatters::HTML.new
-    ROUGE_CSS = Rouge::Themes::Github.mode(:dark).render(scope: ".highlight") # See themes here: https://rouge-ruby.github.io/docs/Rouge/CSSTheme.html
-
     def initialize(code, syntax:, clipboard: true, clipboard_success: "Copied!", clipboard_error: "Copy failed!", **attrs)
       @code = code
       @syntax = syntax.to_sym
@@ -22,7 +17,6 @@ module RubyUI
     end
 
     def view_template
-      style { ROUGE_CSS } # For faster load times, move this to the head of your document. (Also move ROUGE_CSS value to head of document)
       if @clipboard
         with_clipboard
       else
@@ -35,7 +29,7 @@ module RubyUI
     def default_attrs
       {
         style: {tab_size: 2},
-        class: "highlight text-sm max-h-[350px] after:content-none flex font-mono overflow-auto overflow-x rounded-md border !bg-stone-900 [&_pre]:p-4"
+        class: "max-h-[350px] font-mono overflow-auto rounded-md border"
       }
     end
 
@@ -54,14 +48,28 @@ module RubyUI
 
     def codeblock
       div(**attrs) do
-        div(class: "after:content-none") do
-          pre { raw(safe(FORMATTER.format(lexer.lex(@code)))) }
+        div(
+          class: "relative",
+          data: {
+            controller: "shiki-highlighter",
+            shiki_highlighter_language_value: @syntax.to_s
+          }
+        ) do
+          # Hidden code content for Shiki to process
+          pre(
+            class: "hidden",
+            data: {shiki_highlighter_target: "code"}
+          ) do
+            plain @code
+          end
+
+          # Output container for Shiki-generated HTML
+          div(
+            class: "overflow-auto",
+            data: {shiki_highlighter_target: "output"}
+          )
         end
       end
-    end
-
-    def lexer
-      Rouge::Lexer.find(@syntax)
     end
 
     def clipboard_icon

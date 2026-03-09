@@ -46,3 +46,8 @@ yarn-error.log
 
 # Pnpm
 .pnpm-store
+
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+
+.env
