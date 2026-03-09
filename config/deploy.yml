@@ -29,7 +29,7 @@ registry:
   # Set KAMAL_REGISTRY_SERVER environment variable to override
   # For local: use localhost:5001 or registry.docker.io (Docker Hub)
   # For CI/CD: use ghcr.io (GitHub Container Registry)
-  server: registry.docker.io
+  server: registry.hub.docker.com
   username:
     - KAMAL_REGISTRY_USERNAME
 
