@@ -9,6 +9,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=4.0.1
+ARG GIT_COMMIT_HASH=unknown
 FROM ruby:${RUBY_VERSION} AS base
 
 LABEL fly_launch_runtime="rails"
@@ -22,10 +23,12 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
+ARG GIT_COMMIT_HASH
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT="development" \
+    GIT_COMMIT_HASH="${GIT_COMMIT_HASH}"
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build

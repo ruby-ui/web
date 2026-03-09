@@ -17,7 +17,11 @@ module Components
       private
 
       def commit_hash
-        @commit_hash ||= `git rev-parse --short HEAD`.strip
+        @commit_hash ||= ENV.fetch("GIT_COMMIT_HASH") do
+          `git rev-parse --short HEAD`.strip
+        rescue
+          "unknown"
+        end
       end
     end
   end
