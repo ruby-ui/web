@@ -97,6 +97,6 @@ jobs:
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         with:
-          imageName: ghcr.io/ruby-ui/web-devcontainer
-          cacheFrom: ghcr.io/ruby-ui/web-devcontainer
+          imageName: ghcr.io/seth-ruby-ui/web-devcontainer
+          cacheFrom: ghcr.io/seth-ruby-ui/web-devcontainer
           push: always
