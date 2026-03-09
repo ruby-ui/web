@@ -1,7 +1,7 @@
 require "rubygems"
 
 module ApplicationHelper
-  def component_files(component, gem_name = "ruby_ui")
+  def component_files(component, gem_name = "seth_ruby_ui")
     # Find the gem specification
     gem_spec = Gem::Specification.find_by_name(gem_name)
     return [] unless gem_spec

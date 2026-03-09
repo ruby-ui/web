@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get "sidebar", to: "docs#sidebar", as: :docs_sidebar
     get "sidebar/example", to: "docs/sidebar#example", as: :docs_sidebar_example
     get "sidebar/inset", to: "docs/sidebar#inset_example", as: :docs_sidebar_inset
+    get "sidebar/nested", to: "docs/sidebar#nested_example", as: :docs_sidebar_nested
     get "skeleton", to: "docs#skeleton", as: :docs_skeleton
     get "switch", to: "docs#switch", as: :docs_switch
     get "table", to: "docs#table", as: :docs_table
@@ -63,8 +64,15 @@ Rails.application.routes.draw do
     get "typography", to: "docs#typography", as: :docs_typography
   end
 
+  get "blocks", to: "pages#blocks", as: :blocks
+  get "blocks/:id", to: "pages#render_block", as: :render_block
+
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", :as => :rails_health_check
 
   root "pages#home"
 end

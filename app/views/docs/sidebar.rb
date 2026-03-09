@@ -29,12 +29,24 @@ class Views::Docs::Sidebar < Views::Base
         end
       end
 
-      render Docs::VisualCodeExample.new(title: "Example", src: "/docs/sidebar/example", context: self) do
-        Views::Docs::Sidebar::Example::CODE
-      end
+      render Docs::VisualCodeExample.new(
+        title: "Example",
+        context: self,
+        type: :block,
+        content: Views::Docs::Sidebar::Example,
+        content_attributes: {sidebar_state: "open"}
+      )
 
-      render Docs::VisualCodeExample.new(title: "Inset variant", src: "/docs/sidebar/inset", context: self) do
-        Views::Docs::Sidebar::InsetExample::CODE
+      render Docs::VisualCodeExample.new(
+        title: "Inset variant",
+        context: self,
+        type: :block,
+        content: Views::Docs::Sidebar::InsetExample,
+        content_attributes: {sidebar_state: "open"}
+      )
+
+      render Docs::VisualCodeExample.new(title: "Nested sidebar", src: "/docs/sidebar/nested", context: self) do
+        Views::Docs::Sidebar::NestedExample::CODE
       end
 
       render Docs::VisualCodeExample.new(title: "Dialog variant", context: self) do
