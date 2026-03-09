@@ -1,16 +1,16 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.4.7"
+ruby "4.0.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "8.1.1"
+gem "rails", "8.1.2"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft", "1.3.1"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "2.8.0"
+gem "sqlite3", "2.9.0"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "7.1.0"
+gem "puma", "7.2.0"
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails", "1.3.1"
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
@@ -20,7 +20,7 @@ gem "stimulus-rails", "1.3.4"
 # Bundle and process CSS [https://github.com/rails/cssbundling-rails]
 gem "cssbundling-rails", "1.4.3"
 
-gem "lucide-rails", "0.7.1"
+gem "lucide-rails", "0.7.3"
 
 # gem "jbuilder"
 
@@ -76,12 +76,12 @@ end
 gem "phlex", github: "phlex-ruby/phlex"
 gem "phlex-rails", github: "phlex-ruby/phlex-rails"
 
-gem "ruby_ui", github: "ruby-ui/ruby_ui", branch: "main", require: false
-# gem "ruby_ui", path: "../ruby_ui"
+# gem "ruby_ui", github: "ruby-ui/ruby_ui", branch: "main", require: false
+gem "seth_ruby_ui", path: "."
 
-gem "pry", "0.15.2"
+gem "pry", "0.16.0"
 
-gem "tailwind_merge", "~> 1.3.1"
+gem "tailwind_merge", "~> 1.3.2"
 
 gem "rouge", "~> 4.6"
 

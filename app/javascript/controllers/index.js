@@ -87,3 +87,12 @@ application.register("ruby-ui--tooltip", RubyUi__TooltipController)
 
 import SidebarMenuController from "./sidebar_menu_controller"
 application.register("sidebar-menu", SidebarMenuController)
+
+import CustomTabsController from "./custom_tabs_controller"
+application.register("custom-tabs", CustomTabsController)
+
+import BlockCodeViewerController from "./block_code_viewer_controller"
+application.register("block-code-viewer", BlockCodeViewerController)
+
+import ShikiHighlighterController from "./shiki_highlighter_controller"
+application.register("shiki-highlighter", ShikiHighlighterController)
