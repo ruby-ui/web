@@ -44,7 +44,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H 45.55.81.54 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 45.55.81.54 > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
 
       - name: Create Kamal secrets file
         run: |
