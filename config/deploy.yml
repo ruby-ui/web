@@ -65,10 +65,8 @@ aliases:
 
 # Use a different ssh user than root
 #
-ssh:
-  keys: ["~/.ssh/deploy_key"]
-  options:
-    StrictHostKeyChecking: accept-new
+# ssh:
+#   user: app
 
 # Use a persistent storage volume.
 #

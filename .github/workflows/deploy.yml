@@ -46,6 +46,12 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -H 45.55.81.54 > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
+          cat << EOF > ~/.ssh/config
+          Host 45.55.81.54
+            StrictHostKeyChecking accept-new
+            IdentityFile ~/.ssh/deploy_key
+          EOF
+          chmod 600 ~/.ssh/config
 
       - name: Create Kamal secrets file
         run: |
