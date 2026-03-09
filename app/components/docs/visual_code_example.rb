@@ -13,19 +13,14 @@ module Components
         @@collected_code = []
       end
 
-      def initialize(ruby_code: nil, title: nil, description: nil, src: nil, context: nil, type: :component, content: nil, content_attributes: nil)
-        @ruby_code = ruby_code
+      def initialize(title: nil, description: nil, src: nil, context: nil)
         @title = title
         @description = description
         @src = src
         @context = context
-        @type = type
-        @content = content
-        @content_attributes = content_attributes
       end
 
       def view_template(&)
-        # @display_code = @ruby_code || CGI.unescapeHTML(capture(&))
         @display_code = CGI.unescapeHTML(capture(&))
         @@collected_code << @display_code
 
@@ -60,7 +55,7 @@ module Components
       def render_tab_triggers
         TabsList do
           render_tab_trigger("preview", "Preview", method(:eye_icon))
-          render_tab_trigger("code", "Code", method(:code_icon)) if @type == :component
+          render_tab_trigger("code", "Code", method(:code_icon))
         end
       end
 
@@ -77,25 +72,15 @@ module Components
       end
 
       def render_preview_tab(&block)
-        block_class_name = @content.to_s
-
-        return iframe_preview(block_class_name) if @type == :block
+        return iframe_preview if @src
 
         raw_preview
       end
 
-      def iframe_preview(block_name)
-        div(class: "relative aspect-[4/2.5] w-full overflow-hidden rounded-md border") do
+      def iframe_preview
+        div(class: "relative aspect-[4/2.5] w-full overflow-hidden rounded-md border", data: {controller: "iframe-theme"}) do
           div(class: "absolute inset-0 hidden w-[1600px] bg-background md:block") do
-            if @content
-              iframe(src: render_block_path(id: block_name, attributes: @content_attributes), class: "size-full")
-            else
-              iframe(srcdoc: safe("<div>You cannot render a ruby block for a block preview</div>"), class: "size-full")
-              # TODO
-              # decoded_code = CGI.unescapeHTML(@display_code)
-              # html_content = render_block_to_html(decoded_code)
-              # iframe(srcdoc: safe(html_content), class: "size-full")
-            end
+            iframe(src: @src, class: "size-full", data: {iframe_theme_target: "iframe"})
           end
         end
       end
@@ -113,14 +98,6 @@ module Components
         div(class: "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 relative rounded-md border") do
           Codeblock(@display_code, syntax: :ruby, class: "-m-px")
         end
-      end
-
-      def render_block_to_html(code)
-        # Extract the component from "render ComponentName.new" pattern
-        # and evaluate it to generate standalone HTML
-        component_code = code.strip.sub(/^render\s+/, '')
-        component = eval(component_code)
-        component.call
       end
 
       def eye_icon
