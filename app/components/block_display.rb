@@ -173,7 +173,7 @@ class Components::BlockDisplay < Components::Base
   def render_file_header
     @files.each_with_index do |file, index|
       figcaption(
-        class: "text-code-foreground [&_svg]:text-code-foreground relative flex h-12 shrink-0 items-center gap-2 border-b px-4 py-2 [&_svg]:size-4 [&_svg]:opacity-70 #{(index == 0) ? "" : "hidden"}",
+        class: "text-code-foreground [&_svg]:text-code-foreground relative flex h-12 shrink-0 items-center gap-2 border-b px-4 py-2 [&_svg]:size-4 [&_svg]:opacity-70 #{"hidden" unless index == 0}",
         data: {
           file_path: file[:path],
           block_code_viewer_target: "fileHeader"
@@ -202,7 +202,7 @@ class Components::BlockDisplay < Components::Base
   def render_code_body
     @files.each_with_index do |file, index|
       div(
-        class: "overflow-y-auto flex-1 min-h-0 #{(index == 0) ? "" : "hidden"}",
+        class: "overflow-y-auto flex-1 min-h-0 #{"hidden" unless index == 0}",
         data: {
           file_path: file[:path],
           block_code_viewer_target: "fileContent"
