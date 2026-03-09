@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "ruby_ui/version"
-
 module RubyUI
+  VERSION = "0.1.0"
+
   class Error < StandardError; end
 end
