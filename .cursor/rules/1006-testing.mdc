@@ -1,0 +1,71 @@
+---
+description: Follow testing standards when creating or modifying tests
+globs: ["test/**/*.rb"]
+---
+
+# Testing Standards
+
+## Context
+
+- In Ruby on Rails 8 test files
+- Using Minitest for testing
+- Tests should be thorough and maintainable
+
+## Requirements
+
+- Use Minitest for all tests
+- Write tests for models, controllers, services, and other components
+- Use fixtures for test data
+- Organize tests into appropriate test classes
+- Use descriptive test names with test\_ prefix (e.g., test_valid_user_can_login)
+- Use assertions that best match what you're testing
+- Keep tests focused on a single concern
+- Use setup/teardown methods for common setup code
+- Use test helpers for reusable test code
+- Test both happy and sad paths
+- Test edge cases and boundary conditions
+- Avoid testing the framework itself
+- Keep tests independent and idempotent
+- Don't pipe test output into cat (`bin/rails test` not `bin/rails test | cat`)
+
+## Examples
+
+<example>
+```ruby
+require "test_helper"
+
+class UserTest < ActiveSupport::TestCase setup do @user = users(:one) @account = accounts(:one) end
+
+test "valid user" do assert @user.valid? end
+
+test "invalid without email" do @user.email = nil refute @user.valid? assert_not_nil @user.errors[:email] end
+
+test "can be assigned to account" do account_user = AccountUser.new(user: @user, account: @account) assert account_user.valid? end
+
+test "can have admin role" do account_user = AccountUser.new(user: @user, account: @account, admin: true) assert account_user.admin? assert_includes account_user.active_roles, :admin end end
+
+````
+</example>
+
+<example type="invalid">
+```ruby
+require "test_helper"
+
+class UserTest < ActiveSupport::TestCase
+  def setup
+    @user = User.new(name: "Test User", email: "test@example.com")
+  end
+
+  def test_it_works
+    @user.save
+    assert_equal 1, User.count
+    User.all.each do |u|
+      assert u.valid?
+    end
+    @user.update(email: nil)
+    assert_equal false, @user.valid?
+  end
+end
+````
+
+</example>

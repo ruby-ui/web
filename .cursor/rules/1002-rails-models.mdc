@@ -1,0 +1,105 @@
+---
+description: Follow Rails 8 model standards and patterns when creating or modifying models
+globs: ["app/models/**/*.rb"]
+---
+
+# Rails Model Standards
+
+## Context
+
+- In Ruby on Rails 8 models
+- Use modern Rails patterns like store_accessor, concerns, and modules
+- Add YARD documentation
+
+## Requirements
+
+- Add YARD documentation to all methods
+- Use positional arguments in enums
+- Include a separate module for specific roles, validations, or other functionality
+- Define constants at the top of the file
+- Use has_prefix_id for models with UUIDs
+- Use strong typing with attribute declarations
+- Use normalizes for attribute normalization
+- Include Searchable concern for models that need search
+- Use counter_cache for belongs_to relationships that need counts
+- Use store_accessor for models with JSON columns
+- Use acts_as_tenant for multi-tenant models
+- Include validation for uploaded files with resizable_image
+- Pass models to jobs, not IDs (they will be serialized)
+- Use strong typing in models with `attribute` declarations
+
+## Examples
+
+<example>
+```ruby
+# frozen_string_literal: true
+
+class Plan < ApplicationRecord has_prefix_id :plan
+
+INTERVALS = [:month, :year].freeze
+
+# Store JSON attributes in the details column
+
+# @return [Array<String>] List of features for this plan
+
+store_accessor :details, :features, :stripe_tax
+
+# Define default attributes
+
+attribute :currency, default: "usd"
+
+# Normalize attributes before saving
+
+normalizes :currency, with: ->(currency) { currency.downcase }
+
+# Validations
+
+validates :name, :amount, :interval, presence: true validates :currency, presence: true, format: {with: /\A[a-zA-Z]{3}\z/, message: "must be a 3-letter ISO currency code"} validates :interval, inclusion: INTERVALS validates :trial_period_days, numericality: {only_integer: true} validates :unit_label, presence: {if: :charge_per_unit?}
+
+# Scopes
+
+scope :hidden, -> { where(hidden: true) } scope :visible, -> { where(hidden: [nil, false]) } scope :monthly, -> { where(interval: :month) } scope :yearly, -> { where(interval: :year) } scope :sorted, -> { order(amount: :asc) }
+
+# Returns a list of features for this plan
+
+# @return [Array<String>] List of features
+
+def features Array.wrap(super) end
+
+# Checks if this plan has a trial period
+
+# @return [Boolean] True if the plan has a trial
+
+def has_trial? trial_period_days > 0 end
+
+# Checks if this plan is a monthly plan
+
+# @return [Boolean] True if the plan is monthly
+
+def monthly? interval == "month" end end
+
+````
+</example>
+
+<example type="invalid">
+```ruby
+class Plan < ApplicationRecord
+  def self.free
+    where(name: "Free").first_or_initialize
+  end
+
+  def features
+    super
+  end
+
+  def has_trial?
+    self.trial_period_days > 0
+  end
+
+  def self.get_all
+    all
+  end
+end
+````
+
+</example>

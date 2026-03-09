@@ -1,0 +1,87 @@
+---
+description: Follow general Rails 8 conventions and patterns
+globs: ["**/*.rb", "app/**/*.erb"]
+---
+
+# General Rails 8 Conventions
+
+## Context
+
+- In Ruby on Rails 8 application
+- Using modern Rails features and patterns
+- Follows Ruby style conventions
+
+## Requirements
+
+- Follow Ruby style guidelines (2 spaces for indentation, snake_case for variables/methods)
+- Use Service Objects for complex business logic
+- Use concerns for shared functionality
+- Use modules for namespacing and code organization
+- Use class Module::ClassName instead of nested module/class definitions
+- Add YARD documentation to methods and classes
+- Use positional arguments in enums and other Rails 8 features
+- Use credentials with Rails.application.credentials syntax
+- Pass models to jobs, not IDs (they'll be serialized automatically)
+- Use has_prefix_id for models with UUIDs
+- Use ActiveRecord conventions for database operations
+- Follow RESTful conventions for controllers
+- Use Tailwind CSS for styling views
+- Make all UI components responsive and support dark mode
+- Use Hotwire (Turbo, Stimulus) for JavaScript functionality
+- Ensure accessibility in all UI components
+
+## Examples
+
+<example>
+```ruby
+# Good - Using Rails 8 credentials
+api_key = Rails.application.credentials.anthropic[:api_key]
+
+# Good - Using Service Object
+
+user = CreateUserService.new(user_params).run
+
+# Good - Using positional arguments in enum
+
+class Article < ApplicationRecord enum status: [:draft, :published, :archived] end
+
+# Good - Class namespacing
+
+class Api::V1::UsersController < ApplicationController
+
+# ...
+
+end
+
+````
+</example>
+
+<example type="invalid">
+```ruby
+# Bad - Using outdated credentials pattern
+api_key = Rails.application.secrets.anthropic_api_key
+
+# Bad - Complex logic in controller
+def create
+  @user = User.new(user_params)
+  if @user.save
+    # Complex business logic here
+  end
+end
+
+# Bad - Using hash for enum
+class Article < ApplicationRecord
+  enum status: { draft: 0, published: 1, archived: 2 }
+end
+
+# Bad - Nested modules
+module Api
+  module V1
+    class UsersController < ApplicationController
+      # ...
+    end
+  end
+end
+````
+
+</example>

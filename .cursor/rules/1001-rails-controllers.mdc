@@ -1,0 +1,82 @@
+---
+description: Follow Rails 8 controller standards and patterns when creating or editing controllers
+globs: ["app/controllers/**/*.rb"]
+---
+
+# Rails Controller Standards
+
+## Context
+
+- In Ruby on Rails 8 controllers
+- Controllers should follow RESTful conventions
+- Comment style includes HTTP verb and path
+
+## Requirements
+
+- Add controller method comments with HTTP verb and full path
+- Use resource-based naming
+- Use before_action for common setup
+- Namespace API controllers under Api::V1
+- Use respond_to for format handling (HTML/JSON)
+- Use pagy for pagination: `@pagy, @resources = pagy(Resource.sort_by_params(params[:sort], sort_direction))`
+- Use `status: :see_other` for redirects after DELETE
+- Use `status: :unprocessable_content` for failed creates/updates
+- Return 404 for records not found with `rescue ActiveRecord::RecordNotFound`
+- Use `params.expect(:resource)` instead of `params.require`
+- Include authentication callbacks where needed
+
+## Examples
+
+<example>
+```ruby
+class CategoriesController < ApplicationController
+  before_action :set_category, only: [:show, :edit, :update, :destroy]
+
+# GET /categories
+
+def index @pagy, @categories = pagy(Category.sort_by_params(params[:sort], sort_direction)) end
+
+# POST /categories
+
+def create @category = Category.new(category_params)
+
+    respond_to do |format|
+      if @category.save
+        format.html { redirect_to @category, notice: "Category was successfully created." }
+        format.json { render :show, status: :created, location: @category }
+      else
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @category.errors, status: :unprocessable_content }
+      end
+    end
+
+end
+
+private
+
+def set_category @category = Category.find(params.expect(:id)) rescue ActiveRecord::RecordNotFound redirect_to categories_path end
+
+def category_params params.expect(category: [:name, :description]) end end
+
+````
+</example>
+
+<example type="invalid">
+```ruby
+class CategoriesController < ApplicationController
+  def index
+    @categories = Category.all
+  end
+
+  def create
+    @category = Category.new(params.permit(:name, :description))
+    if @category.save
+      redirect_to @category
+    else
+      render :new
+    end
+  end
+end
+````
+
+</example>
