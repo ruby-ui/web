@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 begin
-  require "rails/generators/base"
+  require "rails/generators"
 rescue LoadError
   # Rails not available, skip generator definition
 end

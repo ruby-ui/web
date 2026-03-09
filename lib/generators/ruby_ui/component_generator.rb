@@ -1,7 +1,7 @@
 require_relative "javascript_utils"
 
 begin
-  require "rails/generators/base"
+  require "rails/generators"
 rescue LoadError
   # Rails not available, skip generator definition
 end
