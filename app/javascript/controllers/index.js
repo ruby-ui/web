@@ -43,6 +43,9 @@ application.register("ruby-ui--command", RubyUi__CommandController)
 import RubyUi__ContextMenuController from "./ruby_ui/context_menu_controller"
 application.register("ruby-ui--context-menu", RubyUi__ContextMenuController)
 
+import RubyUi__DataTableController from "./ruby_ui/data_table_controller"
+application.register("ruby-ui--data-table", RubyUi__DataTableController)
+
 import RubyUi__DialogController from "./ruby_ui/dialog_controller"
 application.register("ruby-ui--dialog", RubyUi__DialogController)
 

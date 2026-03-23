@@ -190,6 +190,10 @@ class DocsController < ApplicationController
     render Views::Docs::Switch.new
   end
 
+  def data_table
+    render Views::Docs::DataTable.new
+  end
+
   def table
     render Views::Docs::Table.new
   end
