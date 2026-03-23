@@ -55,6 +55,8 @@ Rails.application.routes.draw do
     get "sidebar/inset", to: "docs/sidebar#inset_example", as: :docs_sidebar_inset
     get "skeleton", to: "docs#skeleton", as: :docs_skeleton
     get "switch", to: "docs#switch", as: :docs_switch
+    get "data_table", to: "docs#data_table", as: :docs_data_table
+    get "data_table/demo", to: "docs/data_table_demo#index", as: :docs_data_table_demo
     get "table", to: "docs#table", as: :docs_table
     get "tabs", to: "docs#tabs", as: :docs_tabs
     get "textarea", to: "docs#textarea", as: :docs_textarea
