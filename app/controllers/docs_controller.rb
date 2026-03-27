@@ -24,6 +24,10 @@ class DocsController < ApplicationController
     render Views::Docs::GettingStarted::CustomizingComponents.new
   end
 
+  def llms_txt
+    render Views::Docs::GettingStarted::LlmsTxt.new
+  end
+
   # INSTALLATION
   def installation_rails_bundler
     render Views::Docs::Installation::RailsBundler.new
