@@ -51,8 +51,6 @@ Rails.application.routes.draw do
     get "sheet", to: "docs#sheet", as: :docs_sheet
     get "shortcut_key", to: "docs#shortcut_key", as: :docs_shortcut_key
     get "sidebar", to: "docs#sidebar", as: :docs_sidebar
-    get "sidebar/example", to: "docs/sidebar#example", as: :docs_sidebar_example
-    get "sidebar/inset", to: "docs/sidebar#inset_example", as: :docs_sidebar_inset
     get "skeleton", to: "docs#skeleton", as: :docs_skeleton
     get "switch", to: "docs#switch", as: :docs_switch
     get "table", to: "docs#table", as: :docs_table
@@ -62,6 +60,9 @@ Rails.application.routes.draw do
     get "tooltip", to: "docs#tooltip", as: :docs_tooltip
     get "typography", to: "docs#typography", as: :docs_typography
   end
+
+  get "blocks", to: "pages#blocks", as: :blocks
+  get "blocks/:id", to: "pages#render_block", as: :render_block
 
   match "/404", to: "errors#not_found", via: :all
   match "/500", to: "errors#internal_server_error", via: :all
