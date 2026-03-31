@@ -11,10 +11,10 @@ class Views::Pages::Home < Views::Base
           svg(xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewbox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", class: "ml-2 h-4 w-4") { |s| s.path(d: "M5 12h14"); s.path(d: "m12 5 7 7-7 7") }
         end
         h1(class: "leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl") do
-          "Build your compo­nent library."
+          "Build your component library."
         end
         p(class: "max-w-4xl text-base text-balance text-foreground sm:text-lg") do
-          "Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open Source."
+          "A UI component library, crafted precisely for Ruby devs who want to stay organised and build modern apps, fast."
         end
         div(class: "space-x-4 mt-4") do
           Link(href: docs_introduction_path, variant: :primary, size: :lg) { "Documentation" }
