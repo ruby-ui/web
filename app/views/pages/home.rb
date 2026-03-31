@@ -11,7 +11,13 @@ class Views::Pages::Home < Views::Base
           svg(xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewbox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", class: "ml-2 h-4 w-4") { |s| s.path(d: "M5 12h14"); s.path(d: "m12 5 7 7-7 7") }
         end
         h1(class: "leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl") do
-          "Build sharp Ruby interfaces."
+          [
+            "Build sharp Ruby interfaces.",
+            "Reusable UI components for Ruby developers.",
+            "Pure Ruby UI, built with Phlex.",
+            "Elevate your Rails apps with RubyUI.",
+            "The sharpest way to build in Ruby."
+          ].sample
         end
         p(class: "max-w-4xl text-base text-balance text-foreground sm:text-lg") do
           "A UI component library, crafted precisely for Ruby devs who want to stay organised and build modern apps, fast."
@@ -25,13 +31,6 @@ class Views::Pages::Home < Views::Base
 
     # Components Mosaic Section
     section(class: "container py-8 md:py-12 lg:py-24 mx-auto max-w-6xl") do
-      div(class: "mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center mb-12") do
-        h2(class: "scroll-m-24 text-4xl font-semibold tracking-tight") { "Modern components for modern applications" }
-        p(class: "max-w-[85%] leading-normal text-foreground sm:text-lg sm:leading-7") do
-          "Every component is built with Ruby, Phlex, and Tailwind CSS. No more context switching between languages."
-        end
-      end
-
       div(class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6") do
         # COLUMN 1
         div(class: "space-y-6") do
@@ -56,14 +55,17 @@ class Views::Pages::Home < Views::Base
                   Input(placeholder: "YYYY")
                 end
               end
-              div(class: "space-y-2") do
-                label { "CVV" }
-                Input(placeholder: "123")
-              end
             end
             CardFooter do
               Button(class: "w-full") { "Add Payment" }
             end
+          end
+
+          # ALERT Showcase
+          Alert do
+            lucide_icon "terminal", class: "h-4 w-4"
+            AlertTitle { "Heads up!" }
+            AlertDescription { "You can add components directly to your app using Phlex." }
           end
 
           # BADGES Showcase
@@ -73,12 +75,32 @@ class Views::Pages::Home < Views::Base
               Badge(variant: :secondary) { "Updating" }
               Badge(variant: :outline) { "Loading" }
               Badge(variant: :destructive) { "Failed" }
+              Badge { "Success" }
             end
           end
         end
 
         # COLUMN 2
         div(class: "space-y-6") do
+          # TABS
+          Tabs(default_value: "account") do
+            TabsList(class: "grid w-full grid-cols-2") do
+              TabsTrigger(value: "account") { "Account" }
+              TabsTrigger(value: "password") { "Password" }
+            end
+            TabsContent(value: "account") do
+              Card do
+                CardHeader do
+                  CardTitle { "Account" }
+                  CardDescription { "Make changes to your account here." }
+                end
+                CardFooter do
+                  Button(size: :sm) { "Save changes" }
+                end
+              end
+            end
+          end
+
           # TEAM MEMBERS
           Card do
             CardHeader do
@@ -88,23 +110,9 @@ class Views::Pages::Home < Views::Base
             CardContent(class: "space-y-6") do
               team_member("Sofia Davis", "@sdavis", "https://i.pravatar.cc/150?u=sofia")
               team_member("Jackson Lee", "@jlee", "https://i.pravatar.cc/150?u=jackson")
-              team_member("Isabella Nguyen", "@isabella", "https://i.pravatar.cc/150?u=isabella")
             end
             CardFooter do
               Button(variant: :outline, class: "w-full") { "Invite Members" }
-            end
-          end
-
-          # NOTIFICATIONS
-          Card do
-            CardHeader do
-              CardTitle { "Activity" }
-              CardDescription { "Last 24 hours" }
-            end
-            CardContent(class: "space-y-4") do
-              activity_item("New deployment", "2 minutes ago", :success)
-              activity_item("Database backup", "3 hours ago", :info)
-              activity_item("Security alert", "5 hours ago", :warning)
             end
           end
         end
@@ -114,8 +122,8 @@ class Views::Pages::Home < Views::Base
           # SETTINGS / SWITCHES
           Card do
             CardHeader do
-              CardTitle { "Compute Environment" }
-              CardDescription { "Select your target cluster." }
+              CardTitle { "Settings" }
+              CardDescription { "Manage your preferences." }
             end
             CardContent(class: "space-y-4") do
               div(class: "flex items-center justify-between rounded-lg border p-4 shadow-sm") do
@@ -127,8 +135,8 @@ class Views::Pages::Home < Views::Base
               end
               div(class: "flex items-center justify-between rounded-lg border p-4 shadow-sm") do
                 div(class: "space-y-0.5") do
-                  p(class: "font-medium") { "Virtual Machine" }
-                  p(class: "text-xs text-muted-foreground") { "Dedicated server." }
+                  p(class: "font-medium") { "Dark Mode" }
+                  p(class: "text-xs text-muted-foreground") { "Use the dark theme." }
                 end
                 Switch()
               end
@@ -151,7 +159,7 @@ class Views::Pages::Home < Views::Base
             end
             CardContent do
               p(class: "text-sm bg-muted p-3 rounded-lg") do
-                "Hey! RubyUI is finally live. Let me know what you think of the new mosaic home page! 💎"
+                "Build sharp. Build Ruby. 💎"
               end
             end
             CardFooter(class: "pt-0") do
