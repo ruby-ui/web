@@ -43,21 +43,21 @@ class Views::Pages::Home < Views::Base
             end
             CardContent(class: "space-y-4") do
               div(class: "space-y-2") do
-                Label { "Name on Card" }
+                label { "Name on Card" }
                 Input(placeholder: "John Doe")
               end
               div(class: "grid grid-cols-2 gap-4") do
                 div(class: "space-y-2") do
-                  Label { "Month" }
+                  label { "Month" }
                   Input(placeholder: "MM")
                 end
                 div(class: "space-y-2") do
-                  Label { "Year" }
+                  label { "Year" }
                   Input(placeholder: "YYYY")
                 end
               end
               div(class: "space-y-2") do
-                Label { "CVV" }
+                label { "CVV" }
                 Input(placeholder: "123")
               end
             end
