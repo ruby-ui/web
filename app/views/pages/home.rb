@@ -196,17 +196,4 @@ class Views::Pages::Home < Views::Base
       end
     end
   end
-
-  private
-
-  def feature_card(title:, description:)
-    div(class: "relative overflow-hidden rounded-lg border bg-background p-2") do
-      div(class: "flex h-[140px] flex-col justify-between rounded-md p-6") do
-        div(class: "space-y-2") do
-          h3(class: "font-bold text-lg") { title }
-          p(class: "text-base text-foreground leading-relaxed") { description }
-        end
-      end
-    end
-  end
 end
