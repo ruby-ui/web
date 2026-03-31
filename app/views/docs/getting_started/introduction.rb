@@ -6,6 +6,7 @@ class Views::Docs::GettingStarted::Introduction < Views::Base
       render Docs::Header.new(title: "Introduction", description: "Reusable UI components for Ruby developers")
 
       div(class: "space-y-4") do
+        iframe(width: "100%", height: "400", src: "https://www.youtube.com/embed/OQZam7rug00?si=JmZNzS5u194Q0AWQ", title: "YouTube video player", frameborder: "0", class: "rounded-xl border shadow-lg mb-10", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: true)
         Heading(level: 2) { "About" }
         Text do
           plain "RubyUI is a UI framework for Ruby developers, built on top of "

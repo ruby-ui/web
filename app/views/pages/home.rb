@@ -23,28 +23,176 @@ class Views::Pages::Home < Views::Base
       end
     end
 
-    # Features / Components Showcase
-    section(class: "container space-y-6 py-8 md:py-12 lg:py-24 mx-auto max-w-5xl") do
-      div(class: "mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center") do
-        h2(class: "scroll-m-24 text-5xl font-semibold tracking-tight") { "Features" }
+    # Components Mosaic Section
+    section(class: "container py-8 md:py-12 lg:py-24 mx-auto max-w-6xl") do
+      div(class: "mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center mb-12") do
+        h2(class: "scroll-m-24 text-4xl font-semibold tracking-tight") { "Modern components for modern applications" }
         p(class: "max-w-[85%] leading-normal text-foreground sm:text-lg sm:leading-7") do
-          "This library comes packed with all the concepts and tools you need to build out your application."
+          "Every component is built with Ruby, Phlex, and Tailwind CSS. No more context switching between languages."
         end
       end
 
-      # Features Grid
-      div(class: "mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3 pt-8") do
-        feature_card(title: "Built for Speed", description: "Dive into a world where your Rails UI development happens at light speed. Phlex is not just fast - it's blazing fast.")
-        feature_card(title: "Minimal Dependencies", description: "Keep your app lean and mean. With RubyUI, we use custom built Stimulus.js controllers wherever possible.")
-        feature_card(title: "Awesome UX", description: "Create an app experience your users will rave about. RubyUI ensures that your user's journey is memorable.")
-        feature_card(title: "Completely Customisable", description: "Have full control over the design of all components. Built using Tailwind utilities.")
-        feature_card(title: "Stay Organized", description: "Say goodbye to clutter. With Phlex, your UI components are not only organized, but also easy to manage.")
-        feature_card(title: "Reuse with Ease", description: "Avoid the hassle of constantly reconstructing components. With Phlex, once built, use them seamlessly.")
-      end
+      div(class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6") do
+        # COLUMN 1
+        div(class: "space-y-6") do
+          # PAYMENT CARD
+          Card do
+            CardHeader do
+              CardTitle { "Payment Method" }
+              CardDescription { "All transactions are secure and encrypted." }
+            end
+            CardContent(class: "space-y-4") do
+              div(class: "space-y-2") do
+                Label { "Name on Card" }
+                Input(placeholder: "John Doe")
+              end
+              div(class: "grid grid-cols-2 gap-4") do
+                div(class: "space-y-2") do
+                  Label { "Month" }
+                  Input(placeholder: "MM")
+                end
+                div(class: "space-y-2") do
+                  Label { "Year" }
+                  Input(placeholder: "YYYY")
+                end
+              end
+              div(class: "space-y-2") do
+                Label { "CVV" }
+                Input(placeholder: "123")
+              end
+            end
+            CardFooter do
+              Button(class: "w-full") { "Add Payment" }
+            end
+          end
 
-      # Video container
-      div(class: "flex justify-center mt-8 mb-12 py-12") do
-        iframe(width: "100%", height: "600", src: "https://www.youtube.com/embed/OQZam7rug00?si=JmZNzS5u194Q0AWQ", title: "YouTube video player", frameborder: "0", class: "rounded-xl border shadow-lg", allow: "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share", allowfullscreen: true)
+          # BADGES Showcase
+          Card do
+            CardContent(class: "pt-6 flex flex-wrap gap-2") do
+              Badge(variant: :default) { "Syncing" }
+              Badge(variant: :secondary) { "Updating" }
+              Badge(variant: :outline) { "Loading" }
+              Badge(variant: :destructive) { "Failed" }
+            end
+          end
+        end
+
+        # COLUMN 2
+        div(class: "space-y-6") do
+          # TEAM MEMBERS
+          Card do
+            CardHeader do
+              CardTitle { "Team Members" }
+              CardDescription { "Collaborate with your team." }
+            end
+            CardContent(class: "space-y-6") do
+              team_member("Sofia Davis", "@sdavis", "https://i.pravatar.cc/150?u=sofia")
+              team_member("Jackson Lee", "@jlee", "https://i.pravatar.cc/150?u=jackson")
+              team_member("Isabella Nguyen", "@isabella", "https://i.pravatar.cc/150?u=isabella")
+            end
+            CardFooter do
+              Button(variant: :outline, class: "w-full") { "Invite Members" }
+            end
+          end
+
+          # NOTIFICATIONS
+          Card do
+            CardHeader do
+              CardTitle { "Activity" }
+              CardDescription { "Last 24 hours" }
+            end
+            CardContent(class: "space-y-4") do
+              activity_item("New deployment", "2 minutes ago", :success)
+              activity_item("Database backup", "3 hours ago", :info)
+              activity_item("Security alert", "5 hours ago", :warning)
+            end
+          end
+        end
+
+        # COLUMN 3
+        div(class: "space-y-6") do
+          # SETTINGS / SWITCHES
+          Card do
+            CardHeader do
+              CardTitle { "Compute Environment" }
+              CardDescription { "Select your target cluster." }
+            end
+            CardContent(class: "space-y-4") do
+              div(class: "flex items-center justify-between rounded-lg border p-4 shadow-sm") do
+                div(class: "space-y-0.5") do
+                  p(class: "font-medium") { "Kubernetes" }
+                  p(class: "text-xs text-muted-foreground") { "Highly available cluster." }
+                end
+                Switch(checked: true)
+              end
+              div(class: "flex items-center justify-between rounded-lg border p-4 shadow-sm") do
+                div(class: "space-y-0.5") do
+                  p(class: "font-medium") { "Virtual Machine" }
+                  p(class: "text-xs text-muted-foreground") { "Dedicated server." }
+                end
+                Switch()
+              end
+            end
+          end
+
+          # CHAT / MESSAGE
+          Card do
+            CardHeader(class: "pb-2") do
+              div(class: "flex items-center gap-2") do
+                Avatar(size: :sm) do
+                  AvatarImage(src: "https://i.pravatar.cc/150?u=george", alt: "George")
+                  AvatarFallback { "GK" }
+                end
+                div do
+                  p(class: "text-sm font-semibold") { "George Kettle" }
+                  p(class: "text-xs text-muted-foreground") { "Creator of RubyUI" }
+                end
+              end
+            end
+            CardContent do
+              p(class: "text-sm bg-muted p-3 rounded-lg") do
+                "Hey! RubyUI is finally live. Let me know what you think of the new mosaic home page! 💎"
+              end
+            end
+            CardFooter(class: "pt-0") do
+              Input(placeholder: "Type a message...", class: "flex-1")
+              Button(icon: true, variant: :ghost, class: "ml-2") do
+                lucide_icon "send", class: "h-4 w-4"
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  private
+
+  def team_member(name, handle, avatar_url)
+    div(class: "flex items-center justify-between") do
+      div(class: "flex items-center gap-4") do
+        Avatar do
+          AvatarImage(src: avatar_url, alt: name)
+          AvatarFallback { name.split.map(&:first).join }
+        end
+        div do
+          p(class: "text-sm font-medium leading-none") { name }
+          p(class: "text-xs text-muted-foreground") { handle }
+        end
+      end
+      Button(variant: :ghost, size: :sm) { "Edit" }
+    end
+  end
+
+  def activity_item(title, time, status)
+    div(class: "flex items-center gap-4") do
+      div(class: [
+        "h-2 w-2 rounded-full",
+        (status == :success ? "bg-green-500" : (status == :warning ? "bg-amber-500" : "bg-blue-500"))
+      ])
+      div do
+        p(class: "text-sm font-medium") { title }
+        p(class: "text-xs text-muted-foreground") { time }
       end
     end
   end
