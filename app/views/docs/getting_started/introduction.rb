@@ -64,8 +64,19 @@ class Views::Docs::GettingStarted::Introduction < Views::Base
         end
       end
 
-      div(class: "space-y-4") do
-        Heading(level: 2) { "Why I built RubyUI" }
+      div(class: "pt-10 border-t space-y-8") do
+        Heading(level: 1) { "Notes from the original author" }
+        
+        div(class: "flex items-center gap-3") do
+          Avatar(size: :md, class: "border") { img(src: "https://i.pravatar.cc/150?u=george", alt: "George Kettle") }
+          div do
+            p(class: "text-sm font-medium leading-none") { "George Kettle" }
+            p(class: "text-sm text-muted-foreground") { "Original author of RubyUI" }
+          end
+        end
+
+        div(class: "space-y-4") do
+          Heading(level: 2) { "Why I built RubyUI" }
         Text do
           plain "Many Ruby developers are familiar with "
           InlineLink(href: "https://rubyonrails.org") { "Rails" }
@@ -144,6 +155,7 @@ class Views::Docs::GettingStarted::Introduction < Views::Base
             InlineLink(href: "https://twitter.com/george_kettle") { "My Twitter followers" }
             plain " - Thanks for all the ideas, feedback and support."
           end
+        end
         end
       end
     end
