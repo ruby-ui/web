@@ -43,7 +43,9 @@ class Views::Docs::DataTable < Views::Base
           ],
           row_count: 30,
           page: 1,
-          per_page: 10
+          per_page: 10,
+          sort: nil,
+          direction: nil
         ) do
           DataTableContent()
           DataTablePagination(current_page: 1, total_pages: 3)
