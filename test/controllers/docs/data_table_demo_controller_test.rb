@@ -34,4 +34,13 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
     assert json["data"].all? { |r| r["name"].downcase.include?("alice") || r["email"].downcase.include?("alice") }
     assert json["row_count"] < 30
   end
+
+  test "docs data_table page includes pagination data-value" do
+    get docs_data_table_path
+    assert_response :success
+    assert_match "data-ruby-ui--data-table-pagination-value", response.body
+    decoded = CGI.unescapeHTML(response.body)
+    assert_match '"pageIndex":0', decoded
+    assert_match '"pageSize":10', decoded
+  end
 end
