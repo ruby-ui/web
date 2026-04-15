@@ -2,17 +2,20 @@ import { Controller } from "@hotwired/stimulus"
 import { createTable, getCoreRowModel } from "@tanstack/table-core"
 
 export default class extends Controller {
-  static targets = ["thead", "tbody", "prevButton", "nextButton", "pageIndicator"]
+  static targets = ["thead", "tbody", "prevButton", "nextButton", "pageIndicator", "search", "perPage"]
   static values = {
     src: String,
     data: { type: Array, default: [] },
     columns: { type: Array, default: [] },
     rowCount: { type: Number, default: 0 },
     pagination: { type: Object, default: { pageIndex: 0, pageSize: 10 } },
-    sorting: { type: Array, default: [] }
+    sorting: { type: Array, default: [] },
+    search: { type: String, default: "" }
   }
 
   connect() {
+    this.searchTimeout = null
+
     this.table = createTable({
       data: this.dataValue,
       columns: this.columnsValue.map((c) => ({
@@ -24,6 +27,7 @@ export default class extends Controller {
       renderFallbackValue: null,
       manualPagination: true,
       manualSorting: true,
+      manualFiltering: true,
       rowCount: this.rowCountValue,
       state: {},
       onStateChange: () => {}
@@ -32,7 +36,8 @@ export default class extends Controller {
     this.tableState = {
       ...this.table.initialState,
       pagination: this.paginationValue,
-      sorting: this.sortingValue
+      sorting: this.sortingValue,
+      globalFilter: this.searchValue
     }
 
     this.table.setOptions((prev) => ({
@@ -62,11 +67,44 @@ export default class extends Controller {
       }
     }))
 
+    // Pre-fill search input if hydrating from initial state
+    if (this.hasSearchTarget && this.searchValue) {
+      this.searchTarget.value = this.searchValue
+    }
+
     this.render()
+  }
+
+  disconnect() {
+    if (this.searchTimeout) clearTimeout(this.searchTimeout)
   }
 
   previousPage() { this.table.previousPage() }
   nextPage() { this.table.nextPage() }
+
+  search() {
+    if (this.searchTimeout) clearTimeout(this.searchTimeout)
+    this.searchTimeout = setTimeout(() => {
+      const query = this.searchTarget.value
+      this.tableState = {
+        ...this.tableState,
+        globalFilter: query,
+        pagination: { ...this.tableState.pagination, pageIndex: 0 }
+      }
+      this.table.setOptions((p) => ({ ...p, state: this.tableState }))
+      this.#fetchAndRender()
+    }, 300)
+  }
+
+  changePerPage() {
+    const pageSize = parseInt(this.perPageTarget.value)
+    this.tableState = {
+      ...this.tableState,
+      pagination: { pageIndex: 0, pageSize }
+    }
+    this.table.setOptions((p) => ({ ...p, state: this.tableState }))
+    this.#fetchAndRender()
+  }
 
   render() {
     this.#renderHeaders()
@@ -102,6 +140,10 @@ export default class extends Controller {
       url.searchParams.set("direction", desc ? "desc" : "asc")
     }
 
+    if (this.tableState.globalFilter) {
+      url.searchParams.set("search", this.tableState.globalFilter)
+    }
+
     return url.toString()
   }
 
@@ -132,7 +174,7 @@ export default class extends Controller {
       const cells = group.headers.map((header) => {
         const def = header.column.columnDef.header
         const label = typeof def === "function" ? def(header.getContext()) : (def ?? "")
-        const sorted = header.column.getIsSorted() // false | "asc" | "desc"
+        const sorted = header.column.getIsSorted()
         const canSort = header.column.getCanSort()
 
         if (!canSort) {
@@ -156,15 +198,12 @@ export default class extends Controller {
 
     this.theadTarget.innerHTML = html
 
-    // Attach sort handlers after render (avoid inline onclick with private methods)
     this.theadTarget.querySelectorAll("[data-sort-col]").forEach((btn) => {
-      btn.addEventListener("click", () => this.#sortColumn(btn.dataset.sortCol))
+      btn.addEventListener("click", () => {
+        const col = this.table.getColumn(btn.dataset.sortCol)
+        if (col) col.toggleSorting()
+      })
     })
-  }
-
-  #sortColumn(colId) {
-    const col = this.table.getColumn(colId)
-    if (col) col.toggleSorting()
   }
 
   #renderRows() {
