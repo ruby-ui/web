@@ -13,6 +13,27 @@ export default class extends Controller {
     search: { type: String, default: "" }
   }
 
+  static CELL_RENDERERS = {
+    text: (value) => escapeHtml(value ?? ""),
+
+    badge: (value, meta) => {
+      const colors = meta?.colors ?? {}
+      const colorClass = colors[value] ?? "bg-secondary text-secondary-foreground"
+      return `<span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${colorClass}">${escapeHtml(value ?? "")}</span>`
+    },
+
+    date: (value) => {
+      if (!value) return ""
+      const d = new Date(value)
+      return isNaN(d.getTime()) ? escapeHtml(value) : d.toLocaleDateString()
+    },
+
+    currency: (value) => {
+      if (value == null || value === "") return ""
+      return new Intl.NumberFormat("en-US", {style: "currency", currency: "USD", maximumFractionDigits: 0}).format(Number(value))
+    }
+  }
+
   connect() {
     this.searchTimeout = null
 
@@ -21,7 +42,8 @@ export default class extends Controller {
       columns: this.columnsValue.map((c) => ({
         id: c.key,
         accessorKey: c.key,
-        header: c.header
+        header: c.header,
+        meta: { type: c.type ?? "text", colors: c.colors ?? null }
       })),
       getCoreRowModel: getCoreRowModel(),
       renderFallbackValue: null,
@@ -224,7 +246,10 @@ export default class extends Controller {
     const html = rows.map((row) => {
       const cells = row.getVisibleCells().map((cell) => {
         const value = cell.getValue()
-        return `<td class="p-2 align-middle">${escapeHtml(value ?? "")}</td>`
+        const meta = cell.column.columnDef.meta ?? {}
+        const type = meta.type ?? "text"
+        const renderer = this.constructor.CELL_RENDERERS[type] ?? this.constructor.CELL_RENDERERS.text
+        return `<td class="p-2 align-middle">${renderer(value, meta)}</td>`
       }).join("")
       return `<tr class="border-b transition-colors hover:bg-muted/50">${cells}</tr>`
     }).join("")
