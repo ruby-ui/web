@@ -19,8 +19,6 @@ export default class extends Controller {
         header: c.header
       })),
       getCoreRowModel: getCoreRowModel(),
-      state: {},
-      onStateChange: () => {},
       renderFallbackValue: null
     })
 
