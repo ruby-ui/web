@@ -43,4 +43,20 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
     assert_match '"pageIndex":0', decoded
     assert_match '"pageSize":10', decoded
   end
+
+  test "JSON response respects sort param ascending" do
+    get docs_data_table_demo_path, params: {sort: "name", direction: "asc"},
+                                   headers: {"Accept" => "application/json"}
+    json = JSON.parse(response.body)
+    names = json["data"].map { |r| r["name"] }
+    assert_equal names.sort, names
+  end
+
+  test "JSON response respects sort param descending" do
+    get docs_data_table_demo_path, params: {sort: "name", direction: "desc"},
+                                   headers: {"Accept" => "application/json"}
+    json = JSON.parse(response.body)
+    names = json["data"].map { |r| r["name"] }
+    assert_equal names.sort.reverse, names
+  end
 end
