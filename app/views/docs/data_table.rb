@@ -2,11 +2,15 @@
 
 class Views::Docs::DataTable < Views::Base
   COLUMNS = [
-    {key: "name", header: "Name"},
-    {key: "email", header: "Email"},
-    {key: "department", header: "Department"},
-    {key: "status", header: "Status"},
-    {key: "salary", header: "Salary"}
+    {key: "name", header: "Name", type: "text"},
+    {key: "email", header: "Email", type: "text"},
+    {key: "department", header: "Department", type: "text"},
+    {key: "status", header: "Status", type: "badge", colors: {
+      "Active" => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+      "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+    }},
+    {key: "salary", header: "Salary", type: "currency"}
   ].freeze
 
   DEMO_EMPLOYEES = ::Docs::DataTableDemoController::EMPLOYEES.first(10).map do |e|
