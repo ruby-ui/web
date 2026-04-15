@@ -1,77 +1,78 @@
 import { Controller } from "@hotwired/stimulus"
+import { createTable, getCoreRowModel } from "@tanstack/table-core"
 
 export default class extends Controller {
-  static targets = ["search", "perPage"]
+  static targets = ["thead", "tbody"]
   static values = {
     src: String,
-    sortColumn: String,
-    sortDirection: String,
-    page: { type: Number, default: 1 },
-    perPage: { type: Number, default: 10 },
-    searchQuery: String,
-    debounceMs: { type: Number, default: 300 }
+    data: { type: Array, default: [] },
+    columns: { type: Array, default: [] },
+    rowCount: { type: Number, default: 0 }
   }
 
   connect() {
-    this.searchTimeout = null
+    this.table = createTable({
+      data: this.dataValue,
+      columns: this.columnsValue.map((c) => ({
+        id: c.key,
+        accessorKey: c.key,
+        header: c.header
+      })),
+      getCoreRowModel: getCoreRowModel(),
+      state: {},
+      onStateChange: () => {},
+      renderFallbackValue: null
+    })
+
+    this.render()
   }
 
-  disconnect() {
-    if (this.searchTimeout) clearTimeout(this.searchTimeout)
+  render() {
+    this.renderHeaders()
+    this.renderRows()
   }
 
-  sort(event) {
-    const { column, direction } = event.params
-    this.sortColumnValue = column
-    this.sortDirectionValue = direction || ""
-    this.pageValue = 1
-    this._reload()
+  renderHeaders() {
+    if (!this.hasTheadTarget) return
+
+    const html = this.table.getHeaderGroups().map((group) => {
+      const cells = group.headers.map((header) => {
+        const def = header.column.columnDef.header
+        const label = typeof def === "function" ? def(header.getContext()) : def
+        return `<th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground">${escapeHtml(label ?? "")}</th>`
+      }).join("")
+      return `<tr class="border-b transition-colors">${cells}</tr>`
+    }).join("")
+
+    this.theadTarget.innerHTML = html
   }
 
-  search() {
-    if (this.searchTimeout) clearTimeout(this.searchTimeout)
-    this.searchTimeout = setTimeout(() => {
-      this.searchQueryValue = this.searchTarget.value
-      this.pageValue = 1
-      this._reload()
-    }, this.debounceMsValue)
-  }
+  renderRows() {
+    if (!this.hasTbodyTarget) return
 
-  nextPage() {
-    this.pageValue += 1
-    this._reload()
-  }
-
-  previousPage() {
-    if (this.pageValue > 1) {
-      this.pageValue -= 1
-      this._reload()
+    const rows = this.table.getRowModel().rows
+    if (rows.length === 0) {
+      this.tbodyTarget.innerHTML = `<tr><td class="h-24 text-center text-muted-foreground" colspan="${this.columnsValue.length || 1}">No results.</td></tr>`
+      return
     }
+
+    const html = rows.map((row) => {
+      const cells = row.getVisibleCells().map((cell) => {
+        const value = cell.getValue()
+        return `<td class="p-2 align-middle">${escapeHtml(value ?? "")}</td>`
+      }).join("")
+      return `<tr class="border-b transition-colors hover:bg-muted/50">${cells}</tr>`
+    }).join("")
+
+    this.tbodyTarget.innerHTML = html
   }
+}
 
-  changePerPage() {
-    this.perPageValue = parseInt(this.perPageTarget.value)
-    this.pageValue = 1
-    this._reload()
-  }
-
-  _reload() {
-    if (!this.hasSrcValue || !this.srcValue) return
-
-    const url = new URL(this.srcValue, window.location.origin)
-    if (this.sortColumnValue) url.searchParams.set("sort", this.sortColumnValue)
-    if (this.sortDirectionValue) url.searchParams.set("direction", this.sortDirectionValue)
-    if (this.searchQueryValue) url.searchParams.set("search", this.searchQueryValue)
-    url.searchParams.set("page", this.pageValue)
-    url.searchParams.set("per_page", this.perPageValue)
-
-    // Use Turbo to fetch and replace the content frame
-    const frame = this.element.querySelector("turbo-frame")
-    if (frame) {
-      frame.src = url.toString()
-    } else {
-      // Fallback: dispatch custom event for consumer to handle
-      this.dispatch("navigate", { detail: { url: url.toString() } })
-    }
-  }
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
 }
