@@ -18,7 +18,7 @@ class Views::Docs::DataTable < Views::Base
   end.freeze
 
   def initialize(initial_data: DEMO_EMPLOYEES, total_count: 100,
-                 page: 1, per_page: 10, sort: nil, direction: nil, search: nil)
+    page: 1, per_page: 10, sort: nil, direction: nil, search: nil)
     @initial_data = initial_data
     @total_count = total_count
     @page = page
@@ -40,8 +40,10 @@ class Views::Docs::DataTable < Views::Base
       # ── Full-Featured Demo ──────────────────────────────────────────────────
       Heading(level: 2) { "Demo" }
       p(class: "text-sm text-muted-foreground -mt-6") {
-        "100 employees. Pagination, column sorting, free-text search, and configurable rows per page. The URL reflects state — share it or reload to restore."
+        plain "100 employees. Pagination, column sorting, free-text search, and configurable rows per page. "
+        plain "The URL reflects state — share it or reload to restore."
       }
+
       div(class: "rounded-lg border p-6") do
         DataTable(
           src: docs_data_table_demo_path,
@@ -66,21 +68,110 @@ class Views::Docs::DataTable < Views::Base
         end
       end
 
+      # ── Usage ──────────────────────────────────────────────────────────────
+      Heading(level: 2) { "Usage" }
+
+      render Docs::VisualCodeExample.new(title: "Basic — static data, no server", context: self) do
+        <<~RUBY
+          DataTable(
+            data: [
+              {name: "Alice Johnson", department: "Engineering"},
+              {name: "Bob Smith", department: "Design"},
+              {name: "Carol White", department: "Product"}
+            ],
+            columns: [
+              {key: "name", header: "Name"},
+              {key: "department", header: "Department"}
+            ]
+          ) do
+            DataTableContent()
+          end
+        RUBY
+      end
+
+      render Docs::VisualCodeExample.new(title: "With cell types (badge + currency)", context: self) do
+        <<~RUBY
+          DataTable(
+            data: [
+              {name: "Alice Johnson", status: "Active", salary: 95_000},
+              {name: "Bob Smith", status: "Inactive", salary: 82_000},
+              {name: "Carol White", status: "On Leave", salary: 88_000}
+            ],
+            columns: [
+              {key: "name", header: "Name", type: "text"},
+              {key: "status", header: "Status", type: "badge", colors: {
+                "Active" => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+                "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+                "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+              }},
+              {key: "salary", header: "Salary", type: "currency"}
+            ]
+          ) do
+            DataTableContent()
+          end
+        RUBY
+      end
+
+      render Docs::VisualCodeExample.new(title: "With pagination (server-side)", context: self) do
+        <<~RUBY
+          DataTable(
+            src: docs_data_table_demo_path,
+            data: ::Docs::DataTableDemoController::EMPLOYEES.first(5).map { |e|
+              {name: e.name, department: e.department}
+            },
+            columns: [{key: "name", header: "Name"}, {key: "department", header: "Department"}],
+            row_count: 100,
+            page: 1,
+            per_page: 5
+          ) do
+            DataTableContent()
+            DataTablePagination(current_page: 1, total_pages: 20)
+          end
+        RUBY
+      end
+
+      render Docs::VisualCodeExample.new(title: "With toolbar (search + rows per page)", context: self) do
+        <<~RUBY
+          DataTable(
+            src: docs_data_table_demo_path,
+            data: ::Docs::DataTableDemoController::EMPLOYEES.first(5).map { |e|
+              {name: e.name, email: e.email, department: e.department}
+            },
+            columns: [
+              {key: "name", header: "Name"},
+              {key: "email", header: "Email"},
+              {key: "department", header: "Department"}
+            ],
+            row_count: 100,
+            page: 1,
+            per_page: 5
+          ) do
+            DataTableToolbar do
+              DataTableSearch(placeholder: "Search employees...")
+              DataTablePerPage(options: [5, 10, 25], current: 5)
+            end
+            DataTableContent()
+            DataTablePagination(current_page: 1, total_pages: 20)
+          end
+        RUBY
+      end
+
       # ── Overview ────────────────────────────────────────────────────────────
       Heading(level: 2) { "Overview" }
       p(class: "text-sm text-muted-foreground") {
-        plain "DataTable is headless — it has no built-in visual chrome. Instead, it wires "
-        plain "TanStack Table Core (a framework-agnostic state machine) to a Stimulus controller "
-        plain "that manages state, builds JSON fetch URLs, and renders "
+        plain "DataTable is headless — it has no built-in visual chrome. It wires "
+        a(href: "https://tanstack.com/table/latest/docs/vanilla", target: "_blank", class: "underline underline-offset-2") { "TanStack Table Core (vanilla)" }
+        plain " — a framework-agnostic state machine — to a Stimulus controller that manages state, "
+        plain "builds fetch URLs, and renders "
         code(class: "font-mono text-xs") { "<thead>" }
         plain " and "
         code(class: "font-mono text-xs") { "<tbody>" }
         plain " into the empty shell emitted by "
         code(class: "font-mono text-xs") { "DataTableContent" }
-        plain ". Every interaction that changes visible data — pagination, sorting, search, "
-        plain "rows-per-page — hits the Rails controller via a plain "
+        plain ". Every interaction — pagination, sorting, search, rows-per-page — hits the Rails "
+        plain "controller via "
         code(class: "font-mono text-xs") { "fetch()" }
-        plain " request with "
+        plain " with "
         code(class: "font-mono text-xs") { "Accept: application/json" }
         plain ". The server is always the source of truth."
       }
@@ -92,7 +183,10 @@ class Views::Docs::DataTable < Views::Base
         code(class: "font-mono text-xs") { "@tanstack/table-core" }
         plain " in addition to the standard ruby_ui setup."
       }
+
+      p(class: "text-xs font-semibold text-muted-foreground uppercase tracking-wide") { plain "1. Add component" }
       Codeblock("rails g ruby_ui:component DataTable", syntax: :bash)
+      p(class: "text-xs font-semibold text-muted-foreground uppercase tracking-wide") { plain "2. Install TanStack Table Core" }
       Codeblock("pnpm add @tanstack/table-core\npnpm build", syntax: :bash)
 
       # ── How it works ────────────────────────────────────────────────────────
@@ -100,28 +194,27 @@ class Views::Docs::DataTable < Views::Base
       p(class: "text-sm text-muted-foreground") {
         plain "All data operations are "
         strong { "server-side" }
-        plain ". TanStack Table Core is configured with "
+        plain ". TanStack is configured with "
         code(class: "font-mono text-xs") { "manualPagination: true" }
         plain ", "
         code(class: "font-mono text-xs") { "manualSorting: true" }
         plain ", and "
         code(class: "font-mono text-xs") { "manualFiltering: true" }
-        plain ". It never slices or sorts the in-memory array — it only tracks state "
-        plain "(current page, sort column, search query) and notifies the Stimulus controller "
-        plain "via callbacks ("
+        plain ". It never slices or sorts the data array — it only tracks state "
+        plain "and fires callbacks ("
         code(class: "font-mono text-xs") { "onPaginationChange" }
         plain ", "
         code(class: "font-mono text-xs") { "onSortingChange" }
-        plain "). The controller fetches a new JSON page from your Rails endpoint and calls "
+        plain "). The Stimulus controller fetches a fresh JSON page from Rails and calls "
         code(class: "font-mono text-xs") { "table.setOptions({data, rowCount})" }
-        plain " to update what TanStack renders."
+        plain " to update what renders."
       }
 
       # ── Rails controller setup ───────────────────────────────────────────────
       Heading(level: 2) { "Rails controller setup" }
       p(class: "text-sm text-muted-foreground") {
-        plain "Your endpoint must respond to both HTML (initial page load) and JSON (subsequent fetches). "
-        plain "It receives the params "
+        plain "Your endpoint responds to both HTML (initial load) and JSON (subsequent fetches). "
+        plain "It accepts params: "
         code(class: "font-mono text-xs") { "page" }
         plain ", "
         code(class: "font-mono text-xs") { "per_page" }
@@ -129,10 +222,11 @@ class Views::Docs::DataTable < Views::Base
         code(class: "font-mono text-xs") { "sort" }
         plain ", "
         code(class: "font-mono text-xs") { "direction" }
-        plain ", and "
+        plain ", "
         code(class: "font-mono text-xs") { "search" }
         plain "."
       }
+
       Codeblock(<<~RUBY, syntax: :ruby)
         class EmployeesController < ApplicationController
           def index
@@ -147,128 +241,39 @@ class Views::Docs::DataTable < Views::Base
 
             respond_to do |format|
               format.html  # renders view with initial data
-              format.json  { render json: { data: @employees.as_json, row_count: @total_count } }
+              format.json  { render json: {data: @employees.as_json, row_count: @total_count} }
             end
           end
-        end
-      RUBY
-
-      # ── Basic usage ──────────────────────────────────────────────────────────
-      Heading(level: 2) { "Basic usage" }
-      p(class: "text-sm text-muted-foreground") {
-        plain "Pass "
-        code(class: "font-mono text-xs") { "data:" }
-        plain " (current page rows as hashes), "
-        code(class: "font-mono text-xs") { "columns:" }
-        plain " (column definitions), "
-        code(class: "font-mono text-xs") { "src:" }
-        plain " (JSON endpoint URL), and "
-        code(class: "font-mono text-xs") { "row_count:" }
-        plain " (total rows). Nest "
-        code(class: "font-mono text-xs") { "DataTableContent" }
-        plain " inside to get the table shell."
-      }
-      Codeblock(<<~RUBY, syntax: :ruby)
-        DataTable(
-          src: employees_path,
-          data: @employees.map { |e| {id: e.id, name: e.name, email: e.email} },
-          columns: [
-            {key: "name",  header: "Name"},
-            {key: "email", header: "Email"}
-          ],
-          row_count: @total_count,
-          page: params[:page] || 1,
-          per_page: params[:per_page] || 10
-        ) do
-          DataTableContent()
-        end
-      RUBY
-
-      # ── With pagination ───────────────────────────────────────────────────────
-      Heading(level: 2) { "Adding pagination" }
-      p(class: "text-sm text-muted-foreground") {
-        plain "Add "
-        code(class: "font-mono text-xs") { "DataTablePagination" }
-        plain " inside the "
-        code(class: "font-mono text-xs") { "DataTable" }
-        plain " block. It reads "
-        code(class: "font-mono text-xs") { "current_page" }
-        plain " and "
-        code(class: "font-mono text-xs") { "total_pages" }
-        plain " for the initial disabled-state of Prev/Next buttons. The Stimulus controller "
-        plain "updates these live after each fetch via "
-        code(class: "font-mono text-xs") { "data-ruby-ui--data-table-target" }
-        plain " attributes on the buttons."
-      }
-      Codeblock(<<~RUBY, syntax: :ruby)
-        DataTable(src: employees_path, data: @employees.map(&:to_h),
-                  columns: columns, row_count: @total_count,
-                  page: @page, per_page: @per_page) do
-          DataTableContent()
-          DataTablePagination(current_page: @page, total_pages: @total_pages)
-        end
-      RUBY
-
-      # ── With toolbar (search + per-page) ─────────────────────────────────────
-      Heading(level: 2) { "Adding search and per-page" }
-      p(class: "text-sm text-muted-foreground") {
-        plain "Wrap "
-        code(class: "font-mono text-xs") { "DataTableSearch" }
-        plain " and "
-        code(class: "font-mono text-xs") { "DataTablePerPage" }
-        plain " in a "
-        code(class: "font-mono text-xs") { "DataTableToolbar" }
-        plain ". Search is debounced 300ms client-side. Both reset the page to 1 before fetching."
-      }
-      Codeblock(<<~RUBY, syntax: :ruby)
-        DataTable(...) do
-          DataTableToolbar do
-            DataTableSearch(placeholder: "Search employees...")
-            DataTablePerPage(options: [10, 25, 50], current: @per_page)
-          end
-          DataTableContent()
-          DataTablePagination(current_page: @page, total_pages: @total_pages)
         end
       RUBY
 
       # ── Cell types ───────────────────────────────────────────────────────────
       Heading(level: 2) { "Cell types" }
       p(class: "text-sm text-muted-foreground") {
-        plain "Each column definition accepts an optional "
+        plain "Each column accepts an optional "
         code(class: "font-mono text-xs") { "type:" }
-        plain " field. Available built-in types: "
+        plain " field. Built-in types: "
         code(class: "font-mono text-xs") { "text" }
-        plain " (default), "
+        plain " (default — HTML-escaped string), "
         code(class: "font-mono text-xs") { "badge" }
-        plain " (colored pill — pass "
-        code(class: "font-mono text-xs") { 'colors: {"Value" => "tailwind-classes"}' }
-        plain "), "
+        plain " (colored pill — pass a "
+        code(class: "font-mono text-xs") { "colors:" }
+        plain " hash mapping values to Tailwind classes), "
         code(class: "font-mono text-xs") { "currency" }
-        plain " (USD, no decimals), "
+        plain " (USD, no decimals via "
+        code(class: "font-mono text-xs") { "Intl.NumberFormat" }
+        plain "), "
         code(class: "font-mono text-xs") { "date" }
         plain " (locale date string)."
       }
-      Codeblock(<<~RUBY, syntax: :ruby)
-        columns: [
-          {key: "name",   header: "Name",   type: "text"},
-          {key: "status", header: "Status", type: "badge", colors: {
-            "Active"   => "bg-green-100 text-green-800",
-            "Inactive" => "bg-red-100 text-red-800"
-          }},
-          {key: "salary", header: "Salary", type: "currency"},
-          {key: "hired_at", header: "Hired",  type: "date"}
-        ]
-      RUBY
 
       # ── URL state ────────────────────────────────────────────────────────────
       Heading(level: 2) { "URL state" }
       p(class: "text-sm text-muted-foreground") {
-        plain "The URL is updated via "
+        plain "The URL updates via "
         code(class: "font-mono text-xs") { "history.replaceState" }
-        plain " after every state change. To restore state on page load, read URL params in your "
-        plain "Rails action and pass them to the view, which forwards them to "
-        code(class: "font-mono text-xs") { "DataTable" }
-        plain " as "
+        plain " after every interaction. On page load, your Rails action reads those params "
+        plain "and passes them to the view as "
         code(class: "font-mono text-xs") { "page:" }
         plain ", "
         code(class: "font-mono text-xs") { "sort:" }
@@ -276,15 +281,72 @@ class Views::Docs::DataTable < Views::Base
         code(class: "font-mono text-xs") { "direction:" }
         plain ", "
         code(class: "font-mono text-xs") { "search:" }
-        plain ", and "
+        plain ", "
         code(class: "font-mono text-xs") { "per_page:" }
-        plain ". The component serializes them as Stimulus values; "
+        plain ". The "
+        code(class: "font-mono text-xs") { "DataTable" }
+        plain " component serializes them as Stimulus values so "
         code(class: "font-mono text-xs") { "connect()" }
-        plain " hydrates TanStack with the correct initial state."
+        plain " hydrates TanStack with the correct initial state. Shared URLs and page reloads restore exact table state."
       }
 
+      # ── TanStack reference ───────────────────────────────────────────────────
+      Heading(level: 2) { "TanStack Table reference" }
+      p(class: "text-sm text-muted-foreground") {
+        plain "This component uses the "
+        a(href: "https://tanstack.com/table/latest/docs/vanilla", target: "_blank", class: "underline underline-offset-2") { "TanStack Table vanilla adapter" }
+        plain ". Useful docs for customisation:"
+      }
+      ul(class: "text-sm text-muted-foreground list-disc list-inside space-y-1 mt-2") do
+        li {
+          a(href: "https://tanstack.com/table/latest/docs/api/core/table", target: "_blank", class: "underline underline-offset-2") { "Table instance API" }
+          plain " — all options passed to "
+          code(class: "font-mono text-xs") { "createTable()" }
+        }
+        li {
+          a(href: "https://tanstack.com/table/latest/docs/guide/pagination", target: "_blank", class: "underline underline-offset-2") { "Manual pagination" }
+          plain " — "
+          code(class: "font-mono text-xs") { "manualPagination" }
+          plain ", "
+          code(class: "font-mono text-xs") { "rowCount" }
+          plain ", "
+          code(class: "font-mono text-xs") { "onPaginationChange" }
+        }
+        li {
+          a(href: "https://tanstack.com/table/latest/docs/guide/sorting", target: "_blank", class: "underline underline-offset-2") { "Manual sorting" }
+          plain " — "
+          code(class: "font-mono text-xs") { "manualSorting" }
+          plain ", "
+          code(class: "font-mono text-xs") { "onSortingChange" }
+        }
+        li {
+          a(href: "https://tanstack.com/table/latest/docs/guide/column-defs", target: "_blank", class: "underline underline-offset-2") { "Column definitions" }
+          plain " — "
+          code(class: "font-mono text-xs") { "accessorKey" }
+          plain ", "
+          code(class: "font-mono text-xs") { "header" }
+          plain ", "
+          code(class: "font-mono text-xs") { "meta" }
+        }
+      end
+
       render Components::ComponentSetup::Tabs.new(component_name: component)
-      render Docs::ComponentsTable.new(component_files(component))
+      render Docs::ComponentsTable.new(local_component_files)
     end
+  end
+
+  private
+
+  def local_component_files
+    base = "https://github.com/ruby-ui/ruby_ui/blob/main/lib/ruby_ui/data_table"
+    [
+      ::Docs::ComponentStruct.new(name: "DataTable", source: "#{base}/data_table.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableContent", source: "#{base}/data_table_content.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTablePagination", source: "#{base}/data_table_pagination.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableSearch", source: "#{base}/data_table_search.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTablePerPage", source: "#{base}/data_table_per_page.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableToolbar", source: "#{base}/data_table_toolbar.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableController", source: "#{base}/data_table_controller.js", built_using: :stimulus)
+    ]
   end
 end
