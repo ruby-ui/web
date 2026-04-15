@@ -76,6 +76,7 @@ export default class extends Controller {
           this.#fetchAndRender()
         } else {
           this.render()
+          this.#syncURL()
         }
       },
       onRowSelectionChange: (updater) => {
@@ -140,7 +141,6 @@ export default class extends Controller {
     this.#renderRows()
     this.#syncPaginationUI()
     this.#syncBulkActionsUI()
-    this.#syncURL()
   }
 
   #fetchAndRender() {
@@ -155,6 +155,7 @@ export default class extends Controller {
           state: this.tableState
         }))
         this.render()
+        this.#syncURL()
       })
   }
 
