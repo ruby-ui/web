@@ -191,7 +191,39 @@ class DocsController < ApplicationController
   end
 
   def data_table
-    render Views::Docs::DataTable.new
+    # Delegate filtering/sorting/paging to the same demo logic
+    employees = Docs::DataTableDemoController::EMPLOYEES.dup
+
+    if params[:search].present?
+      query = params[:search].downcase
+      employees = employees.select { |e| e.name.downcase.include?(query) || e.email.downcase.include?(query) }
+    end
+
+    if params[:sort].present?
+      col = params[:sort].to_sym
+      employees = employees.sort_by { |e| e.send(col).to_s.downcase } rescue employees
+      employees = employees.reverse if params[:direction] == "desc"
+    end
+
+    total_count = employees.size
+    per_page = (params[:per_page] || 10).to_i.clamp(1, 100)
+    page = (params[:page] || 1).to_i.clamp(1, Float::INFINITY)
+    total_pages = [(total_count.to_f / per_page).ceil, 1].max
+    page = [page, total_pages].min
+    offset = (page - 1) * per_page
+    initial_data = (employees.slice(offset, per_page) || []).map do |e|
+      {id: e.id, name: e.name, email: e.email, department: e.department, status: e.status, salary: e.salary}
+    end
+
+    render Views::Docs::DataTable.new(
+      initial_data: initial_data,
+      total_count: total_count,
+      page: page,
+      per_page: per_page,
+      sort: params[:sort],
+      direction: params[:direction],
+      search: params[:search]
+    )
   end
 
   def table
