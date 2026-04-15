@@ -110,6 +110,7 @@ export default class extends Controller {
     this.#renderHeaders()
     this.#renderRows()
     this.#syncPaginationUI()
+    this.#syncURL()
   }
 
   #fetchAndRender() {
@@ -165,6 +166,11 @@ export default class extends Controller {
       this.nextButtonTarget.classList.toggle("opacity-50", !can)
       this.nextButtonTarget.classList.toggle("pointer-events-none", !can)
     }
+  }
+
+  #syncURL() {
+    if (!this.hasSrcValue || !this.srcValue) return
+    history.replaceState(null, "", this.#buildURL())
   }
 
   #renderHeaders() {
