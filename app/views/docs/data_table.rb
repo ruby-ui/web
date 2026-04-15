@@ -69,28 +69,28 @@ class Views::Docs::DataTable < Views::Base
       # ── Overview ────────────────────────────────────────────────────────────
       Heading(level: 2) { "Overview" }
       p(class: "text-sm text-muted-foreground") {
-        "DataTable is headless — it has no built-in visual chrome. Instead, it wires "
-        "TanStack Table Core (a framework-agnostic state machine) to a Stimulus controller "
-        "that manages state, builds JSON fetch URLs, and renders "
+        plain "DataTable is headless — it has no built-in visual chrome. Instead, it wires "
+        plain "TanStack Table Core (a framework-agnostic state machine) to a Stimulus controller "
+        plain "that manages state, builds JSON fetch URLs, and renders "
         code(class: "font-mono text-xs") { "<thead>" }
-        " and "
+        plain " and "
         code(class: "font-mono text-xs") { "<tbody>" }
-        " into the empty shell emitted by "
+        plain " into the empty shell emitted by "
         code(class: "font-mono text-xs") { "DataTableContent" }
-        ". Every interaction that changes visible data — pagination, sorting, search, "
-        "rows-per-page — hits the Rails controller via a plain "
+        plain ". Every interaction that changes visible data — pagination, sorting, search, "
+        plain "rows-per-page — hits the Rails controller via a plain "
         code(class: "font-mono text-xs") { "fetch()" }
-        " request with "
+        plain " request with "
         code(class: "font-mono text-xs") { "Accept: application/json" }
-        ". The server is always the source of truth."
+        plain ". The server is always the source of truth."
       }
 
       # ── Installation ────────────────────────────────────────────────────────
       Heading(level: 2) { "Installation" }
       p(class: "text-sm text-muted-foreground") {
-        "DataTable requires "
+        plain "DataTable requires "
         code(class: "font-mono text-xs") { "@tanstack/table-core" }
-        " in addition to the standard ruby_ui setup."
+        plain " in addition to the standard ruby_ui setup."
       }
       Codeblock("rails g ruby_ui:component DataTable", syntax: :bash)
       Codeblock("pnpm add @tanstack/table-core\npnpm build", syntax: :bash)
@@ -98,40 +98,40 @@ class Views::Docs::DataTable < Views::Base
       # ── How it works ────────────────────────────────────────────────────────
       Heading(level: 2) { "How it works" }
       p(class: "text-sm text-muted-foreground") {
-        "All data operations are "
+        plain "All data operations are "
         strong { "server-side" }
-        ". TanStack Table Core is configured with "
+        plain ". TanStack Table Core is configured with "
         code(class: "font-mono text-xs") { "manualPagination: true" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "manualSorting: true" }
-        ", and "
+        plain ", and "
         code(class: "font-mono text-xs") { "manualFiltering: true" }
-        ". It never slices or sorts the in-memory array — it only tracks state "
-        "(current page, sort column, search query) and notifies the Stimulus controller "
-        "via callbacks ("
+        plain ". It never slices or sorts the in-memory array — it only tracks state "
+        plain "(current page, sort column, search query) and notifies the Stimulus controller "
+        plain "via callbacks ("
         code(class: "font-mono text-xs") { "onPaginationChange" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "onSortingChange" }
-        "). The controller fetches a new JSON page from your Rails endpoint and calls "
+        plain "). The controller fetches a new JSON page from your Rails endpoint and calls "
         code(class: "font-mono text-xs") { "table.setOptions({data, rowCount})" }
-        " to update what TanStack renders."
+        plain " to update what TanStack renders."
       }
 
       # ── Rails controller setup ───────────────────────────────────────────────
       Heading(level: 2) { "Rails controller setup" }
       p(class: "text-sm text-muted-foreground") {
-        "Your endpoint must respond to both HTML (initial page load) and JSON (subsequent fetches). "
-        "It receives the params "
+        plain "Your endpoint must respond to both HTML (initial page load) and JSON (subsequent fetches). "
+        plain "It receives the params "
         code(class: "font-mono text-xs") { "page" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "per_page" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "sort" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "direction" }
-        ", and "
+        plain ", and "
         code(class: "font-mono text-xs") { "search" }
-        "."
+        plain "."
       }
       Codeblock(<<~RUBY, syntax: :ruby)
         class EmployeesController < ApplicationController
@@ -156,17 +156,17 @@ class Views::Docs::DataTable < Views::Base
       # ── Basic usage ──────────────────────────────────────────────────────────
       Heading(level: 2) { "Basic usage" }
       p(class: "text-sm text-muted-foreground") {
-        "Pass "
+        plain "Pass "
         code(class: "font-mono text-xs") { "data:" }
-        " (current page rows as hashes), "
+        plain " (current page rows as hashes), "
         code(class: "font-mono text-xs") { "columns:" }
-        " (column definitions), "
+        plain " (column definitions), "
         code(class: "font-mono text-xs") { "src:" }
-        " (JSON endpoint URL), and "
+        plain " (JSON endpoint URL), and "
         code(class: "font-mono text-xs") { "row_count:" }
-        " (total rows). Nest "
+        plain " (total rows). Nest "
         code(class: "font-mono text-xs") { "DataTableContent" }
-        " inside to get the table shell."
+        plain " inside to get the table shell."
       }
       Codeblock(<<~RUBY, syntax: :ruby)
         DataTable(
@@ -187,18 +187,18 @@ class Views::Docs::DataTable < Views::Base
       # ── With pagination ───────────────────────────────────────────────────────
       Heading(level: 2) { "Adding pagination" }
       p(class: "text-sm text-muted-foreground") {
-        "Add "
+        plain "Add "
         code(class: "font-mono text-xs") { "DataTablePagination" }
-        " inside the "
+        plain " inside the "
         code(class: "font-mono text-xs") { "DataTable" }
-        " block. It reads "
+        plain " block. It reads "
         code(class: "font-mono text-xs") { "current_page" }
-        " and "
+        plain " and "
         code(class: "font-mono text-xs") { "total_pages" }
-        " for the initial disabled-state of Prev/Next buttons. The Stimulus controller "
-        "updates these live after each fetch via "
+        plain " for the initial disabled-state of Prev/Next buttons. The Stimulus controller "
+        plain "updates these live after each fetch via "
         code(class: "font-mono text-xs") { "data-ruby-ui--data-table-target" }
-        " attributes on the buttons."
+        plain " attributes on the buttons."
       }
       Codeblock(<<~RUBY, syntax: :ruby)
         DataTable(src: employees_path, data: @employees.map(&:to_h),
@@ -212,13 +212,13 @@ class Views::Docs::DataTable < Views::Base
       # ── With toolbar (search + per-page) ─────────────────────────────────────
       Heading(level: 2) { "Adding search and per-page" }
       p(class: "text-sm text-muted-foreground") {
-        "Wrap "
+        plain "Wrap "
         code(class: "font-mono text-xs") { "DataTableSearch" }
-        " and "
+        plain " and "
         code(class: "font-mono text-xs") { "DataTablePerPage" }
-        " in a "
+        plain " in a "
         code(class: "font-mono text-xs") { "DataTableToolbar" }
-        ". Search is debounced 300ms client-side. Both reset the page to 1 before fetching."
+        plain ". Search is debounced 300ms client-side. Both reset the page to 1 before fetching."
       }
       Codeblock(<<~RUBY, syntax: :ruby)
         DataTable(...) do
@@ -234,19 +234,19 @@ class Views::Docs::DataTable < Views::Base
       # ── Cell types ───────────────────────────────────────────────────────────
       Heading(level: 2) { "Cell types" }
       p(class: "text-sm text-muted-foreground") {
-        "Each column definition accepts an optional "
+        plain "Each column definition accepts an optional "
         code(class: "font-mono text-xs") { "type:" }
-        " field. Available built-in types: "
+        plain " field. Available built-in types: "
         code(class: "font-mono text-xs") { "text" }
-        " (default), "
+        plain " (default), "
         code(class: "font-mono text-xs") { "badge" }
-        " (colored pill — pass "
-        code(class: "font-mono text-xs") { "colors: {\"Value\" => \"tailwind-classes\"}" }
-        "), "
+        plain " (colored pill — pass "
+        code(class: "font-mono text-xs") { 'colors: {"Value" => "tailwind-classes"}' }
+        plain "), "
         code(class: "font-mono text-xs") { "currency" }
-        " (USD, no decimals), "
+        plain " (USD, no decimals), "
         code(class: "font-mono text-xs") { "date" }
-        " (locale date string)."
+        plain " (locale date string)."
       }
       Codeblock(<<~RUBY, syntax: :ruby)
         columns: [
@@ -263,24 +263,24 @@ class Views::Docs::DataTable < Views::Base
       # ── URL state ────────────────────────────────────────────────────────────
       Heading(level: 2) { "URL state" }
       p(class: "text-sm text-muted-foreground") {
-        "The URL is updated via "
+        plain "The URL is updated via "
         code(class: "font-mono text-xs") { "history.replaceState" }
-        " after every state change. To restore state on page load, read URL params in your "
-        "Rails action and pass them to the view, which forwards them to "
+        plain " after every state change. To restore state on page load, read URL params in your "
+        plain "Rails action and pass them to the view, which forwards them to "
         code(class: "font-mono text-xs") { "DataTable" }
-        " as "
+        plain " as "
         code(class: "font-mono text-xs") { "page:" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "sort:" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "direction:" }
-        ", "
+        plain ", "
         code(class: "font-mono text-xs") { "search:" }
-        ", and "
+        plain ", and "
         code(class: "font-mono text-xs") { "per_page:" }
-        ". The component serializes them as Stimulus values; "
+        plain ". The component serializes them as Stimulus values; "
         code(class: "font-mono text-xs") { "connect()" }
-        " hydrates TanStack with the correct initial state."
+        plain " hydrates TanStack with the correct initial state."
       }
 
       render Components::ComponentSetup::Tabs.new(component_name: component)
