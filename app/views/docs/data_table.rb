@@ -2,16 +2,18 @@
 
 class Views::Docs::DataTable < Views::Base
   COLUMNS = [
-    {key: "name", header: "Name", type: "text"},
-    {key: "email", header: "Email", type: "text", visible: false},
-    {key: "department", header: "Department", type: "text"},
-    {key: "status", header: "Status", type: "badge", colors: {
-      "Active" => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-      "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-      "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-    }},
-    {key: "salary", header: "Salary", type: "currency"}
+    {key: "name", header: "Name"},
+    {key: "email", header: "Email", visible: false},
+    {key: "department", header: "Department"},
+    {key: "status", header: "Status"},
+    {key: "salary", header: "Salary"}
   ].freeze
+
+  STATUS_COLORS = {
+    "Active" => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+    "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+    "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+  }.freeze
 
   DEMO_EMPLOYEES = ::Docs::DataTableDemoController::EMPLOYEES.first(10).map do |e|
     {id: e.id, name: e.name, email: e.email, department: e.department, status: e.status, salary: e.salary}
@@ -31,7 +33,7 @@ class Views::Docs::DataTable < Views::Base
   def view_template
     component = "DataTable"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(
         title: component,
         description: "A headless data table built on TanStack Table Core and Hotwire. Supports server-side pagination, sorting, and search; row selection with bulk actions; column visibility; expandable rows; custom cell renderers; URL state sync; and passing any TanStack option directly."
@@ -83,6 +85,9 @@ class Views::Docs::DataTable < Views::Base
                 DataTablePerPage(options: [5, 10, 25, 50], current: @per_page)
               end
             end
+            DataTableCellBadge(key: "status", colors: STATUS_COLORS)
+            DataTableCellCurrency(key: "salary")
+            DataTableCellLink(key: "email", href: "mailto:{value}")
             DataTableContent()
             DataTableExpandedRow do
               div(class: "p-4 bg-muted/20 space-y-2 text-sm") do
@@ -121,7 +126,7 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
-      render Docs::VisualCodeExample.new(title: "With cell types (badge + currency)", context: self) do
+      render Docs::VisualCodeExample.new(title: "With cell components (badge + currency)", context: self) do
         <<~RUBY
           DataTable(
             data: [
@@ -130,15 +135,17 @@ class Views::Docs::DataTable < Views::Base
               {name: "Carol White", status: "On Leave", salary: 88_000}
             ],
             columns: [
-              {key: "name", header: "Name", type: "text"},
-              {key: "status", header: "Status", type: "badge", colors: {
-                "Active" => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-                "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-                "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-              }},
-              {key: "salary", header: "Salary", type: "currency"}
+              {key: "name", header: "Name"},
+              {key: "status", header: "Status"},
+              {key: "salary", header: "Salary"}
             ]
           ) do
+            DataTableCellBadge(key: "status", colors: {
+              "Active"   => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+              "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+              "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+            })
+            DataTableCellCurrency(key: "salary")
             DataTableContent()
           end
         RUBY
@@ -199,12 +206,13 @@ class Views::Docs::DataTable < Views::Base
             columns: [
               {key: "name", header: "Name"},
               {key: "department", header: "Department"},
-              {key: "salary", header: "Salary", type: "currency"},
+              {key: "salary", header: "Salary"},
               {key: "bio", header: "Bio", visible: false},
               {key: "email", header: "Email", visible: false}
             ],
             options: {enableExpanding: true}
           ) do
+            DataTableCellCurrency(key: "salary")
             DataTableContent()
             DataTableExpandedRow do
               div(class: "p-4 bg-muted/20 space-y-2 text-sm") do
@@ -228,9 +236,10 @@ class Views::Docs::DataTable < Views::Base
               {key: "name", header: "Name"},
               {key: "email", header: "Email", visible: false},
               {key: "department", header: "Department"},
-              {key: "salary", header: "Salary", type: "currency"}
+              {key: "salary", header: "Salary"}
             ]
           ) do
+            DataTableCellCurrency(key: "salary")
             DataTableToolbar do
               div {}
               DataTableColumnToggle()
@@ -253,14 +262,15 @@ class Views::Docs::DataTable < Views::Base
             columns: [
               {key: "name", header: "Name"},
               {key: "department", header: "Department"},
-              {key: "status", header: "Status", type: "badge", colors: {
-                "Active"   => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-                "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-                "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-              }}
+              {key: "status", header: "Status"}
             ],
             selectable: true
           ) do
+            DataTableCellBadge(key: "status", colors: {
+              "Active"   => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+              "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+              "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+            })
             DataTableToolbar do
               DataTableSearch(placeholder: "Search...")
               DataTableBulkActions do
@@ -403,80 +413,109 @@ class Views::Docs::DataTable < Views::Base
         end
       RUBY
 
-      # ── Cell types ───────────────────────────────────────────────────────────
-      Heading(level: 2) { "Cell types" }
+      # ── Cell components ──────────────────────────────────────────────────────
+      Heading(level: 2) { "Cell components" }
       p {
-        plain "Cell renderers are a "
-        strong { "ruby_ui convention" }
-        plain ", not a TanStack feature. TanStack only accepts arbitrary "
-        code(class: "font-mono text-xs") { "meta" }
-        plain " on column definitions — we use that field to carry a "
-        code(class: "font-mono text-xs") { "type:" }
-        plain " tag that the Stimulus controller maps to a formatter function in "
-        code(class: "font-mono text-xs") { "CELL_RENDERERS" }
-        plain ". Add your own by editing the controller."
+        plain "Cell formatting is done with "
+        strong { "Phlex components" }
+        plain ". Each one renders an HTML "
+        code(class: "font-mono text-xs") { "<template>" }
+        plain " (Web Components primitive) that the Stimulus controller clones per row. "
+        plain "All markup (classes, wrapping elements, aria attributes) lives in Ruby — no HTML strings in JavaScript. "
+        plain "Transformations that require computation (currency format, date format) use "
+        strong { "browser-native " }
+        code(class: "font-mono text-xs") { "Intl" }
+        plain " APIs via data attributes."
       }
-      p(class: "mt-2") { plain "Built-in renderers:" }
+      p(class: "mt-2") {
+        plain "Declare a cell component inside the "
+        code(class: "font-mono text-xs") { "DataTable" }
+        plain " block with the "
+        code(class: "font-mono text-xs") { "key:" }
+        plain " matching the column. Columns without a cell component render as plain HTML-escaped text."
+      }
+      p(class: "mt-2") { plain "Built-in components:" }
       ul(class: "list-disc list-inside space-y-1 mt-2") do
         li {
-          code(class: "font-mono text-xs") { "text" }
-          plain " (default) — HTML-escaped string"
+          code(class: "font-mono text-xs") { "DataTableCellText" }
+          plain " — default when no cell is declared; just a "
+          code(class: "font-mono text-xs") { "<span>" }
+          plain " with escaped text. Also the way to add a custom "
+          code(class: "font-mono text-xs") { "class:" }
+          plain " to the wrapping span."
         }
         li {
-          code(class: "font-mono text-xs") { "badge" }
-          plain " — colored pill; pass "
+          code(class: "font-mono text-xs") { "DataTableCellBadge" }
+          plain " — colored pill. "
           code(class: "font-mono text-xs") { 'colors: {"Active" => "bg-green-100 text-green-800"}' }
+          plain ", optional "
+          code(class: "font-mono text-xs") { "fallback:" }
+          plain " class for unmapped values."
         }
         li {
-          code(class: "font-mono text-xs") { "currency" }
-          plain " — "
+          code(class: "font-mono text-xs") { "DataTableCellCurrency" }
+          plain " — via "
           code(class: "font-mono text-xs") { "Intl.NumberFormat" }
-          plain " USD by default; override with "
+          plain ". Options: "
           code(class: "font-mono text-xs") { 'currency: "BRL"' }
+          plain ", "
+          code(class: "font-mono text-xs") { "digits: 2" }
+          plain ", "
+          code(class: "font-mono text-xs") { 'locale: "pt-BR"' }
         }
         li {
-          code(class: "font-mono text-xs") { "number" }
-          plain " — thousands-separated integer"
+          code(class: "font-mono text-xs") { "DataTableCellNumber" }
+          plain " — thousands-separated integer via "
+          code(class: "font-mono text-xs") { "Intl.NumberFormat" }
         }
         li {
-          code(class: "font-mono text-xs") { "percent" }
-          plain " — accepts 0.25 → "
+          code(class: "font-mono text-xs") { "DataTableCellPercent" }
+          plain " — accepts "
+          code(class: "font-mono text-xs") { "0.25" }
+          plain " → "
           code(class: "font-mono text-xs") { "25%" }
           plain "; optional "
-          code(class: "font-mono text-xs") { "digits: 2" }
+          code(class: "font-mono text-xs") { "digits:" }
         }
         li {
-          code(class: "font-mono text-xs") { "date" }
+          code(class: "font-mono text-xs") { "DataTableCellDate" }
           plain " — "
-          code(class: "font-mono text-xs") { "toLocaleDateString()" }
-          plain " from any parseable date string"
+          code(class: "font-mono text-xs") { "Date.toLocaleDateString()" }
         }
         li {
-          code(class: "font-mono text-xs") { "boolean" }
-          plain " — ✓ for true, — for false"
+          code(class: "font-mono text-xs") { "DataTableCellBoolean" }
+          plain " — ✓ / —"
         }
         li {
-          code(class: "font-mono text-xs") { "link" }
-          plain " — renders an "
+          code(class: "font-mono text-xs") { "DataTableCellLink" }
+          plain " — renders "
           code(class: "font-mono text-xs") { "<a>" }
-          plain ". Use "
+          plain ". "
           code(class: "font-mono text-xs") { 'href: "/users/{value}"' }
-          plain " (the "
-          code(class: "font-mono text-xs") { "{value}" }
-          plain " placeholder is replaced with the cell value), "
+          plain " with placeholder substitution; optional "
           code(class: "font-mono text-xs") { "label:" }
-          plain " and "
+          plain " (fixed link text) and "
           code(class: "font-mono text-xs") { "target:" }
         }
         li {
-          code(class: "font-mono text-xs") { "truncate" }
-          plain " — clips long strings with an ellipsis; optional "
+          code(class: "font-mono text-xs") { "DataTableCellTruncate" }
+          plain " — clips long strings, shows full value on hover. "
           code(class: "font-mono text-xs") { "max: 40" }
-          plain ". Full value shown on hover."
         }
       end
+      p(class: "mt-2") {
+        plain "Need something not in this list? Write your own "
+        code(class: "font-mono text-xs") { "DataTable{Something}Cell" }
+        plain " component following the same pattern — render a "
+        code(class: "font-mono text-xs") { "<template>" }
+        plain " with the target "
+        code(class: "font-mono text-xs") { 'data-ruby-ui--data-table-target="tplCell_<key>"' }
+        plain " and mark value placeholders with "
+        code(class: "font-mono text-xs") { "data-field" }
+        plain ". No JavaScript required."
+      }
 
-      render Docs::VisualCodeExample.new(title: "All built-in cell types", context: self) do
+      render Docs::VisualCodeExample.new(title: "All built-in cell components", context: self) do
         <<~RUBY
           DataTable(
             data: [
@@ -486,20 +525,28 @@ class Views::Docs::DataTable < Views::Base
             ],
             columns: [
               {key: "id", header: "#"},
-              {key: "title", header: "Title", type: "truncate", max: 30},
-              {key: "done", header: "Done", type: "boolean"},
-              {key: "priority", header: "Priority", type: "badge", colors: {
-                "high"   => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-                "medium" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
-                "low"    => "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
-              }},
-              {key: "growth", header: "Growth", type: "percent", digits: 1},
-              {key: "views", header: "Views", type: "number"},
-              {key: "budget", header: "Budget", type: "currency"},
-              {key: "due", header: "Due", type: "date"},
-              {key: "link_to", header: "", type: "link", href: "/tasks/{value}", label: "Open →"}
+              {key: "title", header: "Title"},
+              {key: "done", header: "Done"},
+              {key: "priority", header: "Priority"},
+              {key: "growth", header: "Growth"},
+              {key: "views", header: "Views"},
+              {key: "budget", header: "Budget"},
+              {key: "due", header: "Due"},
+              {key: "link_to", header: ""}
             ]
           ) do
+            DataTableCellTruncate(key: "title", max: 30)
+            DataTableCellBoolean(key: "done")
+            DataTableCellBadge(key: "priority", colors: {
+              "high"   => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+              "medium" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+              "low"    => "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
+            })
+            DataTableCellPercent(key: "growth", digits: 1)
+            DataTableCellNumber(key: "views")
+            DataTableCellCurrency(key: "budget")
+            DataTableCellDate(key: "due")
+            DataTableCellLink(key: "link_to", href: "/tasks/{value}", label: "Open →")
             DataTableContent()
           end
         RUBY
@@ -727,6 +774,15 @@ class Views::Docs::DataTable < Views::Base
       ::Docs::ComponentStruct.new(name: "DataTableBulkActions", source: "#{base}/data_table_bulk_actions.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableColumnToggle", source: "#{base}/data_table_column_toggle.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableExpandedRow", source: "#{base}/data_table_expanded_row.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellText", source: "#{base}/data_table_cell_text.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellBadge", source: "#{base}/data_table_cell_badge.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellCurrency", source: "#{base}/data_table_cell_currency.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellNumber", source: "#{base}/data_table_cell_number.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellPercent", source: "#{base}/data_table_cell_percent.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellDate", source: "#{base}/data_table_cell_date.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellBoolean", source: "#{base}/data_table_cell_boolean.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellLink", source: "#{base}/data_table_cell_link.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableCellTruncate", source: "#{base}/data_table_cell_truncate.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableController", source: "#{base}/data_table_controller.js", built_using: :stimulus)
     ]
   end

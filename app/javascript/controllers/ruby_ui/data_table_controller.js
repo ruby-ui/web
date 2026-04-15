@@ -48,7 +48,6 @@ export default class extends Controller {
       id: c.key,
       accessorKey: c.key,
       header: c.header,
-      meta: { type: c.type ?? "text", colors: c.colors ?? null },
     }));
 
     this.table = createTable({
@@ -490,13 +489,7 @@ export default class extends Controller {
       row.getVisibleCells().forEach((cell) => {
         const td = document.createElement("td");
         td.className = "p-2 align-middle";
-
-        const value = cell.getValue();
-        const meta = cell.column.columnDef.meta ?? {};
-        const type = meta.type ?? "text";
-        const renderer = this.constructor.CELL_RENDERERS[type] ?? this.constructor.CELL_RENDERERS.text;
-        // Renderers return an HTML string for rich types (badge), or plain text for text
-        td.innerHTML = renderer(value, meta);
+        this.#renderCell(td, cell.column.id, cell.getValue(), row);
         tr.appendChild(td);
       });
 
@@ -511,15 +504,12 @@ export default class extends Controller {
         expandedTd.className = "p-0";
 
         const content = this.tplExpandedRowTarget.content.cloneNode(true);
-        // Populate any [data-field="columnKey"] elements with row.original values
+        // Populate any [data-field="columnKey"] elements via the column's
+        // registered cell template (if any) or fall back to plain text.
         content.querySelectorAll("[data-field]").forEach((el) => {
           const key = el.dataset.field;
           const value = row.original?.[key];
-          const col = this.table.getColumn(key);
-          const meta = col?.columnDef.meta ?? {};
-          const type = meta.type ?? "text";
-          const renderer = this.constructor.CELL_RENDERERS[type] ?? this.constructor.CELL_RENDERERS.text;
-          el.innerHTML = renderer(value, meta);
+          this.#renderCell(el, key, value, row);
         });
 
         expandedTd.appendChild(content);
@@ -537,69 +527,103 @@ export default class extends Controller {
     if (row) row.toggleSelected(event.target.checked);
   }
 
-  static CELL_RENDERERS = {
-    text: (value) => escapeHtml(value ?? ""),
+  // Cell rendering: look up the Phlex-authored <template> for this column,
+  // clone it, populate [data-field] elements, then apply browser-native
+  // formatters keyed by data-cell-format. All markup lives in Ruby; this
+  // method only formats primitives and swaps DOM nodes.
+  //
+  // `el` is the <td> to populate, `colId` is the column key, `value` is the
+  // raw cell value, `row` is the TanStack row object.
+  #renderCell(el, colId, value, row) {
+    // Look up <template data-ruby-ui--data-table-target="tplCell_<colId>">
+    // by selector (colId values are dynamic — can't list all targets upfront).
+    const tpl = this.element.querySelector(
+      `template[data-ruby-ui--data-table-target="tplCell_${CSS.escape(colId)}"]`
+    );
 
-    badge: (value, meta) => {
-      const colors = meta?.colors ?? {};
-      const colorClass = colors[value] ?? "bg-secondary text-secondary-foreground";
-      return `<span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${colorClass}">${escapeHtml(value ?? "")}</span>`;
-    },
+    if (!tpl || !tpl.content) {
+      // Fallback: plain text
+      el.textContent = value == null ? "" : String(value);
+      return;
+    }
 
-    date: (value) => {
-      if (!value) return "";
-      const d = new Date(value);
-      return isNaN(d.getTime()) ? escapeHtml(value) : d.toLocaleDateString();
-    },
+    const content = tpl.content.cloneNode(true);
+    const format = tpl.dataset.cellFormat;
+    const locale = tpl.dataset.cellLocale || "en-US";
 
-    currency: (value, meta) => {
-      if (value == null || value === "") return "";
-      const currency = meta?.currency ?? "USD";
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency,
-        maximumFractionDigits: 0,
-      }).format(Number(value));
-    },
+    content.querySelectorAll("[data-field]").forEach((placeholder) => {
+      const formatted = this.#formatCellValue(value, format, tpl, locale, row);
 
-    number: (value) => {
-      if (value == null || value === "") return "";
-      return new Intl.NumberFormat("en-US").format(Number(value));
-    },
+      if (placeholder.dataset.applyColors != null) {
+        // Badge: set text + apply colors-map classes
+        placeholder.textContent = value == null ? "" : String(value);
+        const colors = tpl.dataset.cellColors ? JSON.parse(tpl.dataset.cellColors) : {};
+        const fallback = tpl.dataset.cellFallbackClasses;
+        const classStr = colors[value] ?? fallback;
+        if (classStr) placeholder.classList.add(...classStr.split(/\s+/).filter(Boolean));
+      } else if (placeholder.dataset.applyHref != null) {
+        // Link: fill href with {value} substitution, set text if no fixed label
+        const hrefTemplate = tpl.dataset.cellHrefTemplate || "{value}";
+        placeholder.setAttribute(
+          "href",
+          hrefTemplate.replaceAll("{value}", encodeURIComponent(value ?? ""))
+        );
+        if (!placeholder.textContent.trim()) {
+          placeholder.textContent = formatted;
+        }
+      } else if (placeholder.dataset.applyTitle != null) {
+        // Truncate: set full value as title, show truncated text
+        placeholder.title = value == null ? "" : String(value);
+        placeholder.textContent = formatted;
+      } else {
+        placeholder.textContent = formatted;
+      }
+    });
 
-    percent: (value, meta) => {
-      if (value == null || value === "") return "";
-      const digits = meta?.digits ?? 0;
-      return new Intl.NumberFormat("en-US", {
-        style: "percent",
-        minimumFractionDigits: digits,
-        maximumFractionDigits: digits,
-      }).format(Number(value));
-    },
+    el.replaceChildren(content);
+  }
 
-    boolean: (value) => {
-      if (value === true) return `<span class="text-green-600 dark:text-green-400">✓</span>`;
-      if (value === false) return `<span class="text-muted-foreground">—</span>`;
-      return "";
-    },
+  #formatCellValue(value, format, tpl, locale, row) {
+    if (value == null || value === "") return "";
 
-    link: (value, meta) => {
-      if (!value) return "";
-      const href = meta?.href
-        ? meta.href.replaceAll("{value}", encodeURIComponent(value))
-        : escapeHtml(value);
-      const label = meta?.label ?? value;
-      return `<a href="${escapeHtml(href)}" class="underline underline-offset-2 hover:text-primary" target="${meta?.target ?? "_self"}">${escapeHtml(label)}</a>`;
-    },
-
-    truncate: (value, meta) => {
-      if (value == null) return "";
-      const max = meta?.max ?? 40;
-      const str = String(value);
-      const truncated = str.length > max ? str.slice(0, max - 1) + "…" : str;
-      return `<span title="${escapeHtml(str)}">${escapeHtml(truncated)}</span>`;
-    },
-  };
+    switch (format) {
+      case "currency": {
+        const currency = tpl.dataset.cellCurrency || "USD";
+        const digits = Number(tpl.dataset.cellDigits ?? 0);
+        return new Intl.NumberFormat(locale, {
+          style: "currency",
+          currency,
+          maximumFractionDigits: digits,
+          minimumFractionDigits: digits,
+        }).format(Number(value));
+      }
+      case "number":
+        return new Intl.NumberFormat(locale).format(Number(value));
+      case "percent": {
+        const digits = Number(tpl.dataset.cellDigits ?? 0);
+        return new Intl.NumberFormat(locale, {
+          style: "percent",
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits,
+        }).format(Number(value));
+      }
+      case "date": {
+        const d = new Date(value);
+        return isNaN(d.getTime()) ? String(value) : d.toLocaleDateString(locale);
+      }
+      case "boolean":
+        if (value === true) return "✓";
+        if (value === false) return "—";
+        return "";
+      case "truncate": {
+        const max = Number(tpl.dataset.cellMax ?? 40);
+        const str = String(value);
+        return str.length > max ? str.slice(0, max - 1) + "…" : str;
+      }
+      default:
+        return String(value);
+    }
+  }
 }
 
 function escapeHtml(value) {
