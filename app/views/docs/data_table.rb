@@ -29,11 +29,11 @@ class Views::Docs::DataTable < Views::Base
               Table do
                 TableHeader do
                   TableRow do
-                    DataTableSortableHeader(column: "name", label: "Name")
-                    DataTableSortableHeader(column: "email", label: "Email")
-                    DataTableSortableHeader(column: "department", label: "Department")
+                    TableHead { "Name" }
+                    TableHead { "Email" }
+                    TableHead { "Department" }
                     TableHead { "Status" }
-                    DataTableSortableHeader(column: "salary", label: "Salary")
+                    TableHead { "Salary" }
                   end
                 end
                 TableBody do
@@ -69,10 +69,10 @@ class Views::Docs::DataTable < Views::Base
               Table do
                 TableHeader do
                   TableRow do
-                    DataTableSortableHeader(column: "name", label: "Name")
-                    DataTableSortableHeader(column: "department", label: "Department")
+                    TableHead { "Name" }
+                    TableHead { "Department" }
                     TableHead { "Status" }
-                    DataTableSortableHeader(column: "salary", label: "Salary")
+                    TableHead { "Salary" }
                   end
                 end
                 TableBody do
@@ -103,8 +103,8 @@ class Views::Docs::DataTable < Views::Base
               Table do
                 TableHeader do
                   TableRow do
-                    DataTableSortableHeader(column: "name", label: "Name")
-                    DataTableSortableHeader(column: "department", label: "Department")
+                    TableHead { "Name" }
+                    TableHead { "Department" }
                     TableHead { "Status" }
                   end
                 end

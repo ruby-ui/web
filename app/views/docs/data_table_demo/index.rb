@@ -22,11 +22,11 @@ module Views
               Table do
                 TableHeader do
                   TableRow do
-                    DataTableSortableHeader(column: "name", label: "Name", direction: col_direction("name"))
-                    DataTableSortableHeader(column: "email", label: "Email", direction: col_direction("email"))
-                    DataTableSortableHeader(column: "department", label: "Department", direction: col_direction("department"))
+                    TableHead { "Name" }
+                    TableHead { "Email" }
+                    TableHead { "Department" }
                     TableHead { "Status" }
-                    DataTableSortableHeader(column: "salary", label: "Salary", direction: col_direction("salary"))
+                    TableHead { "Salary" }
                   end
                 end
                 TableBody do
