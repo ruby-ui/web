@@ -2,7 +2,7 @@
 
 class Views::Docs::Accordion < Views::Base
   def view_template
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       component = "Accordion"
       render Docs::Header.new(title: component,
         description: "A vertically stacked set of interactive headings that each reveal a section of content.")

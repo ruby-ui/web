@@ -4,7 +4,7 @@ class Views::Docs::Breadcrumb < Views::Base
   def view_template
     component = "Breadcrumb"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Breadcrumb", description: "Indicates the user's current location within a navigational hierarchy.")
 
       Heading(level: 2) { "Usage" }

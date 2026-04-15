@@ -3,7 +3,7 @@
 class Views::Docs::AspectRatio < Views::Base
   def view_template
     component = "AspectRatio"
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Aspect Ratio", description: "Displays content within a desired ratio.")
 
       Heading(level: 2) { "Usage" }

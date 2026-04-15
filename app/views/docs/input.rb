@@ -4,7 +4,7 @@ class Views::Docs::Input < Views::Base
   def view_template
     component = "Input"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Input", description: "Displays a form input field or a component that looks like an input field.")
 
       Heading(level: 2) { "Usage" }

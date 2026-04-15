@@ -2,7 +2,7 @@
 
 class Views::Docs::GettingStarted::CustomizingComponents < Views::Base
   def view_template
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Customizing components", description: "When theming doesn't suffice, RubyUI allows you to tailor the components to your specific needs.")
 
       div(class: "space-y-4") do

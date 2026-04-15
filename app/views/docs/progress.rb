@@ -4,7 +4,7 @@ class Views::Docs::Progress < Views::Base
   def view_template
     component = "Progress"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Progress", description: "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.")
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do

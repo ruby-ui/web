@@ -4,7 +4,7 @@ class Views::Docs::MaskedInput < Views::Base
   def view_template
     component = "MaskedInput"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "MaskedInput", description: "Displays a form input field with applied mask.")
 
       Heading(level: 2) { "Usage" }

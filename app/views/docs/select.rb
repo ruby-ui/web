@@ -4,7 +4,7 @@ class Views::Docs::Select < Views::Base
   def view_template
     component = "Select"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Select", description: "Displays a list of options for the user to pick from—triggered by a button.")
 
       Heading(level: 2) { "Usage" }

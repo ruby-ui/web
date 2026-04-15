@@ -4,7 +4,7 @@ class Views::Docs::Tooltip < Views::Base
   def view_template
     component = "Tooltip"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Tooltip", description: "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.")
 
       Heading(level: 2) { "Usage" }

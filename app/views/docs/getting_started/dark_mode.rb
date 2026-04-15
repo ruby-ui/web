@@ -2,7 +2,7 @@
 
 class Views::Docs::GettingStarted::DarkMode < Views::Base
   def view_template
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Dark mode", description: "How to use dark mode in your application")
 
       div(class: "space-y-4") do

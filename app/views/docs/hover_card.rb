@@ -4,7 +4,7 @@ class Views::Docs::HoverCard < Views::Base
   def view_template
     component = "HoverCard"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Hover Card", description: "For sighted users to preview content available behind a link.")
 
       Heading(level: 2) { "Usage" }

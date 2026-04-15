@@ -4,7 +4,7 @@ class Views::Docs::GettingStarted::Installation < Views::Base
   include DeferredRender
 
   def view_template
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Installation", description: "How to install dependencies and structure your app.")
 
       Heading(level: 2) { "Select a Framework" }

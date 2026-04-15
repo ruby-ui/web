@@ -2,7 +2,7 @@
 
 class Views::Docs::GettingStarted::Theming < Views::Base
   def view_template
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Theming", description: "Using CSS variables for theming.")
 
       div(class: "space-y-4") do

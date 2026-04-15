@@ -4,7 +4,7 @@ class Views::Docs::Popover < Views::Base
   def view_template
     component = "Popover"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Popover", description: "Displays rich content in a portal, triggered by a button.")
 
       render Docs::VisualCodeExample.new(title: "Example", context: self) do

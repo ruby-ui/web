@@ -3,7 +3,7 @@
 class Views::Docs::ContextMenu < Views::Base
   def view_template
     component = "ContextMenu"
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Context Menu", description: "Displays a menu to the user — such as a set of actions or functions — triggered by a right click.")
 
       Heading(level: 2) { "Usage" }

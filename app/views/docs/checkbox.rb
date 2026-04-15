@@ -3,7 +3,7 @@
 class Views::Docs::Checkbox < Views::Base
   def view_template
     component = "Checkbox"
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Checkbox", description: "A control that allows the user to toggle between checked and not checked.")
 
       Heading(level: 2) { "Usage" }

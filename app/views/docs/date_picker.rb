@@ -4,7 +4,7 @@ class Views::Docs::DatePicker < Views::Base
   def view_template
     component = "DatePicker"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Date Picker", description: "A date picker component with input.")
 
       Heading(level: 2) { "Usage" }

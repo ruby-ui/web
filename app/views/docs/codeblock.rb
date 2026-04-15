@@ -3,7 +3,7 @@
 class Views::Docs::Codeblock < Views::Base
   def view_template
     component = "Codeblock"
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Codeblock", description: "A component for displaying highlighted code.")
 
       Heading(level: 2) { "Usage" }

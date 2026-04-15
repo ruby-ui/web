@@ -4,7 +4,7 @@ class Views::Docs::Skeleton < Views::Base
   def view_template
     component = "Skeleton"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Skeleton", description: "Use to show a placeholder while content is loading.")
 
       Heading(level: 2) { "Usage" }

@@ -4,7 +4,7 @@ class Views::Docs::Sheet < Views::Base
   def view_template
     component = "Sheet"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Sheet", description: "Extends the Sheet component to display content that complements the main content of the screen.")
 
       Heading(level: 2) { "Usage" }

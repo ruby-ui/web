@@ -3,7 +3,7 @@
 class Views::Docs::AlertDialog < Views::Base
   def view_template
     component = "AlertDialog"
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Alert Dialog", description: "A modal dialog that interrupts the user with important content and expects a response.")
 
       Heading(level: 2) { "Usage" }

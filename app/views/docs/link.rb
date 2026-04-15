@@ -4,7 +4,7 @@ class Views::Docs::Link < Views::Base
   def view_template
     component = "Link"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Link", description: "Displays a link that looks like a button or underline link.")
 
       Heading(level: 2) { "Usage" }

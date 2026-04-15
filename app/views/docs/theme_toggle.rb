@@ -4,7 +4,7 @@ class Views::Docs::ThemeToggle < Views::Base
   def view_template
     component = "ThemeToggle"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Theme Toggle", description: "Toggle between dark/light theme.")
 
       Heading(level: 2) { "Usage" }

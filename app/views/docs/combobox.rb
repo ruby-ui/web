@@ -5,7 +5,7 @@ class Views::Docs::Combobox < Views::Base
 
   def view_template
     component = "Combobox"
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: component, description: "Autocomplete input and command palette with a list of suggestions.")
 
       Heading(level: 2) { "Usage" }

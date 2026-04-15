@@ -4,7 +4,7 @@ class Views::Docs::Dialog < Views::Base
   def view_template
     component = "Dialog"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Dialog", description: "A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.")
 
       Heading(level: 2) { "Usage" }

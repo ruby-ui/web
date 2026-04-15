@@ -4,7 +4,7 @@ class Views::Docs::RadioButton < Views::Base
   def view_template
     component = "RadioButton"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Radio Button", description: "A control that allows users to make a single selection from a list of options.")
 
       Heading(level: 2) { "Usage" }

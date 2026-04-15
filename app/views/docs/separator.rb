@@ -4,7 +4,7 @@ class Views::Docs::Separator < Views::Base
   def view_template
     component = "Separator"
 
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Separator", description: "Visually or semantically separates content.")
 
       Heading(level: 2) { "Usage" }

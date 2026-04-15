@@ -2,7 +2,7 @@
 
 class Views::Docs::Installation::RailsImportmaps < Views::Base
   def view_template
-    div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
+    div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(title: "Rails - Importmap", description: "How to install RubyUI within a Rails app that employs import maps")
 
       Alert(variant: :info) do
