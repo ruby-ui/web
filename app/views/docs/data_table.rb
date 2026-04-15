@@ -43,10 +43,12 @@ class Views::Docs::DataTable < Views::Base
           ],
           row_count: 30,
           page: 1,
-          per_page: 10,
-          sort: nil,
-          direction: nil
+          per_page: 10
         ) do
+          DataTableToolbar do
+            DataTableSearch(placeholder: "Search by name or email...")
+            DataTablePerPage(options: [5, 10, 20], current: 10)
+          end
           DataTableContent()
           DataTablePagination(current_page: 1, total_pages: 3)
         end
