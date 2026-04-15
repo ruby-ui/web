@@ -2,38 +2,46 @@ import { Controller } from "@hotwired/stimulus"
 import { createTable, getCoreRowModel } from "@tanstack/table-core"
 
 export default class extends Controller {
-  static targets = ["thead", "tbody"]
+  static targets = ["thead", "tbody", "prevButton", "nextButton", "pageIndicator"]
   static values = {
     src: String,
     data: { type: Array, default: [] },
     columns: { type: Array, default: [] },
-    rowCount: { type: Number, default: 0 }
+    rowCount: { type: Number, default: 0 },
+    pagination: { type: Object, default: { pageIndex: 0, pageSize: 10 } }
   }
 
   connect() {
-    // Step 1: create with required stubs
     this.table = createTable({
       data: this.dataValue,
-      columns: this.columnsValue.map((c) => ({
-        id: c.key,
-        accessorKey: c.key,
-        header: c.header
-      })),
+      columns: this.dataValue.length > 0
+        ? this.columnsValue.map((c) => ({ id: c.key, accessorKey: c.key, header: c.header }))
+        : [],
       getCoreRowModel: getCoreRowModel(),
       renderFallbackValue: null,
+      manualPagination: true,
+      rowCount: this.rowCountValue,
       state: {},
       onStateChange: () => {}
     })
 
-    // Step 2: seed local state from TanStack's fully-initialized initialState
-    this.tableState = this.table.initialState
+    this.tableState = {
+      ...this.table.initialState,
+      pagination: this.paginationValue
+    }
 
-    // Step 3: wire proper state management
     this.table.setOptions((prev) => ({
       ...prev,
       state: this.tableState,
+      onPaginationChange: (updater) => {
+        const next = typeof updater === "function" ? updater(this.tableState.pagination) : updater
+        this.tableState = { ...this.tableState, pagination: next }
+        this.table.setOptions((p) => ({ ...p, state: this.tableState }))
+        this.#fetchAndRender()
+      },
       onStateChange: (updater) => {
-        this.tableState = typeof updater === "function" ? updater(this.tableState) : updater
+        const next = typeof updater === "function" ? updater(this.tableState) : updater
+        this.tableState = next
         this.table.setOptions((p) => ({ ...p, state: this.tableState }))
         this.render()
       }
@@ -42,12 +50,63 @@ export default class extends Controller {
     this.render()
   }
 
-  render() {
-    this.renderHeaders()
-    this.renderRows()
+  previousPage() {
+    this.table.previousPage()
   }
 
-  renderHeaders() {
+  nextPage() {
+    this.table.nextPage()
+  }
+
+  render() {
+    this.#renderHeaders()
+    this.#renderRows()
+    this.#syncPaginationUI()
+  }
+
+  #fetchAndRender() {
+    if (!this.hasSrcValue || !this.srcValue) return
+
+    fetch(this.#buildURL(), { headers: { Accept: "application/json" } })
+      .then((r) => r.json())
+      .then(({ data, row_count }) => {
+        this.table.setOptions((prev) => ({
+          ...prev,
+          data,
+          rowCount: row_count,
+          state: this.tableState
+        }))
+        this.render()
+      })
+  }
+
+  #buildURL() {
+    const url = new URL(this.srcValue, window.location.origin)
+    const { pageIndex, pageSize } = this.tableState.pagination
+    url.searchParams.set("page", pageIndex + 1)
+    url.searchParams.set("per_page", pageSize)
+    return url.toString()
+  }
+
+  #syncPaginationUI() {
+    if (this.hasPageIndicatorTarget) {
+      const { pageIndex } = this.tableState.pagination
+      const pageCount = this.table.getPageCount()
+      this.pageIndicatorTarget.textContent = `Page ${pageIndex + 1} of ${pageCount}`
+    }
+    if (this.hasPrevButtonTarget) {
+      this.prevButtonTarget.disabled = !this.table.getCanPreviousPage()
+      this.prevButtonTarget.classList.toggle("opacity-50", !this.table.getCanPreviousPage())
+      this.prevButtonTarget.classList.toggle("pointer-events-none", !this.table.getCanPreviousPage())
+    }
+    if (this.hasNextButtonTarget) {
+      this.nextButtonTarget.disabled = !this.table.getCanNextPage()
+      this.nextButtonTarget.classList.toggle("opacity-50", !this.table.getCanNextPage())
+      this.nextButtonTarget.classList.toggle("pointer-events-none", !this.table.getCanNextPage())
+    }
+  }
+
+  #renderHeaders() {
     if (!this.hasTheadTarget) return
 
     const html = this.table.getHeaderGroups().map((group) => {
@@ -62,7 +121,7 @@ export default class extends Controller {
     this.theadTarget.innerHTML = html
   }
 
-  renderRows() {
+  #renderRows() {
     if (!this.hasTbodyTarget) return
 
     const rows = this.table.getRowModel().rows
