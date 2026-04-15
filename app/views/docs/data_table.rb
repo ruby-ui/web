@@ -17,7 +17,7 @@ class Views::Docs::DataTable < Views::Base
     {id: e.id, name: e.name, email: e.email, department: e.department, status: e.status, salary: e.salary}
   end.freeze
 
-  def initialize(initial_data: DEMO_EMPLOYEES, total_count: 30,
+  def initialize(initial_data: DEMO_EMPLOYEES, total_count: 100,
                  page: 1, per_page: 10, sort: nil, direction: nil, search: nil)
     @initial_data = initial_data
     @total_count = total_count

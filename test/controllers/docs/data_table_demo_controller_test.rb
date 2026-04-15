@@ -24,7 +24,7 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     json = JSON.parse(response.body)
     assert_equal 5, json["data"].length
-    assert_equal 30, json["row_count"]
+    assert_equal 100, json["row_count"]
   end
 
   test "JSON response respects search param" do
@@ -32,7 +32,7 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
                                    headers: { "Accept" => "application/json" }
     json = JSON.parse(response.body)
     assert json["data"].all? { |r| r["name"].downcase.include?("alice") || r["email"].downcase.include?("alice") }
-    assert json["row_count"] < 30
+    assert json["row_count"] < 100
   end
 
   test "docs data_table page includes pagination data-value" do
@@ -58,5 +58,11 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
     json = JSON.parse(response.body)
     names = json["data"].map { |r| r["name"] }
     assert_equal names.sort.reverse, names
+  end
+
+  test "dataset has 100 employees" do
+    get docs_data_table_demo_path, headers: {"Accept" => "application/json"}
+    json = JSON.parse(response.body)
+    assert_equal 100, json["row_count"]
   end
 end
