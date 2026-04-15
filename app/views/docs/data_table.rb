@@ -156,6 +156,39 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
+      render Docs::VisualCodeExample.new(title: "With row selection and bulk actions", context: self) do
+        <<~RUBY
+          DataTable(
+            data: [
+              {id: 1, name: "Alice Johnson", department: "Engineering", status: "Active"},
+              {id: 2, name: "Bob Smith", department: "Design", status: "Active"},
+              {id: 3, name: "Carol White", department: "Product", status: "On Leave"},
+              {id: 4, name: "David Brown", department: "Engineering", status: "Active"},
+              {id: 5, name: "Eve Davis", department: "Marketing", status: "Inactive"}
+            ],
+            columns: [
+              {key: "name", header: "Name"},
+              {key: "department", header: "Department"},
+              {key: "status", header: "Status", type: "badge", colors: {
+                "Active"   => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+                "Inactive" => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+                "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+              }}
+            ],
+            selectable: true
+          ) do
+            DataTableToolbar do
+              DataTableSearch(placeholder: "Search...")
+              DataTableBulkActions do
+                span(class: "text-sm text-muted-foreground", data: {selection_count: true}) {}
+                Button(variant: :destructive, size: :sm) { "Delete selected" }
+              end
+            end
+            DataTableContent()
+          end
+        RUBY
+      end
+
       # ── Overview ────────────────────────────────────────────────────────────
       Heading(level: 2) { "Overview" }
       p(class: "text-sm text-muted-foreground") {
@@ -346,6 +379,7 @@ class Views::Docs::DataTable < Views::Base
       ::Docs::ComponentStruct.new(name: "DataTableSearch", source: "#{base}/data_table_search.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTablePerPage", source: "#{base}/data_table_per_page.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableToolbar", source: "#{base}/data_table_toolbar.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableBulkActions", source: "#{base}/data_table_bulk_actions.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableController", source: "#{base}/data_table_controller.js", built_using: :stimulus)
     ]
   end
