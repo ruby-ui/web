@@ -3,7 +3,7 @@
 class Views::Docs::DataTable < Views::Base
   COLUMNS = [
     {key: "name", header: "Name", type: "text"},
-    {key: "email", header: "Email", type: "text"},
+    {key: "email", header: "Email", type: "text", visible: false},
     {key: "department", header: "Department", type: "text"},
     {key: "status", header: "Status", type: "badge", colors: {
       "Active" => "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -40,8 +40,13 @@ class Views::Docs::DataTable < Views::Base
       # ── Full-Featured Demo ──────────────────────────────────────────────────
       Heading(level: 2) { "Demo" }
       p(class: "-mt-6") {
-        plain "100 employees. Pagination, column sorting, free-text search, and configurable rows per page. "
-        plain "The URL reflects state — share it or reload to restore."
+        plain "100 employees. Every feature enabled: server-side pagination, sorting, search, "
+        plain "per-page selector, cell renderers, row selection with bulk actions, column visibility, "
+        plain "expandable rows, and URL state sync."
+      }
+      p(class: "text-sm text-muted-foreground mt-2") {
+        plain "Tip: shift+click column headers to sort by multiple columns. "
+        plain "Click the chevron to expand a row. Check rows to reveal bulk actions."
       }
 
       div(class: "rounded-lg border p-6") do
@@ -54,13 +59,50 @@ class Views::Docs::DataTable < Views::Base
           per_page: @per_page,
           sort: @sort,
           direction: @direction,
-          search: @search
+          search: @search,
+          selectable: true,
+          options: {
+            enableExpanding: true,
+            enableMultiSort: true,
+            autoResetPageIndex: false
+          }
         ) do
           DataTableToolbar do
-            DataTableSearch(placeholder: "Search by name or email...")
-            DataTablePerPage(options: [5, 10, 25, 50], current: @per_page)
+            div(class: "flex items-center gap-2") do
+              DataTableSearch(placeholder: "Search by name or email...")
+              DataTableBulkActions do
+                span(class: "text-sm text-muted-foreground", data: {selection_count: true}) {}
+                Button(variant: :destructive, size: :sm) { "Delete" }
+                Button(variant: :outline, size: :sm) { "Export CSV" }
+                Button(variant: :ghost, size: :sm) { "Clear" }
+              end
+            end
+            div(class: "flex items-center gap-2") do
+              DataTableColumnToggle()
+              DataTablePerPage(options: [5, 10, 25, 50], current: @per_page)
+            end
           end
           DataTableContent()
+          DataTableExpandedRow do
+            div(class: "p-4 bg-muted/20 space-y-2 text-sm") do
+              div(class: "flex gap-2") do
+                strong { "Employee ID: " }
+                span(data: {field: "id"}) {}
+              end
+              div(class: "flex gap-2") do
+                strong { "Full name: " }
+                span(data: {field: "name"}) {}
+              end
+              div(class: "flex gap-2") do
+                strong { "Email: " }
+                span(data: {field: "email"}) {}
+              end
+              div(class: "flex gap-2") do
+                strong { "Status: " }
+                span(data: {field: "status"}) {}
+              end
+            end
+          end
           DataTablePagination(
             current_page: @page,
             total_pages: [(@total_count.to_f / @per_page).ceil, 1].max
