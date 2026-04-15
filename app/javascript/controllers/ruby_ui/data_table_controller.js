@@ -15,6 +15,8 @@ export default class extends Controller {
     "search",
     "perPage",
     "bulkActions",
+    "columnToggleTrigger",
+    "columnMenu",
     "tplSortAsc",
     "tplSortDesc",
     "tplSortNone",
@@ -29,6 +31,7 @@ export default class extends Controller {
     sorting: { type: Array, default: [] },
     search: { type: String, default: "" },
     selectable: { type: Boolean, default: false },
+    columnVisibility: { type: Object, default: {} },
   };
 
   connect() {
@@ -67,6 +70,7 @@ export default class extends Controller {
       sorting: this.sortingValue,
       globalFilter: this.searchValue,
       rowSelection: this.rowSelection,
+      columnVisibility: this.columnVisibilityValue,
     };
 
     this.table.setOptions((prev) => ({
@@ -113,6 +117,15 @@ export default class extends Controller {
             : updater;
         this.rowSelection = next;
         this.tableState = { ...this.tableState, rowSelection: next };
+        this.table.setOptions((p) => ({ ...p, state: this.tableState }));
+        this.render();
+      },
+      onColumnVisibilityChange: (updater) => {
+        const next =
+          typeof updater === "function"
+            ? updater(this.tableState.columnVisibility)
+            : updater;
+        this.tableState = { ...this.tableState, columnVisibility: next };
         this.table.setOptions((p) => ({ ...p, state: this.tableState }));
         this.render();
       },
@@ -176,6 +189,29 @@ export default class extends Controller {
     this.#renderRows();
     this.#syncPaginationUI();
     this.#syncBulkActionsUI();
+    this.#renderColumnMenu();
+  }
+
+  toggleColumnMenu(event) {
+    event.stopPropagation();
+    if (!this.hasColumnMenuTarget) return;
+    const menu = this.columnMenuTarget;
+    menu.classList.toggle("hidden");
+
+    if (!menu.classList.contains("hidden")) {
+      this._closeColumnMenuOnOutsideClick = (e) => {
+        if (!this.element.contains(e.target)) {
+          menu.classList.add("hidden");
+          document.removeEventListener("click", this._closeColumnMenuOnOutsideClick);
+        }
+      };
+      document.addEventListener("click", this._closeColumnMenuOnOutsideClick);
+    }
+  }
+
+  toggleColumnVisibility(event) {
+    const col = this.table.getColumn(event.target.dataset.colId);
+    if (col) col.toggleVisibility(event.target.checked);
   }
 
   #fetchAndRender() {
@@ -232,6 +268,37 @@ export default class extends Controller {
       this.nextButtonTarget.classList.toggle("opacity-50", !can);
       this.nextButtonTarget.classList.toggle("pointer-events-none", !can);
     }
+  }
+
+  #renderColumnMenu() {
+    if (!this.hasColumnMenuTarget) return;
+
+    const columns = this.table
+      .getAllLeafColumns()
+      .filter((col) => col.getCanHide());
+
+    const fragment = document.createDocumentFragment();
+
+    columns.forEach((col) => {
+      const label = document.createElement("label");
+      label.className = "flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm cursor-pointer hover:bg-accent";
+
+      const cb = this.#cloneTemplate("tplCheckbox")?.firstElementChild
+        || Object.assign(document.createElement("input"), { type: "checkbox" });
+      cb.checked = col.getIsVisible();
+      cb.dataset.colId = col.id;
+      cb.dataset.action = "change->ruby-ui--data-table#toggleColumnVisibility";
+      label.appendChild(cb);
+
+      const span = document.createElement("span");
+      const def = col.columnDef.header;
+      span.textContent = typeof def === "function" ? col.id : (def ?? col.id);
+      label.appendChild(span);
+
+      fragment.appendChild(label);
+    });
+
+    this.columnMenuTarget.replaceChildren(fragment);
   }
 
   #syncBulkActionsUI() {

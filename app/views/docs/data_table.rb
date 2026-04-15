@@ -156,6 +156,30 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
+      render Docs::VisualCodeExample.new(title: "With column visibility toggle", context: self) do
+        <<~RUBY
+          DataTable(
+            data: [
+              {id: 1, name: "Alice Johnson", email: "alice@example.com", department: "Engineering", salary: 95_000},
+              {id: 2, name: "Bob Smith", email: "bob@example.com", department: "Design", salary: 82_000},
+              {id: 3, name: "Carol White", email: "carol@example.com", department: "Product", salary: 88_000}
+            ],
+            columns: [
+              {key: "name", header: "Name"},
+              {key: "email", header: "Email", visible: false},
+              {key: "department", header: "Department"},
+              {key: "salary", header: "Salary", type: "currency"}
+            ]
+          ) do
+            DataTableToolbar do
+              div {}
+              DataTableColumnToggle()
+            end
+            DataTableContent()
+          end
+        RUBY
+      end
+
       render Docs::VisualCodeExample.new(title: "With row selection and bulk actions", context: self) do
         <<~RUBY
           DataTable(
@@ -362,6 +386,24 @@ class Views::Docs::DataTable < Views::Base
         plain " hydrates TanStack with the correct initial state. Shared URLs and page reloads restore exact table state."
       }
 
+      # ── Column visibility ────────────────────────────────────────────────────
+      Heading(level: 2) { "Column visibility" }
+      p {
+        plain "Hide a column by default with "
+        code(class: "font-mono text-xs") { "visible: false" }
+        plain " in its definition. Add "
+        code(class: "font-mono text-xs") { "DataTableColumnToggle" }
+        plain " to the toolbar to let users show/hide columns at runtime. "
+        plain "The dropdown reads all columns from TanStack via "
+        code(class: "font-mono text-xs") { "table.getAllLeafColumns()" }
+        plain " — no config needed."
+      }
+      p(class: "mt-2") {
+        plain "Hidden columns are skipped by "
+        code(class: "font-mono text-xs") { "row.getVisibleCells()" }
+        plain " automatically — headers, cells, and sort handlers respect visibility without extra logic."
+      }
+
       # ── Row selection ────────────────────────────────────────────────────────
       Heading(level: 2) { "Row selection" }
       p {
@@ -474,6 +516,7 @@ class Views::Docs::DataTable < Views::Base
       ::Docs::ComponentStruct.new(name: "DataTablePerPage", source: "#{base}/data_table_per_page.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableToolbar", source: "#{base}/data_table_toolbar.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableBulkActions", source: "#{base}/data_table_bulk_actions.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableColumnToggle", source: "#{base}/data_table_column_toggle.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableController", source: "#{base}/data_table_controller.js", built_using: :stimulus)
     ]
   end

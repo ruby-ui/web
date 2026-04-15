@@ -36,6 +36,9 @@ module RubyUI
 
     def default_attrs
       sorting = @sort.present? ? [{id: @sort, desc: @direction == "desc"}] : []
+      column_visibility = @columns
+        .select { |c| c[:visible] == false }
+        .each_with_object({}) { |c, h| h[c[:key]] = false }
       {
         class: "w-full space-y-4",
         data: {
@@ -47,7 +50,8 @@ module RubyUI
           ruby_ui__data_table_pagination_value: {pageIndex: @page - 1, pageSize: @per_page}.to_json,
           ruby_ui__data_table_sorting_value: sorting.to_json,
           ruby_ui__data_table_search_value: @search.to_s,
-          ruby_ui__data_table_selectable_value: @selectable
+          ruby_ui__data_table_selectable_value: @selectable,
+          ruby_ui__data_table_column_visibility_value: column_visibility.to_json
         }
       }
     end
