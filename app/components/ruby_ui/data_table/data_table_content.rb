@@ -43,6 +43,15 @@ module RubyUI
             class: "h-4 w-4 rounded border border-input accent-primary cursor-pointer"
           )
         end
+
+        template(data: {ruby_ui__data_table_target: "tplChevron"}) do
+          svg(
+            xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24",
+            fill: "none", stroke: "currentColor", stroke_width: "2",
+            stroke_linecap: "round", stroke_linejoin: "round",
+            class: "h-4 w-4 transition-transform"
+          ) { |s| s.path(d: "m9 18 6-6-6-6") }
+        end
       end
     end
 

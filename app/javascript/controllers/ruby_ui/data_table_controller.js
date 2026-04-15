@@ -21,6 +21,8 @@ export default class extends Controller {
     "tplSortDesc",
     "tplSortNone",
     "tplCheckbox",
+    "tplChevron",
+    "tplExpandedRow",
   ];
   static values = {
     src: String,
@@ -32,6 +34,7 @@ export default class extends Controller {
     search: { type: String, default: "" },
     selectable: { type: Boolean, default: false },
     columnVisibility: { type: Object, default: {} },
+    options: { type: Object, default: {} },
   };
 
   connect() {
@@ -60,9 +63,13 @@ export default class extends Controller {
       enableRowSelection: this.selectableValue,
       enableMultiRowSelection: true,
       getRowId: (row) => String(row.id ?? row[Object.keys(row)[0]]),
+      // Spread any user-provided TanStack options (enableExpanding, etc.)
+      ...this.optionsValue,
       state: {},
       onStateChange: () => {},
     });
+
+    this.expandable = this.hasTplExpandedRowTarget || this.optionsValue.enableExpanding === true;
 
     this.tableState = {
       ...this.table.initialState,
@@ -71,6 +78,7 @@ export default class extends Controller {
       globalFilter: this.searchValue,
       rowSelection: this.rowSelection,
       columnVisibility: this.columnVisibilityValue,
+      expanded: {},
     };
 
     this.table.setOptions((prev) => ({
@@ -126,6 +134,15 @@ export default class extends Controller {
             ? updater(this.tableState.columnVisibility)
             : updater;
         this.tableState = { ...this.tableState, columnVisibility: next };
+        this.table.setOptions((p) => ({ ...p, state: this.tableState }));
+        this.render();
+      },
+      onExpandedChange: (updater) => {
+        const next =
+          typeof updater === "function"
+            ? updater(this.tableState.expanded)
+            : updater;
+        this.tableState = { ...this.tableState, expanded: next };
         this.table.setOptions((p) => ({ ...p, state: this.tableState }));
         this.render();
       },
@@ -212,6 +229,12 @@ export default class extends Controller {
   toggleColumnVisibility(event) {
     const col = this.table.getColumn(event.target.dataset.colId);
     if (col) col.toggleVisibility(event.target.checked);
+  }
+
+  toggleRowExpansion(event) {
+    const rowId = event.currentTarget.dataset.rowId;
+    const row = this.table.getRowModel().rows.find((r) => r.id === rowId);
+    if (row) row.toggleExpanded();
   }
 
   #fetchAndRender() {
@@ -352,6 +375,12 @@ export default class extends Controller {
       const tr = document.createElement("tr");
       tr.className = "border-b transition-colors";
 
+      if (this.expandable) {
+        const th = document.createElement("th");
+        th.className = "h-10 w-10 px-2 align-middle";
+        tr.appendChild(th);
+      }
+
       if (this.selectableValue) {
         const th = document.createElement("th");
         th.className = "h-10 w-10 px-2 align-middle";
@@ -404,12 +433,13 @@ export default class extends Controller {
 
     const rows = this.table.getRowModel().rows;
 
+    const extraCols = (this.selectableValue ? 1 : 0) + (this.expandable ? 1 : 0);
+
     if (rows.length === 0) {
-      const colspan = this.columnsValue.length + (this.selectableValue ? 1 : 0);
       const tr = document.createElement("tr");
       const td = document.createElement("td");
       td.className = "h-24 text-center text-muted-foreground";
-      td.colSpan = colspan;
+      td.colSpan = this.columnsValue.length + extraCols;
       td.textContent = "No results.";
       tr.appendChild(td);
       this.tbodyTarget.replaceChildren(tr);
@@ -421,6 +451,26 @@ export default class extends Controller {
     rows.forEach((row) => {
       const tr = document.createElement("tr");
       tr.className = `border-b transition-colors hover:bg-muted/50${row.getIsSelected() ? " bg-muted/50" : ""}`;
+
+      if (this.expandable) {
+        const td = document.createElement("td");
+        td.className = "w-10 px-2 align-middle";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "inline-flex items-center justify-center rounded-md h-6 w-6 hover:bg-accent hover:text-accent-foreground";
+        btn.dataset.rowId = row.id;
+        btn.dataset.action = "click->ruby-ui--data-table#toggleRowExpansion";
+        btn.setAttribute("aria-label", row.getIsExpanded() ? "Collapse row" : "Expand row");
+
+        const chevron = this.#cloneTemplate("tplChevron");
+        if (chevron) {
+          const svg = chevron.firstElementChild;
+          if (row.getIsExpanded()) svg.classList.add("rotate-90");
+          btn.appendChild(chevron);
+        }
+        td.appendChild(btn);
+        tr.appendChild(td);
+      }
 
       if (this.selectableValue) {
         const td = document.createElement("td");
@@ -449,6 +499,31 @@ export default class extends Controller {
       });
 
       fragment.appendChild(tr);
+
+      if (this.expandable && row.getIsExpanded() && this.hasTplExpandedRowTarget) {
+        const expandedTr = document.createElement("tr");
+        expandedTr.className = "border-b bg-muted/30";
+
+        const expandedTd = document.createElement("td");
+        expandedTd.colSpan = this.columnsValue.length + extraCols;
+        expandedTd.className = "p-0";
+
+        const content = this.tplExpandedRowTarget.content.cloneNode(true);
+        // Populate any [data-field="columnKey"] elements with row.original values
+        content.querySelectorAll("[data-field]").forEach((el) => {
+          const key = el.dataset.field;
+          const value = row.original?.[key];
+          const col = this.table.getColumn(key);
+          const meta = col?.columnDef.meta ?? {};
+          const type = meta.type ?? "text";
+          const renderer = this.constructor.CELL_RENDERERS[type] ?? this.constructor.CELL_RENDERERS.text;
+          el.innerHTML = renderer(value, meta);
+        });
+
+        expandedTd.appendChild(content);
+        expandedTr.appendChild(expandedTd);
+        fragment.appendChild(expandedTr);
+      }
     });
 
     this.tbodyTarget.replaceChildren(fragment);

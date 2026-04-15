@@ -156,6 +156,34 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
+      render Docs::VisualCodeExample.new(title: "With expandable rows", context: self) do
+        <<~RUBY
+          DataTable(
+            data: [
+              {id: 1, name: "Alice Johnson", email: "alice@example.com", department: "Engineering", salary: 95_000, bio: "Ruby developer since 2012. Leads the infra team."},
+              {id: 2, name: "Bob Smith", email: "bob@example.com", department: "Design", salary: 82_000, bio: "Former illustrator turned product designer."},
+              {id: 3, name: "Carol White", email: "carol@example.com", department: "Product", salary: 88_000, bio: "Focuses on growth loops and onboarding."}
+            ],
+            columns: [
+              {key: "name", header: "Name"},
+              {key: "department", header: "Department"},
+              {key: "salary", header: "Salary", type: "currency"},
+              {key: "bio", header: "Bio", visible: false},
+              {key: "email", header: "Email", visible: false}
+            ],
+            options: {enableExpanding: true}
+          ) do
+            DataTableContent()
+            DataTableExpandedRow do
+              div(class: "p-4 bg-muted/20 space-y-2 text-sm") do
+                div { strong { "Email: " }; span(data: {field: "email"}) {} }
+                div { strong { "Bio: " }; span(data: {field: "bio"}) {} }
+              end
+            end
+          end
+        RUBY
+      end
+
       render Docs::VisualCodeExample.new(title: "With column visibility toggle", context: self) do
         <<~RUBY
           DataTable(
@@ -386,6 +414,68 @@ class Views::Docs::DataTable < Views::Base
         plain " hydrates TanStack with the correct initial state. Shared URLs and page reloads restore exact table state."
       }
 
+      # ── Passing TanStack options ─────────────────────────────────────────────
+      Heading(level: 2) { "Passing TanStack options directly" }
+      p {
+        plain "For any TanStack Table feature we haven't wrapped explicitly, use the "
+        code(class: "font-mono text-xs") { "options:" }
+        plain " prop. Whatever you pass is spread into "
+        code(class: "font-mono text-xs") { "createTable()" }
+        plain " on the Stimulus side. Any JSON-serializable option works — "
+        code(class: "font-mono text-xs") { "enableExpanding" }
+        plain ", "
+        code(class: "font-mono text-xs") { "enableColumnResizing" }
+        plain ", "
+        code(class: "font-mono text-xs") { "enableSubRowSelection" }
+        plain ", "
+        code(class: "font-mono text-xs") { "autoResetPageIndex" }
+        plain ", etc."
+      }
+      p(class: "mt-2") {
+        plain "Options that are "
+        strong { "functions" }
+        plain " (like "
+        code(class: "font-mono text-xs") { "getRowId" }
+        plain " or "
+        code(class: "font-mono text-xs") { "accessorFn" }
+        plain ") cannot be serialized to JSON — those require editing the controller directly."
+      }
+      Codeblock(<<~RUBY, syntax: :ruby)
+        DataTable(
+          data: @rows,
+          columns: columns,
+          options: {
+            enableExpanding: true,
+            enableColumnResizing: true,
+            autoResetPageIndex: false
+          }
+        ) do
+          DataTableContent()
+        end
+      RUBY
+
+      # ── Expandable rows ──────────────────────────────────────────────────────
+      Heading(level: 2) { "Expandable rows" }
+      p {
+        plain "Set "
+        code(class: "font-mono text-xs") { "options: {enableExpanding: true}" }
+        plain " and nest a "
+        code(class: "font-mono text-xs") { "DataTableExpandedRow" }
+        plain " block. The component renders your markup as a standard HTML "
+        code(class: "font-mono text-xs") { "<template>" }
+        plain " — Stimulus clones it below each expanded row and fills in elements "
+        plain "marked with "
+        code(class: "font-mono text-xs") { "data-field=\"columnKey\"" }
+        plain " using the row's values (respecting the column's "
+        code(class: "font-mono text-xs") { "type:" }
+        plain " renderer)."
+      }
+      p(class: "mt-2") {
+        plain "You write Phlex — no JavaScript. Columns referenced in the expanded view can be hidden from the main table with "
+        code(class: "font-mono text-xs") { "visible: false" }
+        plain " so they still exist as data sources without taking space in the table body."
+      }
+
       # ── Column visibility ────────────────────────────────────────────────────
       Heading(level: 2) { "Column visibility" }
       p {
@@ -517,6 +607,7 @@ class Views::Docs::DataTable < Views::Base
       ::Docs::ComponentStruct.new(name: "DataTableToolbar", source: "#{base}/data_table_toolbar.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableBulkActions", source: "#{base}/data_table_bulk_actions.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableColumnToggle", source: "#{base}/data_table_column_toggle.rb", built_using: :phlex),
+      ::Docs::ComponentStruct.new(name: "DataTableExpandedRow", source: "#{base}/data_table_expanded_row.rb", built_using: :phlex),
       ::Docs::ComponentStruct.new(name: "DataTableController", source: "#{base}/data_table_controller.js", built_using: :stimulus)
     ]
   end

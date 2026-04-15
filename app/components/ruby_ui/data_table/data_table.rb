@@ -12,9 +12,11 @@ module RubyUI
     # @param direction [String, nil] "asc" or "desc"
     # @param search [String, nil] initial search query
     # @param selectable [Boolean] enable row selection with checkboxes
+    # @param options [Hash] extra TanStack Table options spread into createTable()
+    #   — any JSON-serializable option (enableExpanding, enableColumnResizing, etc.)
     def initialize(data: [], columns: [], src: nil, row_count: 0,
       page: 1, per_page: 10, sort: nil, direction: nil, search: nil,
-      selectable: false, **attrs)
+      selectable: false, options: {}, **attrs)
       @data = data
       @columns = columns
       @src = src
@@ -25,6 +27,7 @@ module RubyUI
       @direction = direction
       @search = search
       @selectable = selectable
+      @options = options
       super(**attrs)
     end
 
@@ -51,7 +54,8 @@ module RubyUI
           ruby_ui__data_table_sorting_value: sorting.to_json,
           ruby_ui__data_table_search_value: @search.to_s,
           ruby_ui__data_table_selectable_value: @selectable,
-          ruby_ui__data_table_column_visibility_value: column_visibility.to_json
+          ruby_ui__data_table_column_visibility_value: column_visibility.to_json,
+          ruby_ui__data_table_options_value: @options.to_json
         }
       }
     end
