@@ -10,8 +10,9 @@ module RubyUI
     # @param per_page [Integer] rows per page
     # @param sort [String, nil] sorted column key
     # @param direction [String, nil] "asc" or "desc"
+    # @param search [String, nil] initial search query
     def initialize(data: [], columns: [], src: nil, row_count: 0,
-                   page: 1, per_page: 10, sort: nil, direction: nil, **attrs)
+                   page: 1, per_page: 10, sort: nil, direction: nil, search: nil, **attrs)
       @data = data
       @columns = columns
       @src = src
@@ -20,6 +21,7 @@ module RubyUI
       @per_page = per_page
       @sort = sort
       @direction = direction
+      @search = search
       super(**attrs)
     end
 
@@ -40,7 +42,8 @@ module RubyUI
           ruby_ui__data_table_columns_value: @columns.to_json,
           ruby_ui__data_table_row_count_value: @row_count,
           ruby_ui__data_table_pagination_value: {pageIndex: @page - 1, pageSize: @per_page}.to_json,
-          ruby_ui__data_table_sorting_value: sorting.to_json
+          ruby_ui__data_table_sorting_value: sorting.to_json,
+          ruby_ui__data_table_search_value: @search.to_s
         }
       }
     end
