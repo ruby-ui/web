@@ -39,7 +39,7 @@ class Views::Docs::DataTable < Views::Base
 
       # ── Full-Featured Demo ──────────────────────────────────────────────────
       Heading(level: 2) { "Demo" }
-      p(class: "text-sm text-muted-foreground -mt-6") {
+      p(class: "-mt-6") {
         plain "100 employees. Pagination, column sorting, free-text search, and configurable rows per page. "
         plain "The URL reflects state — share it or reload to restore."
       }
@@ -191,7 +191,7 @@ class Views::Docs::DataTable < Views::Base
 
       # ── Overview ────────────────────────────────────────────────────────────
       Heading(level: 2) { "Overview" }
-      p(class: "text-sm text-muted-foreground") {
+      p {
         plain "DataTable is headless — it has no built-in visual chrome. It wires "
         a(href: "https://tanstack.com/table/latest/docs/vanilla", target: "_blank", class: "underline underline-offset-2") { "TanStack Table Core (vanilla)" }
         plain " — a framework-agnostic state machine — to a Stimulus controller that manages state, "
@@ -211,7 +211,7 @@ class Views::Docs::DataTable < Views::Base
 
       # ── Installation ────────────────────────────────────────────────────────
       Heading(level: 2) { "Installation" }
-      p(class: "text-sm text-muted-foreground") {
+      p {
         plain "DataTable requires "
         code(class: "font-mono text-xs") { "@tanstack/table-core" }
         plain " in addition to the standard ruby_ui setup."
@@ -224,28 +224,24 @@ class Views::Docs::DataTable < Views::Base
 
       # ── How it works ────────────────────────────────────────────────────────
       Heading(level: 2) { "How it works" }
-      p(class: "text-sm text-muted-foreground") {
-        plain "All data operations are "
+      p {
+        plain "When "
+        code(class: "font-mono text-xs") { "src:" }
+        plain " is provided, all operations are "
         strong { "server-side" }
-        plain ". TanStack is configured with "
-        code(class: "font-mono text-xs") { "manualPagination: true" }
-        plain ", "
-        code(class: "font-mono text-xs") { "manualSorting: true" }
-        plain ", and "
-        code(class: "font-mono text-xs") { "manualFiltering: true" }
-        plain ". It never slices or sorts the data array — it only tracks state "
-        plain "and fires callbacks ("
-        code(class: "font-mono text-xs") { "onPaginationChange" }
-        plain ", "
-        code(class: "font-mono text-xs") { "onSortingChange" }
-        plain "). The Stimulus controller fetches a fresh JSON page from Rails and calls "
-        code(class: "font-mono text-xs") { "table.setOptions({data, rowCount})" }
-        plain " to update what renders."
+        plain " — TanStack tracks state and the Stimulus controller fetches a fresh JSON page from Rails on every change. "
+        plain "Without "
+        code(class: "font-mono text-xs") { "src:" }
+        plain ", sorting works "
+        strong { "client-side" }
+        plain " via TanStack's "
+        code(class: "font-mono text-xs") { "getSortedRowModel()" }
+        plain " — useful for static data demos or small datasets that don't need a server."
       }
 
       # ── Rails controller setup ───────────────────────────────────────────────
       Heading(level: 2) { "Rails controller setup" }
-      p(class: "text-sm text-muted-foreground") {
+      p {
         plain "Your endpoint responds to both HTML (initial load) and JSON (subsequent fetches). "
         plain "It accepts params: "
         code(class: "font-mono text-xs") { "page" }
@@ -282,7 +278,7 @@ class Views::Docs::DataTable < Views::Base
 
       # ── Cell types ───────────────────────────────────────────────────────────
       Heading(level: 2) { "Cell types" }
-      p(class: "text-sm text-muted-foreground") {
+      p {
         plain "Each column accepts an optional "
         code(class: "font-mono text-xs") { "type:" }
         plain " field. Built-in types: "
@@ -302,7 +298,7 @@ class Views::Docs::DataTable < Views::Base
 
       # ── URL state ────────────────────────────────────────────────────────────
       Heading(level: 2) { "URL state" }
-      p(class: "text-sm text-muted-foreground") {
+      p {
         plain "The URL updates via "
         code(class: "font-mono text-xs") { "history.replaceState" }
         plain " after every interaction. On page load, your Rails action reads those params "
@@ -323,14 +319,69 @@ class Views::Docs::DataTable < Views::Base
         plain " hydrates TanStack with the correct initial state. Shared URLs and page reloads restore exact table state."
       }
 
+      # ── Row selection ────────────────────────────────────────────────────────
+      Heading(level: 2) { "Row selection" }
+      p {
+        plain "Add "
+        code(class: "font-mono text-xs") { "selectable: true" }
+        plain " to enable checkboxes. Pair with "
+        code(class: "font-mono text-xs") { "DataTableBulkActions" }
+        plain " inside "
+        code(class: "font-mono text-xs") { "DataTableToolbar" }
+        plain " to expose bulk action buttons when rows are checked."
+      }
+      p(class: "mt-2") {
+        plain "The "
+        code(class: "font-mono text-xs") { "DataTableBulkActions" }
+        plain " container gains two data attributes as selection changes:"
+      }
+      ul(class: "list-disc list-inside space-y-1 mt-2") do
+        li {
+          code(class: "font-mono text-xs") { "data-selected-ids" }
+          plain " — JSON array of selected row IDs (uses the "
+          code(class: "font-mono text-xs") { "id" }
+          plain " field from each data row)."
+        }
+        li {
+          code(class: "font-mono text-xs") { "data-selected-count" }
+          plain " — integer count of currently selected rows."
+        }
+      end
+      p(class: "mt-2") {
+        plain "A "
+        code(class: "font-mono text-xs") { "ruby-ui--data-table:selection-change" }
+        plain " custom event is dispatched on the root element with "
+        code(class: "font-mono text-xs") { "{ count, ids }" }
+        plain " in "
+        code(class: "font-mono text-xs") { "event.detail" }
+        plain ". Use it to wire Turbo actions or custom JS."
+      }
+      p(class: "mt-2") {
+        plain "To read selected IDs from an action button:"
+      }
+      Codeblock(<<~JS, syntax: :javascript)
+        // Inside any click handler within the DataTable wrapper:
+        const bulkBar = event.target.closest("[data-controller]")
+          .querySelector("[data-ruby-ui--data-table-target='bulkActions']")
+        const ids = JSON.parse(bulkBar.dataset.selectedIds) // => [1, 3, 5]
+
+        // Or listen globally:
+        document.addEventListener("ruby-ui--data-table:selection-change", (e) => {
+          console.log(e.detail.count, e.detail.ids)
+        })
+      JS
+      p(class: "mt-2") {
+        plain "Selection is automatically cleared when the page, sort column, search query, or rows-per-page changes."
+      }
+
       # ── TanStack reference ───────────────────────────────────────────────────
       Heading(level: 2) { "TanStack Table reference" }
-      p(class: "text-sm text-muted-foreground") {
+      p {
         plain "This component uses the "
         a(href: "https://tanstack.com/table/latest/docs/vanilla", target: "_blank", class: "underline underline-offset-2") { "TanStack Table vanilla adapter" }
         plain ". Useful docs for customisation:"
       }
-      ul(class: "text-sm text-muted-foreground list-disc list-inside space-y-1 mt-2") do
+      ul(class: "list-disc list-inside space-y-1 mt-2") do
         li {
           a(href: "https://tanstack.com/table/latest/docs/api/core/table", target: "_blank", class: "underline underline-offset-2") { "Table instance API" }
           plain " — all options passed to "

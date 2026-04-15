@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { createTable, getCoreRowModel } from "@tanstack/table-core"
+import { createTable, getCoreRowModel, getSortedRowModel } from "@tanstack/table-core"
 
 export default class extends Controller {
   static targets = ["thead", "tbody", "prevButton", "nextButton", "pageIndicator", "search", "perPage", "bulkActions"]
@@ -18,6 +18,8 @@ export default class extends Controller {
     this.searchTimeout = null
     this.rowSelection = {}
 
+    this.hasServer = this.hasSrcValue && !!this.srcValue
+
     const columnDefs = this.columnsValue.map((c) => ({
       id: c.key,
       accessorKey: c.key,
@@ -29,10 +31,11 @@ export default class extends Controller {
       data: this.dataValue,
       columns: columnDefs,
       getCoreRowModel: getCoreRowModel(),
+      getSortedRowModel: this.hasServer ? undefined : getSortedRowModel(),
       renderFallbackValue: null,
-      manualPagination: true,
-      manualSorting: true,
-      manualFiltering: true,
+      manualPagination: this.hasServer,
+      manualSorting: this.hasServer,
+      manualFiltering: this.hasServer,
       rowCount: this.rowCountValue,
       enableRowSelection: this.selectableValue,
       enableMultiRowSelection: true,
@@ -69,7 +72,11 @@ export default class extends Controller {
           rowSelection: {}
         }
         this.table.setOptions((p) => ({ ...p, state: this.tableState }))
-        this.#fetchAndRender()
+        if (this.hasServer) {
+          this.#fetchAndRender()
+        } else {
+          this.render()
+        }
       },
       onRowSelectionChange: (updater) => {
         const next = typeof updater === "function" ? updater(this.tableState.rowSelection) : updater
