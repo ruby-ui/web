@@ -11,6 +11,7 @@ export default class extends Controller {
   }
 
   connect() {
+    // Step 1: create with required stubs
     this.table = createTable({
       data: this.dataValue,
       columns: this.columnsValue.map((c) => ({
@@ -19,8 +20,24 @@ export default class extends Controller {
         header: c.header
       })),
       getCoreRowModel: getCoreRowModel(),
-      renderFallbackValue: null
+      renderFallbackValue: null,
+      state: {},
+      onStateChange: () => {}
     })
+
+    // Step 2: seed local state from TanStack's fully-initialized initialState
+    this.tableState = this.table.initialState
+
+    // Step 3: wire proper state management
+    this.table.setOptions((prev) => ({
+      ...prev,
+      state: this.tableState,
+      onStateChange: (updater) => {
+        this.tableState = typeof updater === "function" ? updater(this.tableState) : updater
+        this.table.setOptions((p) => ({ ...p, state: this.tableState }))
+        this.render()
+      }
+    }))
 
     this.render()
   }
