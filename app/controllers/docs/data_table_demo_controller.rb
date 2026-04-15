@@ -38,7 +38,6 @@ module Docs
     def index
       employees = EMPLOYEES.dup
 
-      # Search
       if params[:search].present?
         query = params[:search].downcase
         employees = employees.select do |e|
@@ -46,7 +45,6 @@ module Docs
         end
       end
 
-      # Sort
       if params[:sort].present?
         col = params[:sort].to_sym
         employees = employees.sort_by { |e| e.send(col).to_s.downcase } rescue employees
@@ -62,18 +60,28 @@ module Docs
       offset = (@current_page - 1) * @per_page
       @employees = employees.slice(offset, @per_page) || []
 
-      @sort = params[:sort]
-      @direction = params[:direction]
-
-      render Views::Docs::DataTableDemo::Index.new(
-        employees: @employees,
-        current_page: @current_page,
-        total_pages: @total_pages,
-        total_count: @total_count,
-        per_page: @per_page,
-        sort: @sort,
-        direction: @direction
-      )
+      respond_to do |format|
+        format.html do
+          render Views::Docs::DataTableDemo::Index.new(
+            employees: @employees,
+            current_page: @current_page,
+            total_pages: @total_pages,
+            total_count: @total_count,
+            per_page: @per_page,
+            sort: params[:sort],
+            direction: params[:direction]
+          )
+        end
+        format.json do
+          render json: {
+            data: @employees.map { |e|
+              {id: e.id, name: e.name, email: e.email, department: e.department,
+               status: e.status, salary: e.salary}
+            },
+            row_count: @total_count
+          }
+        end
+      end
     end
   end
 end
