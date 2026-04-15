@@ -8,18 +8,22 @@ export default class extends Controller {
     data: { type: Array, default: [] },
     columns: { type: Array, default: [] },
     rowCount: { type: Number, default: 0 },
-    pagination: { type: Object, default: { pageIndex: 0, pageSize: 10 } }
+    pagination: { type: Object, default: { pageIndex: 0, pageSize: 10 } },
+    sorting: { type: Array, default: [] }
   }
 
   connect() {
     this.table = createTable({
       data: this.dataValue,
-      columns: this.dataValue.length > 0
-        ? this.columnsValue.map((c) => ({ id: c.key, accessorKey: c.key, header: c.header }))
-        : [],
+      columns: this.columnsValue.map((c) => ({
+        id: c.key,
+        accessorKey: c.key,
+        header: c.header
+      })),
       getCoreRowModel: getCoreRowModel(),
       renderFallbackValue: null,
       manualPagination: true,
+      manualSorting: true,
       rowCount: this.rowCountValue,
       state: {},
       onStateChange: () => {}
@@ -27,7 +31,8 @@ export default class extends Controller {
 
     this.tableState = {
       ...this.table.initialState,
-      pagination: this.paginationValue
+      pagination: this.paginationValue,
+      sorting: this.sortingValue
     }
 
     this.table.setOptions((prev) => ({
@@ -36,6 +41,16 @@ export default class extends Controller {
       onPaginationChange: (updater) => {
         const next = typeof updater === "function" ? updater(this.tableState.pagination) : updater
         this.tableState = { ...this.tableState, pagination: next }
+        this.table.setOptions((p) => ({ ...p, state: this.tableState }))
+        this.#fetchAndRender()
+      },
+      onSortingChange: (updater) => {
+        const next = typeof updater === "function" ? updater(this.tableState.sorting) : updater
+        this.tableState = {
+          ...this.tableState,
+          sorting: next,
+          pagination: { ...this.tableState.pagination, pageIndex: 0 }
+        }
         this.table.setOptions((p) => ({ ...p, state: this.tableState }))
         this.#fetchAndRender()
       },
@@ -50,13 +65,8 @@ export default class extends Controller {
     this.render()
   }
 
-  previousPage() {
-    this.table.previousPage()
-  }
-
-  nextPage() {
-    this.table.nextPage()
-  }
+  previousPage() { this.table.previousPage() }
+  nextPage() { this.table.nextPage() }
 
   render() {
     this.#renderHeaders()
@@ -85,6 +95,13 @@ export default class extends Controller {
     const { pageIndex, pageSize } = this.tableState.pagination
     url.searchParams.set("page", pageIndex + 1)
     url.searchParams.set("per_page", pageSize)
+
+    if (this.tableState.sorting.length > 0) {
+      const { id, desc } = this.tableState.sorting[0]
+      url.searchParams.set("sort", id)
+      url.searchParams.set("direction", desc ? "desc" : "asc")
+    }
+
     return url.toString()
   }
 
@@ -95,14 +112,16 @@ export default class extends Controller {
       this.pageIndicatorTarget.textContent = `Page ${pageIndex + 1} of ${pageCount}`
     }
     if (this.hasPrevButtonTarget) {
-      this.prevButtonTarget.disabled = !this.table.getCanPreviousPage()
-      this.prevButtonTarget.classList.toggle("opacity-50", !this.table.getCanPreviousPage())
-      this.prevButtonTarget.classList.toggle("pointer-events-none", !this.table.getCanPreviousPage())
+      const can = this.table.getCanPreviousPage()
+      this.prevButtonTarget.disabled = !can
+      this.prevButtonTarget.classList.toggle("opacity-50", !can)
+      this.prevButtonTarget.classList.toggle("pointer-events-none", !can)
     }
     if (this.hasNextButtonTarget) {
-      this.nextButtonTarget.disabled = !this.table.getCanNextPage()
-      this.nextButtonTarget.classList.toggle("opacity-50", !this.table.getCanNextPage())
-      this.nextButtonTarget.classList.toggle("pointer-events-none", !this.table.getCanNextPage())
+      const can = this.table.getCanNextPage()
+      this.nextButtonTarget.disabled = !can
+      this.nextButtonTarget.classList.toggle("opacity-50", !can)
+      this.nextButtonTarget.classList.toggle("pointer-events-none", !can)
     }
   }
 
@@ -112,13 +131,40 @@ export default class extends Controller {
     const html = this.table.getHeaderGroups().map((group) => {
       const cells = group.headers.map((header) => {
         const def = header.column.columnDef.header
-        const label = typeof def === "function" ? def(header.getContext()) : def
-        return `<th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground">${escapeHtml(label ?? "")}</th>`
+        const label = typeof def === "function" ? def(header.getContext()) : (def ?? "")
+        const sorted = header.column.getIsSorted() // false | "asc" | "desc"
+        const canSort = header.column.getCanSort()
+
+        if (!canSort) {
+          return `<th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground">${escapeHtml(label)}</th>`
+        }
+
+        const icon = sorted === "asc"
+          ? `<svg class="ml-1 inline-block w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>`
+          : sorted === "desc"
+          ? `<svg class="ml-1 inline-block w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>`
+          : `<svg class="ml-1 inline-block w-3 h-3 opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></svg>`
+
+        return `<th class="h-10 px-2 text-left align-middle font-medium text-muted-foreground">
+          <button class="flex items-center gap-1 hover:text-foreground transition-colors" data-sort-col="${header.column.id}">
+            ${escapeHtml(label)}${icon}
+          </button>
+        </th>`
       }).join("")
       return `<tr class="border-b transition-colors">${cells}</tr>`
     }).join("")
 
     this.theadTarget.innerHTML = html
+
+    // Attach sort handlers after render (avoid inline onclick with private methods)
+    this.theadTarget.querySelectorAll("[data-sort-col]").forEach((btn) => {
+      btn.addEventListener("click", () => this.#sortColumn(btn.dataset.sortCol))
+    })
+  }
+
+  #sortColumn(colId) {
+    const col = this.table.getColumn(colId)
+    if (col) col.toggleSorting()
   }
 
   #renderRows() {
