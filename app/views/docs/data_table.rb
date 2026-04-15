@@ -34,7 +34,7 @@ class Views::Docs::DataTable < Views::Base
     div(class: "max-w-2xl mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(
         title: component,
-        description: "A headless, server-side data table powered by TanStack Table Core and Hotwire. Pagination, sorting, and search all hit the Rails backend — no client-side dataset."
+        description: "A headless data table built on TanStack Table Core and Hotwire. Supports server-side pagination, sorting, and search; row selection with bulk actions; column visibility; expandable rows; custom cell renderers; URL state sync; and passing any TanStack option directly."
       )
 
       # ── Full-Featured Demo ──────────────────────────────────────────────────
@@ -49,65 +49,55 @@ class Views::Docs::DataTable < Views::Base
         plain "Click the chevron to expand a row. Check rows to reveal bulk actions."
       }
 
-      div(class: "rounded-lg border p-6") do
-        DataTable(
-          src: docs_data_table_demo_path,
-          data: @initial_data,
-          columns: COLUMNS,
-          row_count: @total_count,
-          page: @page,
-          per_page: @per_page,
-          sort: @sort,
-          direction: @direction,
-          search: @search,
-          selectable: true,
-          options: {
-            enableExpanding: true,
-            enableMultiSort: true,
-            autoResetPageIndex: false
-          }
-        ) do
-          DataTableToolbar do
-            div(class: "flex items-center gap-2") do
-              DataTableSearch(placeholder: "Search by name or email...")
-              DataTableBulkActions do
-                span(class: "text-sm text-muted-foreground", data: {selection_count: true}) {}
-                Button(variant: :destructive, size: :sm) { "Delete" }
-                Button(variant: :outline, size: :sm) { "Export CSV" }
-                Button(variant: :ghost, size: :sm) { "Clear" }
+      render Docs::VisualCodeExample.new(title: "Full-featured", context: self) do
+        <<~RUBY
+          DataTable(
+            src: docs_data_table_demo_path,
+            data: @initial_data,
+            columns: COLUMNS,
+            row_count: @total_count,
+            page: @page,
+            per_page: @per_page,
+            sort: @sort,
+            direction: @direction,
+            search: @search,
+            selectable: true,
+            options: {
+              enableExpanding: true,
+              enableMultiSort: true,
+              autoResetPageIndex: false
+            }
+          ) do
+            DataTableToolbar do
+              div(class: "flex items-center gap-2") do
+                DataTableSearch(placeholder: "Search by name or email...")
+                DataTableBulkActions do
+                  span(class: "text-sm text-muted-foreground", data: {selection_count: true}) {}
+                  Button(variant: :destructive, size: :sm) { "Delete" }
+                  Button(variant: :outline, size: :sm) { "Export CSV" }
+                  Button(variant: :ghost, size: :sm) { "Clear" }
+                end
+              end
+              div(class: "flex items-center gap-2") do
+                DataTableColumnToggle()
+                DataTablePerPage(options: [5, 10, 25, 50], current: @per_page)
               end
             end
-            div(class: "flex items-center gap-2") do
-              DataTableColumnToggle()
-              DataTablePerPage(options: [5, 10, 25, 50], current: @per_page)
+            DataTableContent()
+            DataTableExpandedRow do
+              div(class: "p-4 bg-muted/20 space-y-2 text-sm") do
+                div(class: "flex gap-2") { strong { "Employee ID: " }; span(data: {field: "id"}) {} }
+                div(class: "flex gap-2") { strong { "Full name: " }; span(data: {field: "name"}) {} }
+                div(class: "flex gap-2") { strong { "Email: " }; span(data: {field: "email"}) {} }
+                div(class: "flex gap-2") { strong { "Status: " }; span(data: {field: "status"}) {} }
+              end
             end
+            DataTablePagination(
+              current_page: @page,
+              total_pages: [(@total_count.to_f / @per_page).ceil, 1].max
+            )
           end
-          DataTableContent()
-          DataTableExpandedRow do
-            div(class: "p-4 bg-muted/20 space-y-2 text-sm") do
-              div(class: "flex gap-2") do
-                strong { "Employee ID: " }
-                span(data: {field: "id"}) {}
-              end
-              div(class: "flex gap-2") do
-                strong { "Full name: " }
-                span(data: {field: "name"}) {}
-              end
-              div(class: "flex gap-2") do
-                strong { "Email: " }
-                span(data: {field: "email"}) {}
-              end
-              div(class: "flex gap-2") do
-                strong { "Status: " }
-                span(data: {field: "status"}) {}
-              end
-            end
-          end
-          DataTablePagination(
-            current_page: @page,
-            total_pages: [(@total_count.to_f / @per_page).ceil, 1].max
-          )
-        end
+        RUBY
       end
 
       # ── Usage ──────────────────────────────────────────────────────────────
@@ -416,22 +406,104 @@ class Views::Docs::DataTable < Views::Base
       # ── Cell types ───────────────────────────────────────────────────────────
       Heading(level: 2) { "Cell types" }
       p {
-        plain "Each column accepts an optional "
+        plain "Cell renderers are a "
+        strong { "ruby_ui convention" }
+        plain ", not a TanStack feature. TanStack only accepts arbitrary "
+        code(class: "font-mono text-xs") { "meta" }
+        plain " on column definitions — we use that field to carry a "
         code(class: "font-mono text-xs") { "type:" }
-        plain " field. Built-in types: "
-        code(class: "font-mono text-xs") { "text" }
-        plain " (default — HTML-escaped string), "
-        code(class: "font-mono text-xs") { "badge" }
-        plain " (colored pill — pass a "
-        code(class: "font-mono text-xs") { "colors:" }
-        plain " hash mapping values to Tailwind classes), "
-        code(class: "font-mono text-xs") { "currency" }
-        plain " (USD, no decimals via "
-        code(class: "font-mono text-xs") { "Intl.NumberFormat" }
-        plain "), "
-        code(class: "font-mono text-xs") { "date" }
-        plain " (locale date string)."
+        plain " tag that the Stimulus controller maps to a formatter function in "
+        code(class: "font-mono text-xs") { "CELL_RENDERERS" }
+        plain ". Add your own by editing the controller."
       }
+      p(class: "mt-2") { plain "Built-in renderers:" }
+      ul(class: "list-disc list-inside space-y-1 mt-2") do
+        li {
+          code(class: "font-mono text-xs") { "text" }
+          plain " (default) — HTML-escaped string"
+        }
+        li {
+          code(class: "font-mono text-xs") { "badge" }
+          plain " — colored pill; pass "
+          code(class: "font-mono text-xs") { 'colors: {"Active" => "bg-green-100 text-green-800"}' }
+        }
+        li {
+          code(class: "font-mono text-xs") { "currency" }
+          plain " — "
+          code(class: "font-mono text-xs") { "Intl.NumberFormat" }
+          plain " USD by default; override with "
+          code(class: "font-mono text-xs") { 'currency: "BRL"' }
+        }
+        li {
+          code(class: "font-mono text-xs") { "number" }
+          plain " — thousands-separated integer"
+        }
+        li {
+          code(class: "font-mono text-xs") { "percent" }
+          plain " — accepts 0.25 → "
+          code(class: "font-mono text-xs") { "25%" }
+          plain "; optional "
+          code(class: "font-mono text-xs") { "digits: 2" }
+        }
+        li {
+          code(class: "font-mono text-xs") { "date" }
+          plain " — "
+          code(class: "font-mono text-xs") { "toLocaleDateString()" }
+          plain " from any parseable date string"
+        }
+        li {
+          code(class: "font-mono text-xs") { "boolean" }
+          plain " — ✓ for true, — for false"
+        }
+        li {
+          code(class: "font-mono text-xs") { "link" }
+          plain " — renders an "
+          code(class: "font-mono text-xs") { "<a>" }
+          plain ". Use "
+          code(class: "font-mono text-xs") { 'href: "/users/{value}"' }
+          plain " (the "
+          code(class: "font-mono text-xs") { "{value}" }
+          plain " placeholder is replaced with the cell value), "
+          code(class: "font-mono text-xs") { "label:" }
+          plain " and "
+          code(class: "font-mono text-xs") { "target:" }
+        }
+        li {
+          code(class: "font-mono text-xs") { "truncate" }
+          plain " — clips long strings with an ellipsis; optional "
+          code(class: "font-mono text-xs") { "max: 40" }
+          plain ". Full value shown on hover."
+        }
+      end
+
+      render Docs::VisualCodeExample.new(title: "All built-in cell types", context: self) do
+        <<~RUBY
+          DataTable(
+            data: [
+              {id: 1, title: "Fix login bug that happens under concurrent load on Tuesdays", done: true,  priority: "high",   growth: 0.25, due: "2026-05-14", link_to: "1", views: 12_430, budget: 45_000},
+              {id: 2, title: "Ship dashboard v2",                                              done: false, priority: "medium", growth: 0.08, due: "2026-06-01", link_to: "2", views: 850,    budget: 12_000},
+              {id: 3, title: "Write migration docs",                                           done: false, priority: "low",    growth: -0.03, due: "2026-06-20", link_to: "3", views: 215,    budget: 3_500}
+            ],
+            columns: [
+              {key: "id", header: "#"},
+              {key: "title", header: "Title", type: "truncate", max: 30},
+              {key: "done", header: "Done", type: "boolean"},
+              {key: "priority", header: "Priority", type: "badge", colors: {
+                "high"   => "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+                "medium" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+                "low"    => "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
+              }},
+              {key: "growth", header: "Growth", type: "percent", digits: 1},
+              {key: "views", header: "Views", type: "number"},
+              {key: "budget", header: "Budget", type: "currency"},
+              {key: "due", header: "Due", type: "date"},
+              {key: "link_to", header: "", type: "link", href: "/tasks/{value}", label: "Open →"}
+            ]
+          ) do
+            DataTableContent()
+          end
+        RUBY
+      end
 
       # ── URL state ────────────────────────────────────────────────────────────
       Heading(level: 2) { "URL state" }
@@ -454,6 +526,11 @@ class Views::Docs::DataTable < Views::Base
         plain " component serializes them as Stimulus values so "
         code(class: "font-mono text-xs") { "connect()" }
         plain " hydrates TanStack with the correct initial state. Shared URLs and page reloads restore exact table state."
+      }
+      p(class: "mt-2") {
+        plain "Disable URL sync with "
+        code(class: "font-mono text-xs") { "sync_url: false" }
+        plain " if you want the table to fetch new pages without touching the browser URL — useful for embedded tables or widgets where the URL belongs to the host page."
       }
 
       # ── Passing TanStack options ─────────────────────────────────────────────

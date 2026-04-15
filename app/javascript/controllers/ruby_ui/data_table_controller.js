@@ -33,6 +33,7 @@ export default class extends Controller {
     sorting: { type: Array, default: [] },
     search: { type: String, default: "" },
     selectable: { type: Boolean, default: false },
+    syncUrl: { type: Boolean, default: true },
     columnVisibility: { type: Object, default: {} },
     options: { type: Object, default: {} },
   };
@@ -271,6 +272,7 @@ export default class extends Controller {
 
   #syncURL() {
     if (!this.hasSrcValue || !this.srcValue) return;
+    if (!this.syncUrlValue) return;
     history.replaceState(null, "", this.#buildURL());
   }
 
@@ -540,8 +542,7 @@ export default class extends Controller {
 
     badge: (value, meta) => {
       const colors = meta?.colors ?? {};
-      const colorClass =
-        colors[value] ?? "bg-secondary text-secondary-foreground";
+      const colorClass = colors[value] ?? "bg-secondary text-secondary-foreground";
       return `<span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${colorClass}">${escapeHtml(value ?? "")}</span>`;
     },
 
@@ -551,13 +552,52 @@ export default class extends Controller {
       return isNaN(d.getTime()) ? escapeHtml(value) : d.toLocaleDateString();
     },
 
-    currency: (value) => {
+    currency: (value, meta) => {
       if (value == null || value === "") return "";
+      const currency = meta?.currency ?? "USD";
       return new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "USD",
+        currency,
         maximumFractionDigits: 0,
       }).format(Number(value));
+    },
+
+    number: (value) => {
+      if (value == null || value === "") return "";
+      return new Intl.NumberFormat("en-US").format(Number(value));
+    },
+
+    percent: (value, meta) => {
+      if (value == null || value === "") return "";
+      const digits = meta?.digits ?? 0;
+      return new Intl.NumberFormat("en-US", {
+        style: "percent",
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits,
+      }).format(Number(value));
+    },
+
+    boolean: (value) => {
+      if (value === true) return `<span class="text-green-600 dark:text-green-400">✓</span>`;
+      if (value === false) return `<span class="text-muted-foreground">—</span>`;
+      return "";
+    },
+
+    link: (value, meta) => {
+      if (!value) return "";
+      const href = meta?.href
+        ? meta.href.replaceAll("{value}", encodeURIComponent(value))
+        : escapeHtml(value);
+      const label = meta?.label ?? value;
+      return `<a href="${escapeHtml(href)}" class="underline underline-offset-2 hover:text-primary" target="${meta?.target ?? "_self"}">${escapeHtml(label)}</a>`;
+    },
+
+    truncate: (value, meta) => {
+      if (value == null) return "";
+      const max = meta?.max ?? 40;
+      const str = String(value);
+      const truncated = str.length > max ? str.slice(0, max - 1) + "…" : str;
+      return `<span title="${escapeHtml(str)}">${escapeHtml(truncated)}</span>`;
     },
   };
 }
