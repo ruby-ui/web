@@ -239,6 +239,49 @@ class Views::Docs::DataTable < Views::Base
         plain " — useful for static data demos or small datasets that don't need a server."
       }
 
+      Heading(level: 3) { "When to use this vs. Turbo Frame" }
+      p {
+        plain "This component is a "
+        strong { "conscious hybrid" }
+        plain ": Rails processes the data, TanStack manages rich client-side UI state. "
+        plain "It is not pure Hotwire — the Stimulus controller renders "
+        code(class: "font-mono text-xs") { "<tbody>" }
+        plain " from JSON, not from server-rendered HTML."
+      }
+      p(class: "mt-2") {
+        plain "If you only need sorting, filtering, and pagination — "
+        strong { "Turbo Frame is simpler and more Rails" }
+        plain ". The server renders HTML fragments and Turbo swaps them. No TanStack, no JSON endpoint, no client-side state."
+      }
+      p(class: "mt-2") {
+        plain "Use this DataTable component when you need:"
+      }
+      ul(class: "list-disc list-inside space-y-1 mt-2") do
+        li { plain "Row selection with bulk actions (checkboxes that survive pagination)" }
+        li { plain "Rich cell renderers (badge, currency, date) without Rails partials per cell" }
+        li { plain "Client-side sort on static datasets (no server roundtrip)" }
+        li { plain "Future: column resizing, virtualization, row expansion — features Turbo Frame cannot provide" }
+      end
+
+      Heading(level: 3) { "HTML templates" }
+      p {
+        plain "UI elements like sort icons and checkboxes are rendered by Phlex as standard "
+        a(href: "https://html.spec.whatwg.org/multipage/scripting.html#the-template-element", target: "_blank", class: "underline underline-offset-2") { "HTML <template> elements" }
+        plain " (W3C spec, part of Web Components). "
+        plain "The browser parses them but doesn't render or execute them. "
+        plain "Stimulus clones them via "
+        code(class: "font-mono text-xs") { "template.content.cloneNode(true)" }
+        plain " when building the table DOM. "
+        plain "This keeps all markup in Ruby — no SVG or HTML strings inside JavaScript."
+      }
+      p(class: "mt-2") {
+        plain "Turbo itself uses this same pattern: every "
+        code(class: "font-mono text-xs") { "<turbo-stream>" }
+        plain " wraps its payload in a "
+        code(class: "font-mono text-xs") { "<template>" }
+        plain " for the same reason."
+      }
+
       # ── Rails controller setup ───────────────────────────────────────────────
       Heading(level: 2) { "Rails controller setup" }
       p {
