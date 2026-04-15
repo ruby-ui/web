@@ -82,7 +82,7 @@ module Components
               end
             end
           end
-          CommandDialogContent(class: "overflow-hidden p-0 shadow-2xl top-[10%] translate-y-0") do
+          CommandDialogContent(class: "overflow-hidden p-0 shadow-2xl") do
             Command(class: "flex h-full w-full flex-col overflow-hidden") do
               CommandInput(placeholder: "Search documentation...", class: "border-none focus:ring-0")
               CommandEmpty { "No results found." }
@@ -106,7 +106,7 @@ module Components
       end
 
       def github_link
-        Link(href: "https://github.com/PhlexUI/phlex_ui", variant: :ghost, icon: true) do
+        Link(href: "https://github.com/ruby-ui/ruby_ui", variant: :ghost, icon: true) do
           github_icon
         end
       end

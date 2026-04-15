@@ -12,7 +12,7 @@ module Components
             main_link("Docs", docs_introduction_path)
             main_link("Components", docs_components_path)
             main_link("Themes", theme_path("default"))
-            main_link("Github", "https://github.com/PhlexUI/phlex_ui")
+            main_link("Github", "https://github.com/ruby-ui/ruby_ui")
             main_link("Discord", ENV["DISCORD_INVITE_LINK"])
             main_link("Discord", ENV["DISCORD_INVITE_LINK"])
           end
