@@ -2,13 +2,13 @@
 
 module RubyUI
   class DataTableContent < Base
-    def initialize(frame_id: "data_table_content", **attrs)
-      @frame_id = frame_id
-      super(**attrs)
-    end
-
-    def view_template(&)
-      div(id: @frame_id, **attrs, &)
+    def view_template
+      div(**attrs) do
+        table(class: "w-full caption-bottom text-sm") do
+          thead(class: "[&_tr]:border-b", data: {ruby_ui__data_table_target: "thead"})
+          tbody(class: "[&_tr:last-child]:border-0", data: {ruby_ui__data_table_target: "tbody"})
+        end
+      end
     end
 
     private
