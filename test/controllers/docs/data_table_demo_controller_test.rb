@@ -8,7 +8,7 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /docs/data_table/demo returns JSON when requested" do
-    get docs_data_table_demo_path, headers: { "Accept" => "application/json" }
+    get docs_data_table_demo_path, headers: {"Accept" => "application/json"}
     assert_response :success
     assert_match "application/json", response.content_type
     json = JSON.parse(response.body)
@@ -19,8 +19,9 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "JSON response respects page param" do
-    get docs_data_table_demo_path, params: { page: 2, per_page: 5 },
-                                   headers: { "Accept" => "application/json" }
+    get docs_data_table_demo_path,
+      params: {page: 2, per_page: 5},
+      headers: {"Accept" => "application/json"}
     assert_response :success
     json = JSON.parse(response.body)
     assert_equal 5, json["data"].length
@@ -28,8 +29,9 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "JSON response respects search param" do
-    get docs_data_table_demo_path, params: { search: "alice" },
-                                   headers: { "Accept" => "application/json" }
+    get docs_data_table_demo_path,
+      params: {search: "alice"},
+      headers: {"Accept" => "application/json"}
     json = JSON.parse(response.body)
     assert json["data"].all? { |r| r["name"].downcase.include?("alice") || r["email"].downcase.include?("alice") }
     assert json["row_count"] < 100

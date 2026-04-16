@@ -117,7 +117,11 @@ module Docs
 
       if params[:sort].present?
         col = params[:sort].to_sym
-        employees = employees.sort_by { |e| e.send(col).to_s.downcase } rescue employees
+        employees = begin
+          employees.sort_by { |e| e.send(col).to_s.downcase }
+        rescue
+          employees
+        end
         employees = employees.reverse if params[:direction] == "desc"
       end
 
