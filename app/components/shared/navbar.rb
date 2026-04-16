@@ -71,9 +71,12 @@ module Components
 
       def search_button
         CommandDialog do
-          CommandDialogTrigger(keybindings: ['keydown.ctrl+k@window', 'keydown.meta+k@window']) do
+          CommandDialogTrigger(keybindings: ["keydown.ctrl+k@window", "keydown.meta+k@window"]) do
             Button(variant: :outline, class: "relative h-8 w-full justify-start rounded-[0.5rem] bg-muted/50 text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-64") do
-              svg(xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewbox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", class: "mr-2") { |s| s.circle(cx: "11", cy: "11", r: "8"); s.path(d: "m21 21-4.3-4.3") }
+              svg(xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewbox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", class: "mr-2") { |s|
+                s.circle(cx: "11", cy: "11", r: "8")
+                s.path(d: "m21 21-4.3-4.3")
+              }
               span(class: "hidden lg:inline-flex") { "Search documentation..." }
               span(class: "inline-flex lg:hidden") { "Search..." }
               kbd(class: "pointer-events-none absolute right-[0.3rem] top-[0.3rem] hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex") do

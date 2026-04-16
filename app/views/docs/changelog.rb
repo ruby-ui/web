@@ -1,6 +1,7 @@
 # frozen_string_literal: true
+
 require "rss"
-require "open-uri"
+require "net/http"
 
 class Views::Docs::Changelog < Views::Base
   def view_template
@@ -38,7 +39,7 @@ class Views::Docs::Changelog < Views::Base
   def releases
     @releases ||= begin
       url = "https://github.com/ruby-ui/ruby_ui/releases.atom"
-      feed = RSS::Parser.parse(URI.open(url).read, false)
+      feed = RSS::Parser.parse(Net::HTTP.get(URI.parse(url)), false)
       feed.items.map do |item|
         {
           name: item.title.content,

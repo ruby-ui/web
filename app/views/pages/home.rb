@@ -8,7 +8,10 @@ class Views::Pages::Home < Views::Base
         Link(href: docs_changelog_path, variant: :outline, class: "rounded-2xl px-4 py-1.5 text-sm font-medium") do
           span(class: "sm:hidden") { "New components available" }
           span(class: "hidden sm:inline") { "Combobox updates and more" }
-          svg(xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewbox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", class: "ml-2 h-4 w-4") { |s| s.path(d: "M5 12h14"); s.path(d: "m12 5 7 7-7 7") }
+          svg(xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewbox: "0 0 24 24", fill: "none", stroke: "currentColor", stroke_width: "2", stroke_linecap: "round", stroke_linejoin: "round", class: "ml-2 h-4 w-4") { |s|
+            s.path(d: "M5 12h14")
+            s.path(d: "m12 5 7 7-7 7")
+          }
         end
         h1(class: "leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl") do
           [
@@ -246,7 +249,7 @@ class Views::Pages::Home < Views::Base
 
   def Label(class: nil, **attrs, &block)
     base_classes = "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-    
+
     label(class: [base_classes, binding.local_variable_get(:class)], **attrs, &block)
   end
 
@@ -270,7 +273,11 @@ class Views::Pages::Home < Views::Base
     div(class: "flex items-center gap-4") do
       div(class: [
         "h-2 w-2 rounded-full",
-        (status == :success ? "bg-green-500" : (status == :warning ? "bg-amber-500" : "bg-blue-500"))
+        (if status == :success
+           "bg-green-500"
+         else
+           ((status == :warning) ? "bg-amber-500" : "bg-blue-500")
+         end)
       ])
       div do
         p(class: "text-sm font-medium") { title }
