@@ -15,7 +15,7 @@ class Views::Docs::DataTable < Views::Base
     "On Leave" => "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
   }.freeze
 
-  DEMO_EMPLOYEES = ::Docs::DataTableDemoController::EMPLOYEES.first(10).map do |e|
+  DEMO_EMPLOYEES = ::Docs::DataTableDemoData::EMPLOYEES.first(10).map do |e|
     {id: e.id, name: e.name, email: e.email, department: e.department, status: e.status, salary: e.salary}
   end.freeze
 
@@ -155,7 +155,7 @@ class Views::Docs::DataTable < Views::Base
         <<~RUBY
           DataTable(
             src: docs_data_table_demo_path,
-            data: ::Docs::DataTableDemoController::EMPLOYEES.first(5).map { |e|
+            data: ::Docs::DataTableDemoData::EMPLOYEES.first(5).map { |e|
               {name: e.name, department: e.department}
             },
             columns: [{key: "name", header: "Name"}, {key: "department", header: "Department"}],
@@ -173,7 +173,7 @@ class Views::Docs::DataTable < Views::Base
         <<~RUBY
           DataTable(
             src: docs_data_table_demo_path,
-            data: ::Docs::DataTableDemoController::EMPLOYEES.first(5).map { |e|
+            data: ::Docs::DataTableDemoData::EMPLOYEES.first(5).map { |e|
               {name: e.name, email: e.email, department: e.department}
             },
             columns: [

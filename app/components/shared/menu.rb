@@ -84,6 +84,7 @@ module Components
           {name: "Command", path: docs_command_path},
           {name: "Context Menu", path: docs_context_menu_path},
           {name: "Data Table", path: docs_data_table_path, badge: "New"},
+          {name: "Data Table (Avo)", path: docs_data_table_avo_path, badge: "New"},
           {name: "Date Picker", path: docs_date_picker_path},
           {name: "Dialog / Modal", path: docs_dialog_path},
           {name: "Dropdown Menu", path: docs_dropdown_menu_path},

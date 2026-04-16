@@ -192,7 +192,7 @@ class DocsController < ApplicationController
 
   def data_table
     # Delegate filtering/sorting/paging to the same demo logic
-    employees = Docs::DataTableDemoController::EMPLOYEES.dup
+    employees = Docs::DataTableDemoData::EMPLOYEES.dup
 
     if params[:search].present?
       query = params[:search].downcase
@@ -221,6 +221,44 @@ class DocsController < ApplicationController
 
     render Views::Docs::DataTable.new(
       initial_data: initial_data,
+      total_count: total_count,
+      page: page,
+      per_page: per_page,
+      sort: params[:sort],
+      direction: params[:direction],
+      search: params[:search]
+    )
+  end
+
+  def data_table_avo
+    employees = Docs::DataTableDemoData::EMPLOYEES.dup
+
+    if params[:search].present?
+      q = params[:search].downcase
+      employees = employees.select { |e| e.name.downcase.include?(q) || e.email.downcase.include?(q) }
+    end
+
+    if params[:sort].present?
+      col = params[:sort].to_sym
+      employees = begin
+        employees.sort_by do |e|
+          v = e.send(col)
+          v.is_a?(Numeric) ? v : v.to_s.downcase
+        end
+      rescue
+        employees
+      end
+      employees = employees.reverse if params[:direction] == "desc"
+    end
+
+    total_count = employees.size
+    per_page = (params[:per_page] || 5).to_i.clamp(1, 100)
+    total_pages = [(total_count.to_f / per_page).ceil, 1].max
+    page = (params[:page] || 1).to_i.clamp(1, total_pages)
+    offset = (page - 1) * per_page
+
+    render Views::Docs::DataTableAvo.new(
+      employees: employees.slice(offset, per_page) || [],
       total_count: total_count,
       page: page,
       per_page: per_page,

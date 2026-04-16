@@ -57,6 +57,8 @@ Rails.application.routes.draw do
     get "switch", to: "docs#switch", as: :docs_switch
     get "data_table", to: "docs#data_table", as: :docs_data_table
     get "data_table/demo", to: "docs/data_table_demo#index", as: :docs_data_table_demo
+    get "data_table_avo", to: "docs#data_table_avo", as: :docs_data_table_avo
+    get "data_table_avo/demo", to: "docs/data_table_avo_demo#index", as: :docs_data_table_avo_demo
     get "table", to: "docs#table", as: :docs_table
     get "tabs", to: "docs#tabs", as: :docs_tabs
     get "textarea", to: "docs#textarea", as: :docs_textarea
