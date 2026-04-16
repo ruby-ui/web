@@ -40,9 +40,11 @@ module RubyUI
     private
 
     def nav_button(direction:, disabled:, action:, target:, icon_path:)
+      base_class = "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
+      btn_class = disabled ? "#{base_class} opacity-50 pointer-events-none" : base_class
       button(
         type: "button",
-        class: "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0 #{disabled ? "opacity-50 pointer-events-none" : nil}",
+        class: btn_class,
         disabled: disabled,
         aria_label: direction,
         data: {
