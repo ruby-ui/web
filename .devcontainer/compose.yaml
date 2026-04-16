@@ -8,10 +8,6 @@ services:
 
     volumes:
     - ../../web:/workspaces/web:cached
-    - ../../ruby_ui:/workspaces/ruby_ui:cached
-    
-    ports:
-    - "3001:3000"
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
