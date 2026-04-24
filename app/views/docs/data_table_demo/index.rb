@@ -87,7 +87,7 @@ class Views::Docs::DataTableDemo::Index < Views::Base
                     TableCell(data: {column: "status"}) do
                       Badge(variant: BADGE_VARIANTS.fetch(e.status, :outline), size: :sm) { plain e.status }
                     end
-                    TableCell(class: "text-right", data: {column: "salary"}) { plain format_currency(e.salary) }
+                    TableCell(class: "text-right", data: {column: "salary"}) { plain view_context.number_to_currency(e.salary, precision: 0, unit: "$") }
                     TableCell(class: "w-12 text-right") { row_actions(e) }
                   end
                 end
@@ -136,7 +136,4 @@ class Views::Docs::DataTableDemo::Index < Views::Base
     }.compact_blank
   end
 
-  def format_currency(n)
-    "$#{n.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}"
-  end
 end

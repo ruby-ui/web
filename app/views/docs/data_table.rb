@@ -241,10 +241,6 @@ class Views::Docs::DataTable < Views::Base
 
       render Docs::VisualCodeExample.new(title: "Custom cell renderers", context: self) do
         <<~'RUBY'
-          def format_currency(n)
-            "$#{n.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse}"
-          end
-
           def status_badge(status)
             variant = {"Active" => :success, "Inactive" => :destructive}.fetch(status, :outline)
             Badge(variant: variant, size: :sm) { plain status }
@@ -264,7 +260,7 @@ class Views::Docs::DataTable < Views::Base
                   TableRow do
                     TableCell { r.name }
                     TableCell { status_badge(r.status) }
-                    TableCell(class: "text-right") { plain format_currency(r.salary) }
+                    TableCell(class: "text-right") { plain view_context.number_to_currency(r.salary, precision: 0) }
                   end
                 end
               end
