@@ -15,7 +15,7 @@ module RubyUI
     end
 
     def view_template
-      render RubyUI::TableHead.new(**attrs) do
+      render RubyUI::TableHead.new(class: "text-foreground whitespace-nowrap", **attrs) do
         a(href: sort_href, class: "inline-flex items-center gap-1 text-inherit no-underline hover:text-foreground transition-colors") do
           plain @label
           sort_icon
