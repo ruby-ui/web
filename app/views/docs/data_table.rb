@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 class Views::Docs::DataTable < Views::Base
-  # Stub data used by code-snippet previews (examples 3-6)
+  # Stub data used by code-snippet previews (examples 2-6)
   Row = Struct.new(:id, :name, :email, :salary, :status, keyword_init: true)
 
   def view_template
@@ -76,36 +76,7 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
-      # ── Example 2: Basic static table ─────────────────────────────────────
-      Heading(level: 2) { "Basic static table" }
-      p(class: "-mt-6") { "Composition only — no interactivity." }
-
-      render Docs::VisualCodeExample.new(title: "Basic static table", context: self) do
-        <<~RUBY
-          DataTable(id: "basic") do
-            Table do
-              TableHeader do
-                TableRow do
-                  TableHead { "Name" }
-                  TableHead { "Role" }
-                end
-              end
-              TableBody do
-                TableRow do
-                  TableCell { "Alice" }
-                  TableCell { "Engineer" }
-                end
-                TableRow do
-                  TableCell { "Bob" }
-                  TableCell { "Designer" }
-                end
-              end
-            end
-          end
-        RUBY
-      end
-
-      # ── Example 3: Server-driven (search + sort + pagination) ─────────────
+      # ── Example 2: Server-driven (search + sort + pagination) ─────────────
       Heading(level: 2) { "Server-driven" }
       p(class: "-mt-6") { "Turbo Frame GET on each sort/search/page. No client-only state." }
 
@@ -133,7 +104,7 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
-      # ── Example 4: Selection + bulk actions ───────────────────────────────
+      # ── Example 3: Selection + bulk actions ───────────────────────────────
       Heading(level: 2) { "Selection + bulk actions" }
       p(class: "-mt-6") { "DataTableBulkActions is a plain slot — put any Phlex content inside. Row checkboxes are <input name=\"ids[]\"> elements inside DataTableForm. Bulk action buttons submit that form with the selected IDs via HTML5 form-association attributes." }
 
@@ -227,7 +198,7 @@ class Views::Docs::DataTable < Views::Base
         end
       RUBY
 
-      # ── Example 5: Column visibility ──────────────────────────────────────
+      # ── Example 4: Column visibility ──────────────────────────────────────
       Heading(level: 2) { "Column visibility" }
       p(class: "-mt-6") { "Client-side toggle. Hidden columns get `hidden` class via data-column attribute matching." }
       p { "Column visibility is client-side and resets on every Turbo Frame swap (sort/search/page re-renders). If you need it to persist, encode it in a URL param (e.g. `?columns=name,status`) or store in localStorage." }
@@ -264,7 +235,7 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
-      # ── Example 6: Custom cell renderers ──────────────────────────────────
+      # ── Example 5: Custom cell renderers ──────────────────────────────────
       Heading(level: 2) { "Custom cell renderers" }
       p(class: "-mt-6") { "Plain Ruby helpers for badge/date/currency — the gem does not ship renderers." }
 
@@ -302,7 +273,7 @@ class Views::Docs::DataTable < Views::Base
         RUBY
       end
 
-      # ── Example 7: Expandable rows ────────────────────────────────────────
+      # ── Example 6: Expandable rows ────────────────────────────────────────
       Heading(level: 2) { "Expandable rows" }
       p(class: "-mt-6") { "Toggle a detail region below each row. Accessible: aria-expanded, aria-controls, keyboard-focusable button, region role on the expanded content." }
 
