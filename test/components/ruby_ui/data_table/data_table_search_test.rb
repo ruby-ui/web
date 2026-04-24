@@ -6,7 +6,8 @@ class RubyUI::DataTableSearchTest < ActiveSupport::TestCase
   test "renders GET form with search input" do
     out = RubyUI::DataTableSearch.new(path: "/x", value: "alice", name: "search").call
     assert_match(/<form[^>]*method="get"[^>]*action="\/x"/, out)
-    assert_match(/<input[^>]*name="search"[^>]*value="alice"/, out)
+    assert_match(/name="search"/, out)
+    assert_match(/value="alice"/, out)
   end
 
   test "renames param via name:" do

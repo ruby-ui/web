@@ -16,18 +16,12 @@ module RubyUI
       form_attrs[:data] = {turbo_frame: @frame_id} if @frame_id
 
       form(**attrs.merge(form_attrs)) do
-        input(
+        render RubyUI::Input.new(
           type: :search,
           name: @name,
           value: @value,
           placeholder: @placeholder,
-          autocomplete: "off",
-          class: [
-            "flex h-9 w-full rounded-md border bg-background px-3 py-1 text-sm shadow-xs transition-[color,box-shadow] border-border",
-            "placeholder:text-muted-foreground",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-            "focus-visible:outline-none focus-visible:ring-ring/50 focus-visible:ring-2 focus-visible:border-ring focus-visible:shadow-sm"
-          ]
+          autocomplete: "off"
         )
       end
     end
