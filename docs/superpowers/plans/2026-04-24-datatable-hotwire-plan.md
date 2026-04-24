@@ -56,13 +56,15 @@ Every later task's `Run:` lines assume this helper. Paste this into your shell:
 ```bash
 dx() {
   docker exec rubyui-web-rails-app-1 bash -c '
-    export PATH="/home/vscode/.local/bin:/home/vscode/.local/share/mise/installs/ruby/3.4.7/bin:/home/vscode/.local/share/mise/installs/node/22.22.1/bin:$PATH"
+    export PATH="/home/vscode/.local/share/mise/installs/node/25.8.2/bin:/home/vscode/.local/bin:/home/vscode/.local/share/mise/installs/ruby/3.4.7/bin:$PATH"
     export SECRET_KEY_BASE=abc123
     export BUNDLE_PATH=/workspaces/web/vendor/bundle
     cd /workspaces/web
     '"$*"
 }
 ```
+
+**Baseline confirmed:** 61 runs, 0 failures, 0 errors before starting.
 
 - [ ] **Step 1.3: Start devcontainer (if not running)**
 
