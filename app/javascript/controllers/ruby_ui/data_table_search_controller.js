@@ -1,21 +1,23 @@
 import { Controller } from "@hotwired/stimulus";
 
+// Module-level map survives controller disconnect/connect across Turbo Frame swaps.
+// Keyed by the search form's action URL.
+const PENDING_FOCUS = new Map();
+
 export default class extends Controller {
   static values = { delay: { type: Number, default: 300 } };
 
   connect() {
     this.timer = null;
-    this.restoreState = null;
     this.beforeFrameRender = this.captureBeforeRender.bind(this);
-    this.afterFrameRender = this.applyAfterRender.bind(this);
     document.addEventListener("turbo:before-frame-render", this.beforeFrameRender);
-    document.addEventListener("turbo:frame-render", this.afterFrameRender);
+    // New instance after a Turbo Frame swap — check for captured state.
+    this.restoreIfPending();
   }
 
   disconnect() {
     clearTimeout(this.timer);
     document.removeEventListener("turbo:before-frame-render", this.beforeFrameRender);
-    document.removeEventListener("turbo:frame-render", this.afterFrameRender);
   }
 
   submit(event) {
@@ -27,20 +29,17 @@ export default class extends Controller {
 
   captureBeforeRender() {
     const input = this.input();
-    if (!input || document.activeElement !== input) {
-      this.restoreState = null;
-      return;
-    }
-    this.restoreState = {
+    if (!input || document.activeElement !== input) return;
+    PENDING_FOCUS.set(this.key(), {
       selectionStart: input.selectionStart,
       selectionEnd: input.selectionEnd
-    };
+    });
   }
 
-  applyAfterRender() {
-    if (!this.restoreState) return;
-    const state = this.restoreState;
-    this.restoreState = null;
+  restoreIfPending() {
+    const state = PENDING_FOCUS.get(this.key());
+    if (!state) return;
+    PENDING_FOCUS.delete(this.key());
     const input = this.input();
     if (!input) return;
     input.focus();
@@ -55,5 +54,9 @@ export default class extends Controller {
 
   input() {
     return this.element.querySelector('input[type="search"]');
+  }
+
+  key() {
+    return this.element.action || "_";
   }
 }
