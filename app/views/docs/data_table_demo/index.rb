@@ -113,8 +113,7 @@ class Views::Docs::DataTableDemo::Index < Views::Base
     DropdownMenu do
       DropdownMenuTrigger do
         Button(type: "button", variant: :ghost, size: :icon, aria_label: "Open menu") do
-          icon = view_context.respond_to?(:lucide_icon) ? raw(view_context.lucide_icon("ellipsis-vertical", class: "h-4 w-4")) : nil
-          icon
+          raw view_context.lucide_icon("ellipsis-vertical", class: "h-4 w-4")
         end
       end
       DropdownMenuContent do

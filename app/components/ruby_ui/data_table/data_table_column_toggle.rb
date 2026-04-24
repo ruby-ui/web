@@ -13,8 +13,7 @@ module RubyUI
           render RubyUI::DropdownMenuTrigger.new do
             render RubyUI::Button.new(variant: :outline, size: :sm) do
               plain "Columns"
-              icon = view_context.respond_to?(:lucide_icon) ? raw(view_context.lucide_icon("chevron-down", class: "w-4 h-4 ml-1")) : nil
-              icon
+              raw view_context.lucide_icon("chevron-down", class: "w-4 h-4 ml-1")
             end
           end
           render RubyUI::DropdownMenuContent.new do

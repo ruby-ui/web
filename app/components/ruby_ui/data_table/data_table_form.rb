@@ -21,8 +21,7 @@ module RubyUI
     private
 
     def csrf_token
-      return view_context.form_authenticity_token if respond_to?(:view_context) && view_context.respond_to?(:form_authenticity_token)
-      SecureRandom.hex(32)
+      view_context.form_authenticity_token
     end
 
     def default_attrs

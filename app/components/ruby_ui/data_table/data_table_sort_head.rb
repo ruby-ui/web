@@ -49,12 +49,7 @@ module RubyUI
       end
       icon_class = current_direction ? "inline-block w-3 h-3" : "inline-block w-3 h-3 opacity-30"
 
-      vc = respond_to?(:view_context) ? view_context : nil
-      if vc&.respond_to?(:lucide_icon)
-        raw vc.lucide_icon(icon_name, class: icon_class)
-      else
-        span(class: icon_class, "data-icon": icon_name)
-      end
+      raw view_context.lucide_icon(icon_name, class: icon_class)
     end
   end
 end
