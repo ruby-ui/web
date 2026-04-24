@@ -2,6 +2,7 @@
 
 class Views::Docs::DataTableDemo::Index < Views::Base
   FRAME_ID = "employees_list"
+  FORM_ID = "employees_form"
 
   TOGGLABLE_COLUMNS = [
     {key: :email, label: "Email"},
@@ -48,10 +49,14 @@ class Views::Docs::DataTableDemo::Index < Views::Base
             frame_id: FRAME_ID,
             value: @per_page
           )
+          DataTableBulkActions do
+            Button(type: "submit", form: FORM_ID, formaction: docs_data_table_demo_bulk_delete_path, formmethod: "post", variant: :destructive, size: :sm) { "Delete" }
+            Button(type: "submit", form: FORM_ID, formaction: docs_data_table_demo_bulk_export_path, formmethod: "post", variant: :outline, size: :sm) { "Export" }
+          end
         end
       end
 
-      DataTableForm(action: "") do
+      DataTableForm(id: FORM_ID, action: "") do
         div(class: "rounded-md border") do
           Table do
             TableHeader do
@@ -89,23 +94,18 @@ class Views::Docs::DataTableDemo::Index < Views::Base
             end
           end
         end
-
-        DataTableSelectionBar do
-          DataTableSelectionSummary(total_on_page: @employees.size)
-          DataTableBulkActions do
-            Button(type: "submit", formaction: docs_data_table_demo_bulk_delete_path, formmethod: "post", variant: :destructive, size: :sm) { "Delete" }
-            Button(type: "submit", formaction: docs_data_table_demo_bulk_export_path, formmethod: "post", variant: :outline, size: :sm) { "Export" }
-          end
-        end
       end
 
-      DataTablePagination(
-        page: @page,
-        per_page: @per_page,
-        total_count: @total_count,
-        path: docs_data_table_demo_path,
-        query: preserved_query
-      )
+      div(class: "flex items-center justify-between gap-4 py-2") do
+        DataTableSelectionSummary(total_on_page: @employees.size)
+        DataTablePagination(
+          page: @page,
+          per_page: @per_page,
+          total_count: @total_count,
+          path: docs_data_table_demo_path,
+          query: preserved_query
+        )
+      end
     end
   end
 
