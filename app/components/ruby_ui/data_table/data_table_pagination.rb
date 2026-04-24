@@ -13,7 +13,7 @@ module RubyUI
     end
 
     def view_template
-      render RubyUI::Pagination.new(**attrs) do
+      render RubyUI::Pagination.new(class: "mx-0 w-auto justify-end", **attrs) do
         render RubyUI::PaginationContent.new do
           prev_item
           number_items
