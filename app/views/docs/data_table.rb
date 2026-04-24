@@ -70,7 +70,7 @@ class Views::Docs::DataTable < Views::Base
               end
             end
 
-            div(class: "flex items-center justify-between gap-4 py-2") do
+            DataTablePaginationBar do
               DataTableSelectionSummary(total_on_page: @employees.size)
               DataTablePagination(page: @page, per_page: @per_page, total_count: @total_count, path: docs_data_table_demo_path)
             end
@@ -292,6 +292,44 @@ class Views::Docs::DataTable < Views::Base
                     TableCell { r.name }
                     TableCell { status_badge(r.status) }
                     TableCell(class: "text-right") { plain format_currency(r.salary) }
+                  end
+                end
+              end
+            end
+          end
+        RUBY
+      end
+
+      # ── Example 7: Expandable rows ────────────────────────────────────────
+      Heading(level: 2) { "Expandable rows" }
+      p(class: "-mt-6") { "Toggle a detail region below each row. Accessible: aria-expanded, aria-controls, keyboard-focusable button, region role on the expanded content." }
+
+      render Docs::VisualCodeExample.new(title: "Expandable rows", context: self) do
+        <<~RUBY
+          DataTable(id: "expand_demo") do
+            Table do
+              TableHeader do
+                TableRow do
+                  TableHead(class: "w-10") { }
+                  TableHead { "Name" }
+                  TableHead { "Role" }
+                end
+              end
+              TableBody do
+                @rows.each do |r|
+                  detail_id = "row-\#{r.id}-detail"
+                  TableRow do
+                    TableCell { DataTableExpandToggle(controls: detail_id, label: "Toggle details for \#{r.name}") }
+                    TableCell { r.name }
+                    TableCell { r.email }
+                  end
+                  TableRow(id: detail_id, class: "hidden", role: "region") do
+                    TableCell(colspan: 3, class: "bg-muted/40") do
+                      div(class: "p-4 space-y-1") do
+                        p { "Salary: $\#{r.salary}" }
+                        p { "Status: \#{r.status}" }
+                      end
+                    end
                   end
                 end
               end

@@ -96,7 +96,7 @@ class Views::Docs::DataTableDemo::Index < Views::Base
         end
       end
 
-      div(class: "flex items-center justify-between gap-4 py-2") do
+      DataTablePaginationBar do
         DataTableSelectionSummary(total_on_page: @employees.size)
         DataTablePagination(
           page: @page,
