@@ -27,7 +27,7 @@ module RubyUI
     private
 
     def render_icon
-      raw view_context.lucide_icon("chevron-right", class: "h-4 w-4 transition-transform duration-150 aria-expanded:rotate-90 [button[aria-expanded='true']_&]:rotate-90")
+      raw view_context.lucide_icon("chevron-right", class: "h-4 w-4 transition-transform duration-150 aria-expanded:rotate-90")
     end
 
     def default_attrs
