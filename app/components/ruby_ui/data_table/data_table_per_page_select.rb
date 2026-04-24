@@ -16,23 +16,16 @@ module RubyUI
       form_attrs[:data] = {turbo_frame: @frame_id} if @frame_id
 
       form(**attrs.merge(form_attrs)) do
-        div(class: "group/native-select relative w-fit") do
-          select(
-            name: @name,
-            onchange: safe("this.form.requestSubmit()"),
-            class: [
-              "border-border bg-transparent text-sm w-full min-w-0 appearance-none rounded-md border py-1 pr-8 pl-2.5 shadow-xs transition-[color,box-shadow] outline-none select-none ring-0 ring-ring/0",
-              "focus-visible:outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-2",
-              "h-9"
-            ]
-          ) do
-            @options.each do |opt|
-              option_attrs = {value: opt.to_s}
-              option_attrs[:selected] = true if opt.to_s == @value.to_s
-              option(**option_attrs) { plain opt.to_s }
-            end
+        select(
+          name: @name,
+          onchange: safe("this.form.requestSubmit()"),
+          class: "h-9 rounded-md border border-input bg-background px-2 text-sm"
+        ) do
+          @options.each do |opt|
+            option_attrs = {value: opt.to_s}
+            option_attrs[:selected] = true if opt.to_s == @value.to_s
+            option(**option_attrs) { plain opt.to_s }
           end
-          render RubyUI::NativeSelectIcon.new
         end
       end
     end
