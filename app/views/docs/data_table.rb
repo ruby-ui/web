@@ -20,7 +20,7 @@ class Views::Docs::DataTable < Views::Base
     div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(
         title: component,
-        description: "A Hotwire-first, Avo-inspired data table. Every interaction (sort, search, pagination) is a Rails request answered with HTML, swapped via Turbo Frame. Row selection uses form-first submission."
+        description: "A Hotwire-first data table. Every interaction (sort, search, pagination) is a Rails request answered with HTML, swapped via Turbo Frame. Row selection uses form-first submission."
       )
 
       # ── Example 1: Complete demo (primary) ─────────────────────────────────
@@ -39,29 +39,33 @@ class Views::Docs::DataTable < Views::Base
               DataTablePerPageSelect(path: docs_data_table_demo_path, value: @per_page)
             end
 
-            Table do
-              TableHeader do
-                TableRow do
-                  TableHead(class: "w-10") { DataTableSelectAllCheckbox() }
-                  DataTableSortHead(column_key: :name, label: "Name", sort: @sort, direction: @direction, path: docs_data_table_demo_path)
-                  DataTableSortHead(column_key: :salary, label: "Salary", sort: @sort, direction: @direction, path: docs_data_table_demo_path)
-                end
-              end
-              TableBody do
-                @employees.each do |e|
-                  TableRow do
-                    TableCell { DataTableRowCheckbox(value: e.id) }
-                    TableCell { e.name }
-                    TableCell { e.salary }
+            DataTableForm(action: "") do
+              div(class: "rounded-md border") do
+                Table do
+                  TableHeader do
+                    TableRow do
+                      TableHead(class: "w-10") { DataTableSelectAllCheckbox() }
+                      DataTableSortHead(column_key: :name, label: "Name", sort: @sort, direction: @direction, path: docs_data_table_demo_path)
+                      DataTableSortHead(column_key: :salary, label: "Salary", sort: @sort, direction: @direction, path: docs_data_table_demo_path)
+                    end
+                  end
+                  TableBody do
+                    @employees.each do |e|
+                      TableRow do
+                        TableCell { DataTableRowCheckbox(value: e.id) }
+                        TableCell { e.name }
+                        TableCell { e.salary }
+                      end
+                    end
                   end
                 end
               end
-            end
 
-            DataTableSelectionBar do
-              DataTableSelectionSummary(total_on_page: @employees.size)
-              DataTableBulkActions do
-                Button(type: "submit", formaction: "/bulk_delete", formmethod: "post") { "Delete" }
+              DataTableSelectionBar do
+                DataTableSelectionSummary(total_on_page: @employees.size)
+                DataTableBulkActions do
+                  Button(type: "submit", formaction: "/bulk_delete", formmethod: "post") { "Delete" }
+                end
               end
             end
 
@@ -133,28 +137,30 @@ class Views::Docs::DataTable < Views::Base
       render Docs::VisualCodeExample.new(title: "Selection + bulk actions", context: self) do
         <<~RUBY
           DataTable(id: "selection") do
-            Table do
-              TableHeader do
-                TableRow do
-                  TableHead { DataTableSelectAllCheckbox() }
-                  TableHead { "Name" }
-                end
-              end
-              TableBody do
-                @rows.each do |r|
+            DataTableForm(action: "") do
+              Table do
+                TableHeader do
                   TableRow do
-                    TableCell { DataTableRowCheckbox(value: r.id) }
-                    TableCell { r.name }
+                    TableHead { DataTableSelectAllCheckbox() }
+                    TableHead { "Name" }
+                  end
+                end
+                TableBody do
+                  @rows.each do |r|
+                    TableRow do
+                      TableCell { DataTableRowCheckbox(value: r.id) }
+                      TableCell { r.name }
+                    end
                   end
                 end
               end
-            end
 
-            DataTableSelectionBar do
-              DataTableSelectionSummary(total_on_page: @rows.size)
-              DataTableBulkActions do
-                Button(type: "submit", formaction: bulk_delete_path, formmethod: "post", variant: :destructive) { "Delete" }
-                Button(type: "submit", formaction: bulk_export_path, formmethod: "post", variant: :outline) { "Export" }
+              DataTableSelectionBar do
+                DataTableSelectionSummary(total_on_page: @rows.size)
+                DataTableBulkActions do
+                  Button(type: "submit", formaction: bulk_delete_path, formmethod: "post", variant: :destructive) { "Delete" }
+                  Button(type: "submit", formaction: bulk_export_path, formmethod: "post", variant: :outline) { "Export" }
+                end
               end
             end
           end
