@@ -1,4 +1,4 @@
-# DataTable — Hotwire-first, Avo-inspired Spec
+# DataTable — Hotwire-first Spec
 
 **Date:** 2026-04-24
 **Branch:** `da/datatable-hotwire`
@@ -15,9 +15,8 @@ JavaScript is Stimulus, kept minimal and scoped to ephemeral UI state
 **form-first** pattern: row checkboxes are `<input name="ids[]">` inside a real
 `<form>`, so bulk actions submit natively without custom fetch logic.
 
-Architecture is inspired by Avo's `ResourceTableComponent`. Composition mirrors
-shadcn's data-table demo, but each primitive maps to an existing Ruby UI
-`Table*` component rather than a namespaced duplicate.
+Composition mirrors shadcn's data-table demo, but each primitive maps to an
+existing Ruby UI `Table*` component rather than a namespaced duplicate.
 
 ## Scope
 
@@ -47,8 +46,7 @@ Out of scope:
 
 ### Reuse over duplication
 
-Cirdes's branch duplicated 8 Table primitives as `DataTableAvo*`. This spec
-reuses the existing `Table`, `TableHeader`, `TableBody`, `TableRow`,
+Reuses the existing `Table`, `TableHeader`, `TableBody`, `TableRow`,
 `TableHead`, `TableCell`, `TableFooter`, `TableCaption` components directly.
 Users compose the table with primitives they already know from the rest of the
 docs site.
@@ -66,7 +64,7 @@ owns the truth.
 
 Row selection and column visibility are DOM-local state. A Turbo Frame swap
 (sort/search/page) destroys and re-renders the frame, which naturally clears
-both. This matches Avo's philosophy and is documented as intentional.
+both. This is by design and documented as intentional.
 
 ### Query param flexibility
 

@@ -4,7 +4,7 @@
 >
 > **Subagent model policy:** All implementation subagents MUST run on `claude-sonnet-4-6` with **low reasoning effort** for speed. Do NOT dispatch implementation tasks to Opus. Planning/review/verification may remain on the default model.
 
-**Goal:** Ship a Hotwire-first, Avo-inspired `DataTable` component family for the Ruby UI docs site, with 12 components, 2 Stimulus controllers, 3 pagination adapters, 6 docs examples, and full render/integration tests.
+**Goal:** Ship a Hotwire-first `DataTable` component family for the Ruby UI docs site, with 12 components, 2 Stimulus controllers, 3 pagination adapters, 6 docs examples, and full render/integration tests.
 
 **Architecture:** One `<turbo-frame>` wraps a real `<form>` so row checkboxes submit natively. Search/sort/per-page/page each swap the frame via a plain GET. Row selection + column visibility are client-only ephemera held in two small Stimulus controllers. Reuses all existing `Table*`, `Checkbox`, `Pagination*`, `DropdownMenu`, `Input`, `NativeSelect`, `Badge`, `Button`, and `lucide-rails` primitives.
 
@@ -2097,7 +2097,7 @@ class Views::Docs::DataTable < Views::Base
     div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(
         title: component,
-        description: "A Hotwire-first, Avo-inspired data table. Every interaction (sort, search, pagination) is a Rails request answered with HTML, swapped via Turbo Frame. Row selection uses form-first submission."
+        description: "A Hotwire-first data table. Every interaction (sort, search, pagination) is a Rails request answered with HTML, swapped via Turbo Frame. Row selection uses form-first submission."
       )
 
       # ── Example 1: Complete demo (primary) ─────────────────────────────────

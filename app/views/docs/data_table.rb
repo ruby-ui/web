@@ -19,7 +19,7 @@ class Views::Docs::DataTable < Views::Base
 
     div(class: "mx-auto w-full py-10 space-y-10") do
       render Docs::Header.new(
-        title: component,
+        title: "Data Table",
         description: "A Hotwire-first data table. Every interaction (sort, search, pagination) is a Rails request answered with HTML, swapped via Turbo Frame. Row selection uses form-first submission."
       )
 
