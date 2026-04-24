@@ -18,4 +18,9 @@ class RubyUI::DataTableTest < ActiveSupport::TestCase
     assert_match(/INNER/, output)
     assert_match(/<form/, output)
   end
+
+  test "renders a hidden authenticity_token input" do
+    output = RubyUI::DataTable.new(id: "x").call
+    assert_match(/<input[^>]*type="hidden"[^>]*name="authenticity_token"[^>]*value="[^"]+"/, output)
+  end
 end

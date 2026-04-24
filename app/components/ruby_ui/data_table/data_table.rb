@@ -28,9 +28,7 @@ module RubyUI
     end
 
     def csrf_token
-      helpers.form_authenticity_token
-    rescue
-      SecureRandom.hex(32)
+      helpers.respond_to?(:form_authenticity_token) ? helpers.form_authenticity_token : SecureRandom.hex(32)
     end
   end
 end
