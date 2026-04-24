@@ -40,7 +40,8 @@ class Views::Docs::DataTableDemo::Index < Views::Base
           path: docs_data_table_demo_path,
           frame_id: FRAME_ID,
           value: @search,
-          placeholder: "Filter emails..."
+          placeholder: "Filter emails...",
+          preserved_params: preserved_query.except("search")
         )
         div(class: "flex items-center gap-2") do
           DataTableColumnToggle(columns: TOGGLABLE_COLUMNS)

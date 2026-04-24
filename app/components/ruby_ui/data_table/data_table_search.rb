@@ -2,13 +2,14 @@
 
 module RubyUI
   class DataTableSearch < Base
-    def initialize(path:, name: "search", value: nil, frame_id: nil, placeholder: "Search...", debounce: 300, **attrs)
+    def initialize(path:, name: "search", value: nil, frame_id: nil, placeholder: "Search...", debounce: 300, preserved_params: {}, **attrs)
       @path = path
       @name = name
       @value = value
       @frame_id = frame_id
       @placeholder = placeholder
       @debounce = debounce
+      @preserved_params = preserved_params
       super(**attrs)
     end
 
@@ -24,6 +25,11 @@ module RubyUI
           placeholder: @placeholder,
           autocomplete: "off"
         )
+        @preserved_params.each do |k, v|
+          next if v.blank?
+          next if k.to_s == @name
+          input(type: "hidden", name: k.to_s, value: v.to_s)
+        end
       end
     end
 

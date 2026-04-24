@@ -42,4 +42,23 @@ class RubyUI::DataTableSearchTest < ActiveSupport::TestCase
     out = RubyUI::DataTableSearch.new(path: "/x", debounce: 0).call
     assert_no_match(/data-controller="ruby-ui--data-table-search"/, out)
   end
+
+  test "preserved_params emits hidden inputs for each key" do
+    out = RubyUI::DataTableSearch.new(path: "/x", name: "search", preserved_params: {"sort" => "name", "direction" => "asc", "per_page" => "10"}).call
+    assert_match(/<input[^>]*type="hidden"[^>]*name="sort"[^>]*value="name"/, out)
+    assert_match(/<input[^>]*type="hidden"[^>]*name="direction"[^>]*value="asc"/, out)
+    assert_match(/<input[^>]*type="hidden"[^>]*name="per_page"[^>]*value="10"/, out)
+  end
+
+  test "preserved_params skips blank values" do
+    out = RubyUI::DataTableSearch.new(path: "/x", preserved_params: {"sort" => "", "direction" => nil}).call
+    assert_no_match(/name="sort"/, out)
+    assert_no_match(/name="direction"/, out)
+  end
+
+  test "preserved_params skips the search param itself" do
+    out = RubyUI::DataTableSearch.new(path: "/x", name: "q", preserved_params: {"q" => "alice", "sort" => "name"}).call
+    assert_no_match(/<input[^>]*type="hidden"[^>]*name="q"/, out)
+    assert_match(/name="sort"/, out)
+  end
 end

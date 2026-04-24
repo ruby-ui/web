@@ -113,7 +113,8 @@ class Views::Docs::DataTable < Views::Base
         <<~RUBY
           DataTable(id: "server") do
             DataTableToolbar do
-              DataTableSearch(path: my_path)
+              # Pass preserved_params so sort/direction survive a new search.
+              DataTableSearch(path: my_path, preserved_params: {"sort" => @sort, "direction" => @direction}.compact_blank)
             end
 
             Table do
