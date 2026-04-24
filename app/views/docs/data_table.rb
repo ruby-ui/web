@@ -310,6 +310,54 @@ class Views::Docs::DataTable < Views::Base
           end
         RUBY
       end
+
+      # ── Pagination adapters ───────────────────────────────────────────────
+      Heading(level: 2) { "Pagination adapters" }
+      p { "DataTablePagination accepts a pagination source via one of four keyword forms. Each resolves to an internal adapter exposing current_page, total_pages, total_count, and per_page." }
+
+      Heading(level: 3) { "Manual" }
+      p { "No gem required. Pass page/per_page/total_count directly." }
+      Codeblock(<<~RUBY, syntax: :ruby)
+        DataTablePagination(
+          page: @page,
+          per_page: @per_page,
+          total_count: @total_count,
+          path: employees_path
+        )
+      RUBY
+
+      Heading(level: 3) { "Pagy" }
+      p { "If you use Pagy, pass the pagy object directly." }
+      Codeblock(<<~RUBY, syntax: :ruby)
+        @pagy, @employees = pagy(Employee.all)
+
+        DataTablePagination(pagy: @pagy, path: employees_path)
+      RUBY
+
+      Heading(level: 3) { "Kaminari" }
+      p { "If you use Kaminari, pass the paginated collection." }
+      Codeblock(<<~RUBY, syntax: :ruby)
+        @employees = Employee.page(params[:page]).per(25)
+
+        DataTablePagination(kaminari: @employees, path: employees_path)
+      RUBY
+
+      Heading(level: 3) { "Custom adapter" }
+      p { "Any object responding to current_page, total_pages, total_count and per_page works via the with: keyword. Useful when wrapping a different gem or custom pagination logic." }
+      Codeblock(<<~RUBY, syntax: :ruby)
+        class MyAdapter
+          def initialize(result)
+            @result = result
+          end
+
+          def current_page = @result.page
+          def total_pages  = @result.total_pages
+          def total_count  = @result.count
+          def per_page     = @result.limit
+        end
+
+        DataTablePagination(with: MyAdapter.new(@result), path: employees_path)
+      RUBY
     end
   end
 
