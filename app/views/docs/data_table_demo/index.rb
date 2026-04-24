@@ -81,7 +81,7 @@ class Views::Docs::DataTableDemo::Index < Views::Base
                   TableRow do
                     TableCell(class: "w-10") { DataTableRowCheckbox(value: e.id) }
                     TableCell(class: "font-medium") { plain e.name }
-                    TableCell(class: "text-muted-foreground", data: {column: "email"}) { plain e.email }
+                    TableCell(data: {column: "email"}) { plain e.email }
                     TableCell(data: {column: "department"}) { plain e.department }
                     TableCell(data: {column: "status"}) do
                       Badge(variant: BADGE_VARIANTS.fetch(e.status, :outline), size: :sm) { plain e.status }
