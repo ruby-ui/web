@@ -136,23 +136,25 @@ class Views::Docs::DataTable < Views::Base
 
       # ── Example 4: Selection + bulk actions ───────────────────────────────
       Heading(level: 2) { "Selection + bulk actions" }
-      p(class: "-mt-6") { "Form-first: row checkboxes are <input name=ids[]>, bulk buttons submit via formaction." }
+      p(class: "-mt-6") { "DataTableBulkActions is a plain slot — put any Phlex content inside. Row checkboxes are <input name=\"ids[]\"> elements inside DataTableForm. Bulk action buttons submit that form with the selected IDs via HTML5 form-association attributes." }
 
       render Docs::VisualCodeExample.new(title: "Selection + bulk actions", context: self) do
         <<~RUBY
-          FORM_ID = "my_form"
-
           DataTable(id: "selection") do
             DataTableToolbar do
-              div(class: "flex items-center gap-2 ml-auto") do
-                DataTableBulkActions do
-                  Button(type: "submit", form: FORM_ID, formaction: bulk_delete_path, formmethod: "post", variant: :destructive) { "Delete" }
-                  Button(type: "submit", form: FORM_ID, formaction: bulk_export_path, formmethod: "post", variant: :outline) { "Export" }
-                end
+              div # empty left slot — or place filters here
+              DataTableBulkActions do
+                Button(type: "submit", form: "selection_form",
+                       formaction: bulk_delete_path, formmethod: "post",
+                       data: {turbo_confirm: "Delete selected?"},
+                       variant: :destructive, size: :sm) { "Delete" }
+                Button(type: "submit", form: "selection_form",
+                       formaction: bulk_export_path, formmethod: "post",
+                       variant: :outline, size: :sm) { "Export" }
               end
             end
 
-            DataTableForm(id: FORM_ID, action: "") do
+            DataTableForm(id: "selection_form", action: "") do
               Table do
                 TableHeader do
                   TableRow do
@@ -171,12 +173,58 @@ class Views::Docs::DataTable < Views::Base
               end
             end
 
-            div(class: "flex items-center justify-between gap-4 py-2") do
-              DataTableSelectionSummary(total_on_page: @rows.size)
-            end
+            DataTableSelectionSummary(total_on_page: @rows.size)
           end
         RUBY
       end
+
+      Heading(level: 3) { "Bulk action button attributes" }
+      p { "Because the submit buttons live inside DataTableToolbar (outside DataTableForm), you must use HTML5 form-association attributes to wire them up. Server receives params[:ids] as an array." }
+
+      Table do
+        TableHeader do
+          TableRow do
+            TableHead { "Attribute" }
+            TableHead { "Required" }
+            TableHead { "Purpose" }
+          end
+        end
+        TableBody do
+          [
+            ['type: "submit"', "yes", "native submit button"],
+            ["form: FORM_ID", "yes (button is outside DataTableForm)", "HTML5 form-association — lets the button submit a form located elsewhere in the DOM"],
+            ['formaction: "/path"', "yes", "target URL, overrides the form's action"],
+            ['formmethod: "post"', "yes", "HTTP verb, overrides the form's method"],
+            ['formnovalidate: true', "optional", "skip HTML5 validation"],
+            ['data: {turbo_confirm: "Are you sure?"}', "optional", "Rails/Turbo confirmation dialog before submit"]
+          ].each do |attr, required, purpose|
+            TableRow do
+              TableCell { code(class: "font-mono text-xs") { plain attr } }
+              TableCell { plain required }
+              TableCell { plain purpose }
+            end
+          end
+        end
+      end
+
+      Heading(level: 3) { "Rails controller example" }
+      p { "Your endpoint receives the selected IDs as params[:ids] (an array of strings):" }
+
+      Codeblock(<<~RUBY, syntax: :ruby)
+        class EmployeesController < ApplicationController
+          def bulk_delete
+            ids = Array(params[:ids]).map(&:to_i)
+            Employee.where(id: ids).destroy_all
+            redirect_to employees_path, notice: "Deleted \#{ids.size} employees"
+          end
+
+          def bulk_export
+            ids = Array(params[:ids]).map(&:to_i)
+            employees = Employee.where(id: ids)
+            send_data employees.to_csv, filename: "employees.csv"
+          end
+        end
+      RUBY
 
       # ── Example 5: Column visibility ──────────────────────────────────────
       Heading(level: 2) { "Column visibility" }
