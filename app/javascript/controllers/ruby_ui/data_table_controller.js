@@ -42,9 +42,5 @@ export default class extends Controller {
     if (this.hasBulkActionsTarget) {
       this.bulkActionsTarget.classList.toggle("hidden", selected === 0);
     }
-
-    if (this.hasSelectionSummaryTarget) {
-      this.selectionSummaryTarget.classList.toggle("hidden", selected > 0);
-    }
   }
 }
