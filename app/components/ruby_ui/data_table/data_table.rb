@@ -5,12 +5,12 @@ module RubyUI
     register_element :turbo_frame, tag: "turbo-frame"
 
     def initialize(id:, **attrs)
-      @frame_id = id
+      @id = id
       super(**attrs)
     end
 
     def view_template(&block)
-      turbo_frame(id: @frame_id, target: "_top") do
+      turbo_frame(id: @id, target: "_top") do
         div(**attrs) do
           yield if block
         end
