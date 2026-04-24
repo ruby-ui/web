@@ -9,7 +9,7 @@ module Docs
       {id: 4, name: "David Brown", email: "david.brown@example.com", department: "Engineering", status: "Active", salary: 102_000},
       {id: 5, name: "Eve Davis", email: "eve.davis@example.com", department: "Marketing", status: "Inactive", salary: 74_000},
       {id: 6, name: "Frank Miller", email: "frank.miller@example.com", department: "Engineering", status: "Active", salary: 98_000},
-      {id: 7, name: "Grace Lee", email: "grace.lee@example.com", department: "HR", status: "Active", salary: 71_000},
+      {id: 7, name: "Grace Lee", email: "grace.lee@example.com", department: "HR", status: "Active", salary: 60_000},
       {id: 8, name: "Henry Wilson", email: "henry.wilson@example.com", department: "Finance", status: "Active", salary: 85_000},
       {id: 9, name: "Iris Martinez", email: "iris.martinez@example.com", department: "Design", status: "Inactive", salary: 79_000},
       {id: 10, name: "Jack Taylor", email: "jack.taylor@example.com", department: "Engineering", status: "Active", salary: 110_000},
