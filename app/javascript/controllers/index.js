@@ -49,8 +49,6 @@ application.register("ruby-ui--data-table", RubyUi__DataTableController)
 import RubyUi__DataTableColumnVisibilityController from "./ruby_ui/data_table_column_visibility_controller"
 application.register("ruby-ui--data-table-column-visibility", RubyUi__DataTableColumnVisibilityController)
 
-import RubyUi__DataTableRowExpandController from "./ruby_ui/data_table_row_expand_controller"
-application.register("ruby-ui--data-table-row-expand", RubyUi__DataTableRowExpandController)
 
 import RubyUi__DataTableSearchController from "./ruby_ui/data_table_search_controller"
 application.register("ruby-ui--data-table-search", RubyUi__DataTableSearchController)

@@ -16,8 +16,7 @@ module RubyUI
         aria_controls: @controls,
         aria_label: @label,
         data: {
-          controller: "ruby-ui--data-table-row-expand",
-          action: "click->ruby-ui--data-table-row-expand#toggle"
+          action: "click->ruby-ui--data-table#toggleRowDetail"
         },
         **attrs
       ) do
