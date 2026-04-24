@@ -29,17 +29,25 @@ class Views::Docs::DataTable < Views::Base
 
       render Docs::VisualCodeExample.new(title: "Complete demo", src: "/docs/data_table_demo", context: self) do
         <<~RUBY
+          FORM_ID = "employees_form"
+
           DataTable(id: "employees_list") do
             DataTableToolbar do
               DataTableSearch(path: docs_data_table_demo_path, frame_id: "employees_list", value: @search)
-              DataTableColumnToggle(columns: [
-                {key: :email, label: "Email"},
-                {key: :department, label: "Department"}
-              ])
-              DataTablePerPageSelect(path: docs_data_table_demo_path, value: @per_page)
+              div(class: "flex items-center gap-2") do
+                DataTableColumnToggle(columns: [
+                  {key: :email, label: "Email"},
+                  {key: :department, label: "Department"}
+                ])
+                DataTablePerPageSelect(path: docs_data_table_demo_path, value: @per_page)
+                DataTableBulkActions do
+                  Button(type: "submit", form: FORM_ID, formaction: bulk_delete_path, formmethod: "post", variant: :destructive, size: :sm) { "Delete" }
+                  Button(type: "submit", form: FORM_ID, formaction: bulk_export_path, formmethod: "post", variant: :outline, size: :sm) { "Export" }
+                end
+              end
             end
 
-            DataTableForm(action: "") do
+            DataTableForm(id: FORM_ID, action: "") do
               div(class: "rounded-md border") do
                 Table do
                   TableHeader do
@@ -60,16 +68,12 @@ class Views::Docs::DataTable < Views::Base
                   end
                 end
               end
-
-              DataTableSelectionBar do
-                DataTableSelectionSummary(total_on_page: @employees.size)
-                DataTableBulkActions do
-                  Button(type: "submit", formaction: "/bulk_delete", formmethod: "post") { "Delete" }
-                end
-              end
             end
 
-            DataTablePagination(page: @page, per_page: @per_page, total_count: @total_count, path: docs_data_table_demo_path)
+            div(class: "flex items-center justify-between gap-4 py-2") do
+              DataTableSelectionSummary(total_on_page: @employees.size)
+              DataTablePagination(page: @page, per_page: @per_page, total_count: @total_count, path: docs_data_table_demo_path)
+            end
           end
         RUBY
       end
@@ -136,8 +140,19 @@ class Views::Docs::DataTable < Views::Base
 
       render Docs::VisualCodeExample.new(title: "Selection + bulk actions", context: self) do
         <<~RUBY
+          FORM_ID = "my_form"
+
           DataTable(id: "selection") do
-            DataTableForm(action: "") do
+            DataTableToolbar do
+              div(class: "flex items-center gap-2 ml-auto") do
+                DataTableBulkActions do
+                  Button(type: "submit", form: FORM_ID, formaction: bulk_delete_path, formmethod: "post", variant: :destructive) { "Delete" }
+                  Button(type: "submit", form: FORM_ID, formaction: bulk_export_path, formmethod: "post", variant: :outline) { "Export" }
+                end
+              end
+            end
+
+            DataTableForm(id: FORM_ID, action: "") do
               Table do
                 TableHeader do
                   TableRow do
@@ -154,14 +169,10 @@ class Views::Docs::DataTable < Views::Base
                   end
                 end
               end
+            end
 
-              DataTableSelectionBar do
-                DataTableSelectionSummary(total_on_page: @rows.size)
-                DataTableBulkActions do
-                  Button(type: "submit", formaction: bulk_delete_path, formmethod: "post", variant: :destructive) { "Delete" }
-                  Button(type: "submit", formaction: bulk_export_path, formmethod: "post", variant: :outline) { "Export" }
-                end
-              end
+            div(class: "flex items-center justify-between gap-4 py-2") do
+              DataTableSelectionSummary(total_on_page: @rows.size)
             end
           end
         RUBY
