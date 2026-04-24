@@ -51,49 +51,51 @@ class Views::Docs::DataTableDemo::Index < Views::Base
         end
       end
 
-      div(class: "rounded-md border") do
-        Table do
-          TableHeader do
-            TableRow do
-              TableHead(class: "w-10") { DataTableSelectAllCheckbox() }
-              DataTableSortHead(column_key: :name, label: "Name", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query)
-              DataTableSortHead(column_key: :email, label: "Email", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query, data: {column: "email"})
-              DataTableSortHead(column_key: :department, label: "Department", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query, data: {column: "department"})
-              TableHead(data: {column: "status"}) { plain "Status" }
-              DataTableSortHead(column_key: :salary, label: "Salary", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query, class: "text-right [&>a]:justify-end", data: {column: "salary"})
-              TableHead(class: "w-12")
-            end
-          end
-
-          TableBody do
-            if @employees.empty?
+      DataTableForm(action: "") do
+        div(class: "rounded-md border") do
+          Table do
+            TableHeader do
               TableRow do
-                TableCell(colspan: 7, class: "h-24 text-center text-muted-foreground") { plain "No results." }
+                TableHead(class: "w-10") { DataTableSelectAllCheckbox() }
+                DataTableSortHead(column_key: :name, label: "Name", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query)
+                DataTableSortHead(column_key: :email, label: "Email", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query, data: {column: "email"})
+                DataTableSortHead(column_key: :department, label: "Department", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query, data: {column: "department"})
+                TableHead(data: {column: "status"}) { plain "Status" }
+                DataTableSortHead(column_key: :salary, label: "Salary", sort: @sort, direction: @direction, path: docs_data_table_demo_path, query: preserved_query, class: "text-right [&>a]:justify-end", data: {column: "salary"})
+                TableHead(class: "w-12")
               end
-            else
-              @employees.each do |e|
+            end
+
+            TableBody do
+              if @employees.empty?
                 TableRow do
-                  TableCell(class: "w-10") { DataTableRowCheckbox(value: e.id) }
-                  TableCell(class: "font-medium") { plain e.name }
-                  TableCell(class: "text-muted-foreground", data: {column: "email"}) { plain e.email }
-                  TableCell(data: {column: "department"}) { plain e.department }
-                  TableCell(data: {column: "status"}) do
-                    Badge(variant: BADGE_VARIANTS.fetch(e.status, :outline), size: :sm) { plain e.status }
+                  TableCell(colspan: 7, class: "h-24 text-center text-muted-foreground") { plain "No results." }
+                end
+              else
+                @employees.each do |e|
+                  TableRow do
+                    TableCell(class: "w-10") { DataTableRowCheckbox(value: e.id) }
+                    TableCell(class: "font-medium") { plain e.name }
+                    TableCell(class: "text-muted-foreground", data: {column: "email"}) { plain e.email }
+                    TableCell(data: {column: "department"}) { plain e.department }
+                    TableCell(data: {column: "status"}) do
+                      Badge(variant: BADGE_VARIANTS.fetch(e.status, :outline), size: :sm) { plain e.status }
+                    end
+                    TableCell(class: "text-right", data: {column: "salary"}) { plain format_currency(e.salary) }
+                    TableCell(class: "w-12 text-right") { row_actions(e) }
                   end
-                  TableCell(class: "text-right", data: {column: "salary"}) { plain format_currency(e.salary) }
-                  TableCell(class: "w-12 text-right") { row_actions(e) }
                 end
               end
             end
           end
         end
-      end
 
-      DataTableSelectionBar do
-        DataTableSelectionSummary(total_on_page: @employees.size)
-        DataTableBulkActions do
-          Button(type: "submit", formaction: docs_data_table_demo_bulk_delete_path, formmethod: "post", variant: :destructive, size: :sm) { "Delete" }
-          Button(type: "submit", formaction: docs_data_table_demo_bulk_export_path, formmethod: "post", variant: :outline, size: :sm) { "Export" }
+        DataTableSelectionBar do
+          DataTableSelectionSummary(total_on_page: @employees.size)
+          DataTableBulkActions do
+            Button(type: "submit", formaction: docs_data_table_demo_bulk_delete_path, formmethod: "post", variant: :destructive, size: :sm) { "Delete" }
+            Button(type: "submit", formaction: docs_data_table_demo_bulk_export_path, formmethod: "post", variant: :outline, size: :sm) { "Export" }
+          end
         end
       end
 
