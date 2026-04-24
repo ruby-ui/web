@@ -35,7 +35,7 @@ module RubyUI
     end
 
     def current = @adapter.current_page
-    def total   = @adapter.total_pages
+    def total = @adapter.total_pages
 
     def page_href(p)
       qs = @query.merge(@page_param => p.to_s).to_query

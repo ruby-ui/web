@@ -28,7 +28,7 @@ class Views::Docs::DataTable < Views::Base
       p(class: "-mt-6") { "Full feature set — search, sort, numbered pagination, per-page, select-all, row checkboxes, bulk actions, row actions dropdown, column visibility, badge cells." }
 
       render Docs::VisualCodeExample.new(title: "Complete demo", src: "/docs/data_table_demo", context: self) do
-        <<~'RUBY'
+        <<~RUBY
           DataTable(id: "employees_list") do
             DataTableToolbar do
               DataTableSearch(path: docs_data_table_demo_path, frame_id: "employees_list", value: @search)
@@ -75,7 +75,7 @@ class Views::Docs::DataTable < Views::Base
       p(class: "-mt-6") { "Composition only — no interactivity." }
 
       render Docs::VisualCodeExample.new(title: "Basic static table", context: self) do
-        <<~'RUBY'
+        <<~RUBY
           DataTable(id: "basic") do
             Table do
               TableHeader do
@@ -104,7 +104,7 @@ class Views::Docs::DataTable < Views::Base
       p(class: "-mt-6") { "Turbo Frame GET on each sort/search/page. No client-only state." }
 
       render Docs::VisualCodeExample.new(title: "Server-driven", context: self) do
-        <<~'RUBY'
+        <<~RUBY
           DataTable(id: "server") do
             DataTableToolbar do
               DataTableSearch(path: my_path)
@@ -131,7 +131,7 @@ class Views::Docs::DataTable < Views::Base
       p(class: "-mt-6") { "Form-first: row checkboxes are <input name=ids[]>, bulk buttons submit via formaction." }
 
       render Docs::VisualCodeExample.new(title: "Selection + bulk actions", context: self) do
-        <<~'RUBY'
+        <<~RUBY
           DataTable(id: "selection") do
             Table do
               TableHeader do
@@ -166,7 +166,7 @@ class Views::Docs::DataTable < Views::Base
       p(class: "-mt-6") { "Client-side toggle. Hidden columns get `hidden` class via data-column attribute matching." }
 
       render Docs::VisualCodeExample.new(title: "Column visibility", context: self) do
-        <<~'RUBY'
+        <<~RUBY
           DataTable(id: "columns") do
             DataTableToolbar do
               DataTableColumnToggle(columns: [

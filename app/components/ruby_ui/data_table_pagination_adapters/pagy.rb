@@ -8,9 +8,9 @@ module RubyUI
       end
 
       def current_page = @pagy.page
-      def total_pages  = @pagy.pages
-      def total_count  = @pagy.count
-      def per_page     = @pagy.items
+      def total_pages = @pagy.pages
+      def total_count = @pagy.count
+      def per_page = @pagy.items
     end
   end
 end
