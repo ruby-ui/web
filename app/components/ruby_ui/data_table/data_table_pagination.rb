@@ -2,13 +2,12 @@
 
 module RubyUI
   class DataTablePagination < Base
-    WINDOW = 1
-
-    def initialize(with: nil, pagy: nil, kaminari: nil, page: nil, per_page: nil, total_count: nil, page_param: "page", path: "", query: {}, **attrs)
+    def initialize(with: nil, pagy: nil, kaminari: nil, page: nil, per_page: nil, total_count: nil, page_param: "page", path: "", query: {}, window: 1, **attrs)
       @adapter = resolve_adapter(with:, pagy:, kaminari:, page:, per_page:, total_count:)
       @page_param = page_param
       @path = path
       @query = query.to_h.transform_keys(&:to_s)
+      @window = window
       super(**attrs)
     end
 
@@ -75,9 +74,9 @@ module RubyUI
     def windowed_pages
       return (1..total).to_a if total <= 7
       pages = [1]
-      pages << :gap if current - WINDOW > 2
-      ((current - WINDOW)..(current + WINDOW)).each { |p| pages << p if p > 1 && p < total }
-      pages << :gap if current + WINDOW < total - 1
+      pages << :gap if current - @window > 2
+      ((current - @window)..(current + @window)).each { |p| pages << p if p > 1 && p < total }
+      pages << :gap if current + @window < total - 1
       pages << total
       pages
     end

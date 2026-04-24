@@ -27,4 +27,13 @@ class RubyUI::DataTablePaginationTest < ActiveSupport::TestCase
   test "raises when no adapter and no manual args" do
     assert_raises(ArgumentError) { RubyUI::DataTablePagination.new(path: "/x", query: {}) }
   end
+
+  test "window: kwarg widens the numbered page range" do
+    # 20 pages, on page 10, window:1 → [1, :gap, 9, 10, 11, :gap, 20]
+    # window:2 → [1, :gap, 8, 9, 10, 11, 12, :gap, 20]
+    out_narrow = RubyUI::DataTablePagination.new(page: 10, per_page: 1, total_count: 20, path: "/x", query: {}, window: 1).call
+    out_wide   = RubyUI::DataTablePagination.new(page: 10, per_page: 1, total_count: 20, path: "/x", query: {}, window: 2).call
+    assert_no_match(/page=8/, out_narrow)
+    assert_match(/page=8/, out_wide)
+  end
 end
