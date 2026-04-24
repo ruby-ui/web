@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyUI
-  module DataTablePagination
+  module DataTablePaginationAdapters
     class Kaminari
       def initialize(collection)
         @collection = collection

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyUI
-  module DataTablePagination
+  module DataTablePaginationAdapters
     class Manual
       attr_reader :current_page, :per_page, :total_count
 

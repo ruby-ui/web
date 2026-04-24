@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module RubyUI
-  module DataTablePagination
+  module DataTablePaginationAdapters
     class Pagy
       def initialize(pagy)
         @pagy = pagy
