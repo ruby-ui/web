@@ -8,19 +8,18 @@ class RubyUI::DataTableTest < ActiveSupport::TestCase
     assert_match %r{<turbo-frame[^>]*id="employees"[^>]*target="_top"}, output
   end
 
-  test "sets data-controller on inner form" do
+  test "sets data-controller on inner div" do
     output = RubyUI::DataTable.new(id: "x").call
     assert_match(/data-controller="ruby-ui--data-table"/, output)
   end
 
-  test "renders children inside form" do
-    output = RubyUI::DataTable.new(id: "x").call { "INNER" }
-    assert_match(/INNER/, output)
-    assert_match(/<form/, output)
+  test "does NOT render a form wrapper" do
+    output = RubyUI::DataTable.new(id: "x").call
+    assert_no_match(/<form/, output)
   end
 
-  test "renders a hidden authenticity_token input" do
-    output = RubyUI::DataTable.new(id: "x").call
-    assert_match(/<input[^>]*type="hidden"[^>]*name="authenticity_token"[^>]*value="[^"]+"/, output)
+  test "renders children inside the div" do
+    output = RubyUI::DataTable.new(id: "x").call { "INNER" }
+    assert_match(/INNER/, output)
   end
 end
