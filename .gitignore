@@ -47,3 +47,6 @@ yarn-error.log
 
 # Pnpm
 .pnpm-store
+
+# Local design artifacts (not checked in)
+/docs/superpowers/
