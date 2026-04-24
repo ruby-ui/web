@@ -15,4 +15,9 @@ class RubyUI::DataTableFormTest < ActiveSupport::TestCase
     out = RubyUI::DataTableForm.new.call { "INNER" }
     assert_match(/INNER/, out)
   end
+
+  test "renders form with id attribute when given" do
+    out = RubyUI::DataTableForm.new(id: "my_form").call
+    assert_match(/<form[^>]*id="my_form"/, out)
+  end
 end
