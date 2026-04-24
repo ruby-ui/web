@@ -27,12 +27,12 @@ module RubyUI
     private
 
     def render_icon
-      raw view_context.lucide_icon("chevron-right", class: "h-4 w-4 transition-transform duration-150 aria-expanded:rotate-90")
+      raw view_context.lucide_icon("chevron-right", class: "h-4 w-4 transition-transform duration-150 group-aria-expanded:rotate-90")
     end
 
     def default_attrs
       {
-        class: "inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        class: "group inline-flex items-center justify-center h-8 w-8 rounded-md hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       }
     end
   end
