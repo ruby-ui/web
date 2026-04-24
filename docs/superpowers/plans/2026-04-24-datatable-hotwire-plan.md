@@ -233,13 +233,13 @@ EOF
 ## Task 6: Pagination adapter — `Manual`
 
 **Files:**
-- Create: `app/components/ruby_ui/data_table/pagination/manual.rb`
-- Create: `test/components/ruby_ui/data_table/pagination/manual_test.rb`
+- Create: `app/components/ruby_ui/data_table_pagination/manual.rb`
+- Create: `test/components/ruby_ui/data_table_pagination/manual_test.rb`
 
 - [ ] **Step 6.1: Write failing test**
 
 ```ruby
-# test/components/ruby_ui/data_table/pagination/manual_test.rb
+# test/components/ruby_ui/data_table_pagination/manual_test.rb
 require "test_helper"
 
 class RubyUI::DataTable::Pagination::ManualTest < ActiveSupport::TestCase
@@ -267,14 +267,14 @@ end
 - [ ] **Step 6.2: Run test, expect fail**
 
 ```bash
-dx bin/rails test test/components/ruby_ui/data_table/pagination/manual_test.rb
+dx bin/rails test test/components/ruby_ui/data_table_pagination/manual_test.rb
 ```
 Expected: NameError / load error (class missing).
 
 - [ ] **Step 6.3: Implement**
 
 ```ruby
-# app/components/ruby_ui/data_table/pagination/manual.rb
+# app/components/ruby_ui/data_table_pagination/manual.rb
 # frozen_string_literal: true
 
 module RubyUI
@@ -302,7 +302,7 @@ end
 
 ```ruby
 # Revised path + class
-# File: app/components/ruby_ui/data_table/pagination/manual.rb
+# File: app/components/ruby_ui/data_table_pagination/manual.rb
 module RubyUI
   module DataTablePagination
     class Manual
@@ -319,15 +319,15 @@ Fix both files to use `RubyUI::DataTablePagination::Manual`.
 - [ ] **Step 6.4: Run test, expect pass**
 
 ```bash
-dx bin/rails test test/components/ruby_ui/data_table/pagination/manual_test.rb
+dx bin/rails test test/components/ruby_ui/data_table_pagination/manual_test.rb
 ```
 Expected: 3 runs, 0 failures.
 
 - [ ] **Step 6.5: Commit**
 
 ```bash
-git add app/components/ruby_ui/data_table/pagination/manual.rb \
-        test/components/ruby_ui/data_table/pagination/manual_test.rb
+git add app/components/ruby_ui/data_table_pagination/manual.rb \
+        test/components/ruby_ui/data_table_pagination/manual_test.rb
 git commit -m "$(cat <<'EOF'
 feat(data_table): add Manual pagination adapter
 
@@ -343,8 +343,8 @@ EOF
 ## Task 7: Pagination adapter — `Pagy`
 
 **Files:**
-- Create: `app/components/ruby_ui/data_table/pagination/pagy.rb`
-- Create: `test/components/ruby_ui/data_table/pagination/pagy_test.rb`
+- Create: `app/components/ruby_ui/data_table_pagination/pagy.rb`
+- Create: `test/components/ruby_ui/data_table_pagination/pagy_test.rb`
 
 - [ ] **Step 7.1: Failing test**
 
@@ -368,13 +368,13 @@ end
 - [ ] **Step 7.2: Run, expect fail**
 
 ```bash
-dx bin/rails test test/components/ruby_ui/data_table/pagination/pagy_test.rb
+dx bin/rails test test/components/ruby_ui/data_table_pagination/pagy_test.rb
 ```
 
 - [ ] **Step 7.3: Implement**
 
 ```ruby
-# app/components/ruby_ui/data_table/pagination/pagy.rb
+# app/components/ruby_ui/data_table_pagination/pagy.rb
 # frozen_string_literal: true
 
 module RubyUI
@@ -398,8 +398,8 @@ end
 - [ ] **Step 7.5: Commit**
 
 ```bash
-git add app/components/ruby_ui/data_table/pagination/pagy.rb \
-        test/components/ruby_ui/data_table/pagination/pagy_test.rb
+git add app/components/ruby_ui/data_table_pagination/pagy.rb \
+        test/components/ruby_ui/data_table_pagination/pagy_test.rb
 git commit -m "$(cat <<'EOF'
 feat(data_table): add Pagy pagination adapter
 
@@ -415,8 +415,8 @@ EOF
 ## Task 8: Pagination adapter — `Kaminari`
 
 **Files:**
-- Create: `app/components/ruby_ui/data_table/pagination/kaminari.rb`
-- Create: `test/components/ruby_ui/data_table/pagination/kaminari_test.rb`
+- Create: `app/components/ruby_ui/data_table_pagination/kaminari.rb`
+- Create: `test/components/ruby_ui/data_table_pagination/kaminari_test.rb`
 
 - [ ] **Step 8.1: Failing test**
 
@@ -442,7 +442,7 @@ end
 - [ ] **Step 8.3: Implement**
 
 ```ruby
-# app/components/ruby_ui/data_table/pagination/kaminari.rb
+# app/components/ruby_ui/data_table_pagination/kaminari.rb
 # frozen_string_literal: true
 
 module RubyUI
@@ -466,8 +466,8 @@ end
 - [ ] **Step 8.5: Commit**
 
 ```bash
-git add app/components/ruby_ui/data_table/pagination/kaminari.rb \
-        test/components/ruby_ui/data_table/pagination/kaminari_test.rb
+git add app/components/ruby_ui/data_table_pagination/kaminari.rb \
+        test/components/ruby_ui/data_table_pagination/kaminari_test.rb
 git commit -m "$(cat <<'EOF'
 feat(data_table): add Kaminari pagination adapter
 
