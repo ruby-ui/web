@@ -6,8 +6,6 @@ class Views::Docs::DataTable < Views::Base
   Row = Struct.new(:id, :name, :email, :salary, :status, keyword_init: true)
 
   def view_template
-    component = "DataTable"
-
     # Stubs so instance_eval'd preview snippets don't raise NameError
     @rows = [
       Row.new(id: 1, name: "Alice", email: "alice@example.com", salary: 90_000, status: "Active"),
@@ -193,10 +191,10 @@ class Views::Docs::DataTable < Views::Base
           [
             ['type: "submit"', "yes", "native submit button"],
             ["form: FORM_ID", "yes (button is outside DataTableForm)", "HTML5 form-association — lets the button submit a form located elsewhere in the DOM"],
-            ['formaction: "/path"', "yes", "target URL, overrides the form's action"],
-            ['formmethod: "post"', "yes", "HTTP verb, overrides the form's method"],
-            ['formnovalidate: true', "optional", "skip HTML5 validation"],
-            ['data: {turbo_confirm: "Are you sure?"}', "optional", "Rails/Turbo confirmation dialog before submit"]
+            ["formaction: \"/path\"", "yes", "target URL, overrides the form's action"],
+            ["formmethod: \"post\"", "yes", "HTTP verb, overrides the form's method"],
+            ["formnovalidate: true", "optional", "skip HTML5 validation"],
+            ["data: {turbo_confirm: \"Are you sure?\"}", "optional", "Rails/Turbo confirmation dialog before submit"]
           ].each do |attr, required, purpose|
             TableRow do
               TableCell { code(class: "font-mono text-xs") { plain attr } }
