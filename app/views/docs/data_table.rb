@@ -206,6 +206,8 @@ class Views::Docs::DataTable < Views::Base
         end
       end
 
+      p { "For simpler bulk actions that include CSRF and Turbo confirms out of the box, you can use Rails' #{code(class: "font-mono text-xs") { "button_to" }} helper — e.g. #{code(class: "font-mono text-xs") { 'button_to "Delete", path, method: :delete, form: {data: {turbo_confirm: "..."}}' }} — the button will carry a nested form that submits to the given path." }
+
       Heading(level: 3) { "Rails controller example" }
       p { "Your endpoint receives the selected IDs as params[:ids] (an array of strings):" }
 
@@ -228,6 +230,7 @@ class Views::Docs::DataTable < Views::Base
       # ── Example 5: Column visibility ──────────────────────────────────────
       Heading(level: 2) { "Column visibility" }
       p(class: "-mt-6") { "Client-side toggle. Hidden columns get `hidden` class via data-column attribute matching." }
+      p { "Column visibility is client-side and resets on every Turbo Frame swap (sort/search/page re-renders). If you need it to persist, encode it in a URL param (e.g. `?columns=name,status`) or store in localStorage." }
 
       render Docs::VisualCodeExample.new(title: "Column visibility", context: self) do
         <<~RUBY
