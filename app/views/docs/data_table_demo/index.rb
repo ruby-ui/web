@@ -135,5 +135,4 @@ class Views::Docs::DataTableDemo::Index < Views::Base
       "per_page" => @per_page.to_s
     }.compact_blank
   end
-
 end

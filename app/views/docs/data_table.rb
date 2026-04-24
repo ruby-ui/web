@@ -240,7 +240,7 @@ class Views::Docs::DataTable < Views::Base
       p(class: "-mt-6") { "Plain Ruby helpers for badge/date/currency — the gem does not ship renderers." }
 
       render Docs::VisualCodeExample.new(title: "Custom cell renderers", context: self) do
-        <<~'RUBY'
+        <<~RUBY
           def status_badge(status)
             variant = {"Active" => :success, "Inactive" => :destructive}.fetch(status, :outline)
             Badge(variant: variant, size: :sm) { plain status }
