@@ -23,4 +23,9 @@ class RubyUI::DataTableRowCheckboxTest < ActiveSupport::TestCase
     out = RubyUI::DataTableRowCheckbox.new(value: 7).call
     assert_match(/aria-label="Select row 7"/, out)
   end
+
+  test "custom aria-label via label: kwarg" do
+    out = render_component(RubyUI::DataTableRowCheckbox.new(value: 1, label: "Select Alice Johnson"))
+    assert_match(/aria-label="Select Alice Johnson"/, out)
+  end
 end

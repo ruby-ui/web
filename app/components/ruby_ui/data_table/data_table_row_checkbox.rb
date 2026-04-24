@@ -2,9 +2,10 @@
 
 module RubyUI
   class DataTableRowCheckbox < Base
-    def initialize(value:, name: "ids[]", **attrs)
+    def initialize(value:, name: "ids[]", label: nil, **attrs)
       @value = value
       @name = name
+      @label = label
       super(**attrs)
     end
 
@@ -18,7 +19,7 @@ module RubyUI
       {
         name: @name,
         value: @value,
-        aria_label: "Select row #{@value}",
+        aria_label: @label || "Select row #{@value}",
         data: {
           "ruby-ui--data-table-target": "rowCheckbox",
           action: "change->ruby-ui--data-table#toggleRow"

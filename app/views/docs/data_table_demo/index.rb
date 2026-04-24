@@ -80,7 +80,7 @@ class Views::Docs::DataTableDemo::Index < Views::Base
               else
                 @employees.each do |e|
                   TableRow do
-                    TableCell(class: "w-10") { DataTableRowCheckbox(value: e.id) }
+                    TableCell(class: "w-10") { DataTableRowCheckbox(value: e.id, label: "Select row for #{e.name}") }
                     TableCell(class: "font-medium") { plain e.name }
                     TableCell(data: {column: "email"}) { plain e.email }
                     TableCell(data: {column: "department"}) { plain e.department }
