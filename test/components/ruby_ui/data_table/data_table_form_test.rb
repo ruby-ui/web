@@ -20,4 +20,14 @@ class RubyUI::DataTableFormTest < ActiveSupport::TestCase
     out = render_component(RubyUI::DataTableForm.new(id: "my_form"))
     assert_match(/<form[^>]*id="my_form"/, out)
   end
+
+  test "renders form with method=get when given" do
+    out = render_component(RubyUI::DataTableForm.new(method: "get"))
+    assert_match(/<form[^>]*method="get"/, out)
+  end
+
+  test "renders form with method=delete when given" do
+    out = render_component(RubyUI::DataTableForm.new(method: "delete"))
+    assert_match(/<form[^>]*method="delete"/, out)
+  end
 end
