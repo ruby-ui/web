@@ -2,13 +2,14 @@
 
 module RubyUI
   class DataTableSortHead < Base
-    def initialize(column_key:, label:, sort: nil, direction: nil, sort_param: "sort", direction_param: "direction", path: "", query: {}, **attrs)
+    def initialize(column_key:, label:, sort: nil, direction: nil, sort_param: "sort", direction_param: "direction", page_param: "page", path: "", query: {}, **attrs)
       @column_key = column_key
       @label = label
       @sort = sort
       @direction = direction
       @sort_param = sort_param
       @direction_param = direction_param
+      @page_param = page_param
       @path = path
       @query = query.to_h.transform_keys(&:to_s)
       super(**attrs)
@@ -31,7 +32,7 @@ module RubyUI
 
     def next_params
       next_dir = {nil => "asc", "asc" => "desc", "desc" => nil}[current_direction]
-      base = @query.except(@sort_param, @direction_param, "page")
+      base = @query.except(@sort_param, @direction_param, @page_param)
       next_dir ? base.merge(@sort_param => @column_key.to_s, @direction_param => next_dir) : base
     end
 

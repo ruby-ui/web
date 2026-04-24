@@ -30,4 +30,10 @@ class RubyUI::DataTableSortHeadTest < ActiveSupport::TestCase
     assert_match(/sort_by=name/, out)
     assert_match(/sort_dir=asc/, out)
   end
+
+  test "custom page_param is dropped from next href when sorting" do
+    out = RubyUI::DataTableSortHead.new(column_key: :name, label: "Name", page_param: "p", path: "/x", query: {"p" => "3", "search" => "bob"}).call
+    assert_no_match(/[?&]p=/, out)
+    assert_match(/search=bob/, out)
+  end
 end
