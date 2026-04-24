@@ -43,4 +43,9 @@ class Docs::DataTableDemoControllerTest < ActionDispatch::IntegrationTest
     post docs_data_table_demo_bulk_export_url, params: {ids: ["3"]}
     assert_redirected_to docs_data_table_demo_path
   end
+
+  test "GET index renders row checkboxes with ids[] name" do
+    get docs_data_table_demo_url(per_page: 5)
+    assert_match(/name="ids\[\]"[^>]*value="1"|value="1"[^>]*name="ids\[\]"/, response.body)
+  end
 end
