@@ -15,4 +15,9 @@ Rails.autoloaders.main.push_dir(
 )
 
 # Allow using RubyUI::ComponentName instead RubyUI::ComponentName::ComponentName
-Rails.autoloaders.main.collapse(Rails.root.join("app/components/ruby_ui/*"))
+# data_table_pagination_adapters/ is intentionally excluded from collapse so that
+# RubyUI::DataTablePaginationAdapters is a proper module (adapter namespace).
+collapse_dirs = Dir.glob(Rails.root.join("app/components/ruby_ui/*")).reject do |path|
+  path.end_with?("data_table_pagination_adapters")
+end
+Rails.autoloaders.main.collapse(collapse_dirs) unless collapse_dirs.empty?

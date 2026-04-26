@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+/vendor/bundle
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -46,3 +47,6 @@ yarn-error.log
 
 # Pnpm
 .pnpm-store
+
+# Local design artifacts (not checked in)
+/docs/superpowers/
