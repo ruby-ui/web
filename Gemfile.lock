@@ -14,10 +14,10 @@ GIT
 
 GIT
   remote: https://github.com/ruby-ui/ruby_ui.git
-  revision: e5a1f6bb7e0e01a3d7584c9ab8b0a94a47f1611b
+  revision: a3e5c8488b11a4c15caf2f2391181f8f057a589f
   branch: main
   specs:
-    ruby_ui (1.0.2)
+    ruby_ui (1.2.0)
 
 GEM
   remote: https://rubygems.org/
@@ -353,4 +353,4 @@ RUBY VERSION
    ruby 3.4.7p58
 
 BUNDLED WITH
-   2.6.4
+   2.6.9
