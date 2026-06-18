@@ -81,4 +81,4 @@ gem "pry", "0.16.0"
 gem "tailwind_merge", "~> 1.4.0"
 gem "rss", "0.3.2"
 
-gem "rouge", "~> 4.7"
+gem "rouge", "~> 5.0"
